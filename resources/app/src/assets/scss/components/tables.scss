@@ -1,0 +1,123 @@
+.table__main {
+  float: left;
+  background: white;
+  padding: 0 10px;
+  margin-top:50px;
+  width: 100%;
+
+  .table__row {
+    float: left;
+    width: 100%;
+    cursor: default;
+    height: 40px;
+    border-radius: 4px;
+    box-shadow: $secondShadow;
+    margin-bottom: 5px;
+    padding: 0 0 0 5px;
+
+    .table__th--data {
+      width: calc( 100% - 20px );
+      float: left;
+      font-size: 14px;
+      height: 100%;
+
+      .table__th {
+        display: inline;
+        height: 100%;
+        float: left;
+        word-wrap: break-word;
+        padding: 8px 0 8px 3px;
+       }
+
+      .table__td {
+        display: inline;
+        height: 100%;
+        float: left;
+        padding: 7px 0 7px 5px;
+        word-wrap: break-word;
+        cursor: pointer;
+        color: $actions-color;
+        font-size: 16px;
+        font-weight: 600;
+      }
+
+        .table_td--click {
+          cursor: default;
+        }
+      }
+
+      .table__td--action {
+        width: 20px;
+        float: left;
+        display: inline;
+        cursor: pointer;
+
+        .icon__dropdown {
+          padding: 8px;
+        }
+      }
+    }
+}
+
+.table_2td {
+  @extend .table__main;
+
+  .table__row {
+    .table__th--data {
+      width: calc(50% - 10px);
+    }
+  }
+}
+
+.table_3td {
+  @extend .table__main;
+
+  .table__row {
+    .table__th--data {
+      width: calc(33.33% - 6.66px);
+    }
+  }
+}
+
+.table_4td {
+  @extend .table__main;
+
+  .table__row {
+    .table__th--data {
+      width: calc(25% - 5px);
+    }
+  }
+}
+
+.tr_click {
+  cursor: pointer;
+}
+
+.dropdown-menu-main {
+  margin-top: -10px !important;
+  padding: 3px 0 !important;
+  .dropdown__item {
+    height: 30px;
+    padding: 4px 0 4px 5px;
+    float: left;
+    width: 100%;
+
+    &:hover {
+      background: $hoverItemSubMenu;
+      cursor: pointer;
+    }
+
+    .dropdown__item--icon {
+      width: 15%;
+      padding-left: 3%;
+      float: left;
+    }
+
+    .dropdown__item--description {
+      padding-left: 5px;
+      width: 85%;
+      float: left;
+      font-size: 15px;
+    }
+  }
+}

@@ -1,7 +1,68 @@
+//import variables
+@import 'variables';
+@import 'general';
 
 //import page
 @import 'pages/loading';
 
+//import components
+@import 'components/leftMenu';
+@import 'components/tables';
+
+
+@font-face {
+  font-family: "Roboto";
+  src: url('../fonts/Roboto-Regular.ttf') format("truetype");
+}
+
+* {
+  outline: none !important;
+}
+
 body {
   background-color: #0c5460;
+  font-family: 'Roboto', Fallback, sans-serif !important;
 }
+
+.app_container {
+  width: 100%;
+  position: absolute;
+  height: 100%;
+  //background: $mainBackground;
+  //overflow-x: auto !important;
+}
+
+.container {
+  padding-top: 20px;
+  background: #fff;
+  width: 80%;
+  height: 100%;
+}
+
+.menu-content {
+  height: 100%;
+  box-sizing: border-box;
+  padding: 20px !important;
+  width: 80% !important;
+  overflow-x: auto;
+
+  .menu-content_header {
+    float: left;
+    width: calc(100% - 20px);
+    margin: 0 10px;
+    padding-bottom: 10px;
+
+    .title_side {
+      float: left;
+      margin: 0;
+      padding-left: 10px;
+    }
+
+    .add_new-button {
+      float: right;
+      width: auto;
+    }
+  }
+}
+
+

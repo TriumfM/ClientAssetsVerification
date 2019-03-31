@@ -1,0 +1,15 @@
+.noPadding {
+  padding: 0 !important;
+}
+
+.noMargin {
+  margin: 0 !important;
+}
+
+.horizontal__line{
+  background-color: $borderMenu;
+  height: 1px;
+  float: left;
+  width: calc(100% - 20px);
+  margin: 0 10px;
+}

@@ -1,6 +1,6 @@
 <template>
-  <div id="app">
-    <router-view/>
+  <div id="app" class="app_container">
+    <router-view :class="{'col-md-12':true, 'noPadding': true }"/>
   </div>
 </template>
 
