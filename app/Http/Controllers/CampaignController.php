@@ -6,7 +6,6 @@ use App\Campaign;
 use App\Http\Requests\CampaignSaveRequest;
 use App\Http\Requests\CampaignUpdateRequest;
 use App\Services\CampaignService;
-use Illuminate\Http\Request;
 
 class CampaignController extends Controller
 {
@@ -19,12 +18,13 @@ class CampaignController extends Controller
 
     public function index()
     {
-        return Campaign::get();
+        return $this->service->findAll();
     }
 
     public function show($id)
     {
-        return Campaign::findOrFail($id);
+        return $this->service->show($id);
+
     }
 
     public function store(CampaignSaveRequest $request)
@@ -33,14 +33,10 @@ class CampaignController extends Controller
 
         $campaign->title = $request->json("title");
         $campaign->description = $request->json("description");
-        $campaign->sms_script = $request->json("sms_script");
-        $campaign->call_script = $request->json("call_script");
-        $campaign->email_subject = $request->json("email_subject");
-        $campaign->email_html = $request->json("email_html");
-        $campaign->sms_verified = $request->json("sms_verified");
-        $campaign->call_verified = $request->json("call_verified");
-        $campaign->email_verified = $request->json("email_verified");
-        $campaign->campaign_verified = $request->json("campaign_verified");
+        $campaign->sms_script = '';
+        $campaign->call_script ='';
+        $campaign->email_subject = '';
+        $campaign->email_html = '';
 
         $campaign->brand_id = $request->json("brand_id");
 

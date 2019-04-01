@@ -26,10 +26,6 @@ class CampaignSaveRequest extends FormRequest
         return [
             'title' => 'required',
             'description' => 'required',
-            'sms_script' => 'required',
-            'call_script' => 'required',
-            'email_subject' => 'required',
-            'email_html' => 'required',
             'brand_id' => 'required|exists:brands,id',
         ];
     }
