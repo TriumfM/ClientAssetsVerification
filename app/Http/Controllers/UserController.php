@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UserSaveRequest;
+use App\Http\Requests\UserUpdateRequest;
 use App\Services\UserService;
 use App\User;
 use Illuminate\Http\Request;
@@ -25,7 +27,7 @@ class UserController extends Controller
         return User::findOrFail($id);
     }
 
-    public function store(Request $request)
+    public function store(UserSaveRequest $request)
     {
         $user = new User();
 
@@ -38,7 +40,7 @@ class UserController extends Controller
         return $this->service->save($user);
     }
 
-    public function update(Request $request, $id)
+    public function update(UserUpdateRequest $request, $id)
     {
         $user = $this->service->findById($id);
 

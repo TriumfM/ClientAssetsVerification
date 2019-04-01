@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Campaign;
+use App\Http\Requests\CampaignSaveRequest;
+use App\Http\Requests\CampaignUpdateRequest;
 use App\Services\CampaignService;
 use Illuminate\Http\Request;
 
@@ -25,7 +27,7 @@ class CampaignController extends Controller
         return Campaign::findOrFail($id);
     }
 
-    public function store(Request $request)
+    public function store(CampaignSaveRequest $request)
     {
         $campaign = new Campaign();
 
@@ -45,7 +47,7 @@ class CampaignController extends Controller
         return  $this->service->save($campaign);
     }
 
-    public function update(Request $request, $id)
+    public function update(CampaignUpdateRequest $request, $id)
     {
         $campaign = Campaign::findOrFail($id);
 

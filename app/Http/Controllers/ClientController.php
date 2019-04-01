@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Client;
+use App\Http\Requests\ClientSaveRequest;
+use App\Http\Requests\ClientUpdateRequest;
 use App\Services\ClientService;
 use Illuminate\Http\Request;
 
@@ -25,7 +27,7 @@ class ClientController extends Controller
         return Client::findOrFail($id);
     }
 
-    public function store(Request $request)
+    public function store(ClientSaveRequest $request)
     {
         $client = new Client();
 
@@ -36,7 +38,7 @@ class ClientController extends Controller
         return  $this->service->save($client);
     }
 
-    public function update(Request $request, $id)
+    public function update(ClientUpdateRequest $request, $id)
     {
         $client = Client::findOrFail($id);
 

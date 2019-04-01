@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Brand;
+use App\Http\Requests\BrandSaveRequest;
+use App\Http\Requests\BrandUpdateRequest;
 use App\Services\BrandService;
 use Illuminate\Http\Request;
 
@@ -25,7 +27,7 @@ class BrandController extends Controller
         return Brand::findOrFail($id);
     }
 
-    public function store(Request $request)
+    public function store(BrandSaveRequest $request)
     {
         $brand = new Brand();
 
@@ -35,7 +37,7 @@ class BrandController extends Controller
         return  $this->service->save($brand);
     }
 
-    public function update(Request $request, $id)
+    public function update(BrandUpdateRequest $request, $id)
     {
         $brand = Brand::findOrFail($id);
 

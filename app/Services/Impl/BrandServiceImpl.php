@@ -3,8 +3,9 @@
 namespace App\Services\Impl;
 
 use App\Brand;
+use App\Services\BrandService;
 
-class BrandServiceImpl
+class BrandServiceImpl implements BrandService
 {
     /**
      * Find All

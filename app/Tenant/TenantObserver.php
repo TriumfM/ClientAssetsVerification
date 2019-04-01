@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: blinzeka
- * Date: 1/21/2019
- * Time: 4:35 PM
- */
 
 namespace App\Tenant;
 
