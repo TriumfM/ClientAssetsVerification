@@ -13,3 +13,12 @@
   width: calc(100% - 20px);
   margin: 0 10px;
 }
+
+.form-line {
+  float: left;
+  width: 100%;
+}
+
+::placeholder {
+  color: #bdbdbd !important;
+}
