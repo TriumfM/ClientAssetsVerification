@@ -27,7 +27,6 @@ class UserUpdateRequest extends FormRequest
             'name' => 'required',
             'email' => 'required|email|unique:users,email,'. $this->id,
             'active' => 'required',
-            'role_id' => 'required',
             'password' => 'sometimes|required',
             'retype_password' => 'required_with:password|same:password',
         ];

@@ -1,31 +1,48 @@
 <?php
 
-use App\Role;
 use Illuminate\Database\Seeder;
-
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 class RoleTableSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
     public function run()
     {
-        $role = new Role();
-        $role->name  = 'Super Admin';
-        $role->save();
+        // Reset cached roles and permissions
+        app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
-        $role2 = new Role();
-        $role2->name  = 'Client Admin';
-        $role2->save();
+        // create permissions
+        Permission::create(['name' => 'edit campaigns']);
+        Permission::create(['name' => 'delete campaigns']);
+        Permission::create(['name' => 'view campaigns']);
+        Permission::create(['name' => 'disapprove campaigns']);
 
-        $role3 = new Role();
-        $role3->name  = 'Client User';
-        $role3->save();
+        Permission::create(['name' => 'edit assets']);
+        Permission::create(['name' => 'verify assets']);
+        Permission::create(['name' => 'view assets']);
 
-        $role4 = new Role();
-        $role4->name  = 'Client Viewer';
-        $role4->save();
+        Permission::create(['name' => 'create client viewers']);
+        Permission::create(['name' => 'create client user']);
+
+        Permission::create(['name' => 'edit clients']);
+        Permission::create(['name' => 'delete clients']);
+
+
+        // create roles and assign created permissions
+
+        $role = Role::create(['name' => 'client-viewer']);
+        $role->givePermissionTo('view assets');
+
+        $role = Role::create(['name' => 'client-user']);
+        $role->givePermissionTo(['edit assets', 'verify assets', 'view assets']);
+
+        $role = Role::create(['name' => 'client-admin'])
+            ->givePermissionTo([
+                'edit assets', 'verify assets', 'view assets',
+                'edit campaigns', 'view campaigns', 'disapprove campaigns', 'delete campaigns'
+            ] );
+
+        $role = Role::create(['name' => 'super-admin']);
+        $role->givePermissionTo(Permission::all());
     }
+
 }

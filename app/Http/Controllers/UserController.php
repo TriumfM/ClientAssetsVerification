@@ -6,7 +6,6 @@ use App\Http\Requests\UserSaveRequest;
 use App\Http\Requests\UserUpdateRequest;
 use App\Services\UserService;
 use App\User;
-use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
@@ -34,7 +33,6 @@ class UserController extends Controller
         $user->name = $request->json('name');
         $user->email = $request->json('email');
         $user->password = bcrypt($request->json('password'));
-        $user->role_id = $request->json('role_id');
         $user->active = $request->json('active');
 
         return $this->service->save($user);
@@ -47,7 +45,6 @@ class UserController extends Controller
         $user->name = $request->json("name");
         $user->email = $request->json('email');
         $user->active = $request->json('active');
-        $user->role_id = $request->json('role_id');
 
         if ($request->has('password')) {
             $user->password = bcrypt($request->json('password'));
