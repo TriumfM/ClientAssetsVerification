@@ -8,6 +8,8 @@ import AppView from '@/main/AppView'
 import LoginView from '@/main/login/LoginComponent'
 import ClientComponent from '@/main/clients/ClientsComponent'
 import BrandsComponent from '@/main/brands/BrandsComponent'
+import CampaignsComponent from '@/main/campaigns/CampaignsComponent'
+import CampaignDetails from '@/main/campaigns/CampaignDetails'
 import UsersComponent from '@/main/users/UsersComponent'
 
 Vue.use(Router)
@@ -38,6 +40,17 @@ export default new Router({
           path: '/users',
           name: 'users',
           component: UsersComponent
+        },
+        {
+          path: '/campaigns',
+          name: 'campaigns',
+          component: CampaignsComponent,
+          children: []
+        },
+        {
+          path: '/campaign/details',
+          name: 'CampaignDetails',
+          component: CampaignDetails
         }
       ]
     },

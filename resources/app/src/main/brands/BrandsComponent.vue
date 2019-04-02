@@ -18,7 +18,7 @@
           <div class='table__td table_td--click'>Devolli</div>
         </div>
         <div class="table__button">
-          <button class="btn btn__">Campaigns</button>
+          <button class="btn btn__row">Campaigns</button>
         </div>
         <div class="table__td--action">
           <div class="dropdown">

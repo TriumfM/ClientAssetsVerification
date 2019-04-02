@@ -7,15 +7,15 @@
       </div>
     </div>
     <div class="horizontal__line"></div>
-    <div class="table__main">
+    <div class="table__main table_with-out--tags">
       <div class="table__row" v-for="n in 10">
         <div class='table__th--data'>
           <div class="table__th">Name: </div>
           <div class='table__td table_td--click'> Devolli</div>
         </div>
         <div class="table__button">
-          <button class="btn btn__">Brands</button>
-          <button class="btn btn__">Campaigns</button>
+          <button class="btn btn__row">Brands</button>
+          <button class="btn btn__row">Campaigns</button>
         </div>
         <div class="table__td--action">
           <div class="dropdown">
