@@ -7,37 +7,37 @@
       </div>
     </div>
     <div class="horizontal__line"></div>
-    <div class="filter__search">
-      <div class="search__row">
-        <div class="input-group" id="adv-search">
-          <input type="text" class="form-control" placeholder="Search by campaign title ..." v-model="search.identifier_name" v-on:keyup.enter="getAll()"/>
-          <div class="input-group-btn">
-            <div class="btn-group" role="group">
-              <div>
-                <button type="button" class="btn btn__filter-open dropdown-toggle" v-on:click="showFilter = !showFilter"><span class="caret"></span></button>
-              </div>
-            </div>
-          </div>
-          <div class="dropdown_filter-content">
-            <transition name="fade">
-              <div class="dropdown__filter" v-if="showFilter">
-                <div class="option__filter">
-                  <span class="option__filter-name"> Campaign:</span>
-                  <div class="option__filter-value">
-                    <input type="text" class="option__filter-value--input" v-model="search.identifier_name"/>
-                  </div>
-                </div>
-                <div class="option__filter-submit">
-                  <div class="btn_submit--search">
-                    <button class="btn btn-light" v-on:click="getAll()">Search</button>
-                  </div>
-                </div>
-              </div>
-            </transition>
-          </div>
-        </div>
-      </div>
-    </div>
+    <!--<div class="filter__search">-->
+      <!--<div class="search__row">-->
+        <!--<div class="input-group" id="adv-search">-->
+          <!--<input type="text" class="form-control" placeholder="Search by campaign title ..." v-model="search.identifier_name" v-on:keyup.enter="getAll()"/>-->
+          <!--<div class="input-group-btn">-->
+            <!--<div class="btn-group" role="group">-->
+              <!--<div>-->
+                <!--<button type="button" class="btn btn__filter-open dropdown-toggle" v-on:click="showFilter = !showFilter"><span class="caret"></span></button>-->
+              <!--</div>-->
+            <!--</div>-->
+          <!--</div>-->
+          <!--<div class="dropdown_filter-content">-->
+            <!--<transition name="fade">-->
+              <!--<div class="dropdown__filter" v-if="showFilter">-->
+                <!--<div class="option__filter">-->
+                  <!--<span class="option__filter-name"> Campaign:</span>-->
+                  <!--<div class="option__filter-value">-->
+                    <!--<input type="text" class="option__filter-value&#45;&#45;input" v-model="search.identifier_name"/>-->
+                  <!--</div>-->
+                <!--</div>-->
+                <!--<div class="option__filter-submit">-->
+                  <!--<div class="btn_submit&#45;&#45;search">-->
+                    <!--<button class="btn btn-light" v-on:click="getAll()">Search</button>-->
+                  <!--</div>-->
+                <!--</div>-->
+              <!--</div>-->
+            <!--</transition>-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</div>-->
     <div class="table__main">
       <div class="table__row" v-for="n in 10">
         <div class='table__th--data'>
@@ -83,65 +83,37 @@
     <transition name="modal" v-if="showModal">
       <div class="modal-mask">
         <div class="modal-wrapper">
-          <div class="modal-container">
-            <div class="modal-header-customize">
-              <span class="modal-title">{{modal}}</span>
-              <div class="modal-close" @click="showModal = false"><i class="fa fa-times"></i></div>
+          <div class="modal-container modal-container_lg">
+            <div class="modal-header-stepper">
+              <router-link to="/campaigns/data" class="step">
+                <div class="icon"><i class="fa fa-circle"></i></div>
+                <span class="details">Details</span>
+              </router-link>
+              <div class="line"></div>
+              <router-link to="/campaigns/sms" class="step">
+                <div class="icon"><i class="fa fa-circle"></i></div>
+                <span class="details">SMS</span>
+              </router-link>
+              <div class="line"></div>
+              <router-link to="/campaigns/call" class="step">
+                <div class="icon"><i class="fa fa-circle"></i></div>
+                <span class="details">Call</span>
+              </router-link>
+              <div class="line"></div>
+              <router-link to="/campaigns/email" class="step">
+                <div class="icon"><i class="fa fa-circle"></i></div>
+                <span class="details">Email</span>
+              </router-link>
             </div>
             <div class="modal-body-customize">
-              <div class="container container_100">
-                <div class="form-line">
-                  <div class="cnf__input col-md-6">
-                    <label>First name</label>
-                    <input type="text" class="form-control" placeholder=" Enter first name" v-model="details.first_name">
-                    <span class="error__span" v-if="errors.first_name">{{ errors.first_name[0] }}</span>
-                  </div>
-                  <div class="cnf__input col-md-6">
-                    <label>Last name</label>
-                    <input type="text" class="form-control" placeholder=" Enter last name" v-model="details.last_name">
-                    <span class="error__span" v-if="errors.last_name">{{ errors.last_name[0] }}</span>
-                  </div>
-                  <div class="cnf__input col-md-6">
-                    <label>Username</label>
-                    <input type="text" class="form-control" placeholder=" Enter username" v-model="details.username">
-                    <span class="error__span" v-if="errors.username">{{ errors.username[0] }}</span>
-                  </div>
-                  <div class="cnf__input col-md-6">
-                    <label>Email</label>
-                    <input type="text" class="form-control" placeholder=" Enter email" v-model="details.email">
-                    <span class="error__span" v-if="errors.email">{{ errors.email[0] }}</span>
-                  </div>
-                  <div class="cnf__input col-md-6">
-                    <label>Password</label>
-                    <input type="text" class="form-control" placeholder=" Enter email" v-model="details.password">
-                    <span class="error__span" v-if="errors.password">{{ errors.password[0] }}</span>
-                  </div>
-                  <div class="cnf__input col-md-6">
-                    <label>Confirm Password</label>
-                    <input type="text" class="form-control" placeholder=" Enter email" v-model="details.cnf_password">
-                    <span class="error__span" v-if="errors.cnf_password">{{ errors.cnf_password[0] }}</span>
-                  </div>
-                  <div class="cnf__input col-md-12">
-                    <label>Role</label>
-                    <treeselect :options="roles" placeholder=" Choose role" v-model="details.role_id">
-                      <label slot="option-label" slot-scope="{ node }">
-                        {{ node.raw }}
-                      </label>
-                    </treeselect>
-                    <span class="error__span" v-if="errors.role_id">{{ errors.role_id[0] }}</span>
-                  </div>
-                  <div class="cnf__input ">
-                    <input type="checkbox" v-model="details.active">
-                    <label>Active</label>
-                  </div>
-                </div>
-              </div>
+              <router-view></router-view>
             </div>
             <div class="modal-footer-customize">
-              <button class="btn btn-light" @click="showModal = false">Close</button>
-              <button class="btn btn-primary" :disabled="showLoading" @click="save()">
-                <i class="fa fa-refresh fa-spin" v-if="showLoading"></i> Save
-              </button>
+              <button class="btn btn-primary">Next</button>
+              <button class="btn btn-primary" @click="showModal = false">Close</button>
+              <!--<button class="btn btn-primary" :disabled="showLoading" @click="save()">-->
+                <!--<i class="fa fa-refresh fa-spin" v-if="showLoading"></i> Save-->
+              <!--</button>-->
             </div>
           </div>
         </div>

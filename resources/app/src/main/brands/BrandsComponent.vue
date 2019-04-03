@@ -170,13 +170,13 @@ export default{
           })
       }, '')
     },
-    fatchClients: function () {
+    fetchClients: function () {
       Http.get(`/clients`)
         .then(response => {
           this.clients = response.data
         })
     },
-    fatchBrands: function () {
+    fetchBrands: function () {
       Http.get(`/brands`)
         .then(response => {
           this.clients = response.data

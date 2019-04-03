@@ -36,6 +36,38 @@
       }
     }
 
+    .modal-header-stepper {
+      width: 100%;
+      float: left;
+      border-bottom: 1px solid $borderMenu;
+      text-align: center;
+      height: 140px;
+      padding: 40px calc(50% - 240px);
+      position: relative;
+
+      .step {
+        float: left;
+        width: 50px;
+        cursor: pointer;
+
+        .icon {
+          font-size: 24px;
+          text-align: center;
+        }
+        .details {
+          font-size: 16px;
+        }
+      }
+
+      .line {
+        margin-top: 25px;
+        float: left;
+        height: 1px;
+        width: 80px;
+        background-color: $alphabetContent;
+      }
+    }
+
     .modal-body-customize {
       padding: 20px 10px 20px 13px;
       border-bottom: 1px solid $borderMenu;

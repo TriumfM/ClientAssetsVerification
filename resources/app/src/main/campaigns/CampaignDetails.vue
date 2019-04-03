@@ -1,29 +1,90 @@
 <template>
   <div class="col-md-12 menu-content">
-    <div class="menu-content_header">
-      <h2 class="title_side">All Campaigns</h2>
-      <div class="add_new-button">
-        <button class="btn btn-primary" @click="modalAdd()">Add new</button>
+    <section class="section">
+      <div class="container">
+        <div class="columns">
+          <div class="column is-8 is-offset-2">
+            <horizontal-stepper :steps="demoSteps" @completed-step="completeStep"
+              @active-step="isStepActive" @stepper-finished="alert"
+            >
+            </horizontal-stepper>
+          </div>
+        </div>
       </div>
-    </div>
-    <div class="horizontal__line"></div>
-    <div class="campaign__new--details">
-      <ul class="nav nav-tabs" id="myTab" role="tablist">
-        <li class="nav-item">
-          <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Profile</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Contact</a>
-        </li>
-      </ul>
-      <div class="tab-content" id="myTabContent">
-        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">...</div>
-        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">...</div>
-        <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">...</div>
-      </div>
-    </div>
+    </section>
   </div>
 </template>
+
+<script>
+import HorizontalStepper from 'vue-stepper';
+
+import StepOne from '@/main/campaigns/details/email'
+import Details from '@/main/campaigns/details/detailsData'
+export default {
+  components: {
+    HorizontalStepper
+  },
+  data(){
+    return {
+      demoSteps: [
+        {
+          icon: '',
+          name: 'details',
+          title: 'Details',
+          subtitle: '',
+          component: Details,
+          completed: false
+        },
+        {
+          icon: '',
+          name: 'sms',
+          title: 'SMS',
+          subtitle: '',
+          component: StepOne,
+          completed: false
+        },
+        {
+          icon: '',
+          name: 'call',
+          title: 'Call',
+          subtitle: '',
+          component: StepOne,
+          completed: false
+        },
+        {
+          icon: '',
+          name: 'email',
+          title: 'Email',
+          subtitle: '',
+          component: StepOne,
+          completed: false
+        }
+      ]
+    }
+  },
+  methods: {
+    // Executed when @completed-step event is triggered
+    completeStep(payload) {
+      this.demoSteps.forEach((step) => {
+        if (step.name === payload.name) {
+          step.completed = true;
+        }
+      })
+    },
+    // Executed when @active-step event is triggered
+    isStepActive(payload) {
+      this.demoSteps.forEach((step) => {
+        if (step.name === payload.name) {
+          if(step.completed === true) {
+            step.completed = false;
+          }
+        }
+      })
+    },
+    // Executed when @stepper-finished event is triggered
+    alert(payload) {
+      alert('end')
+    }
+  }
+}
+</script>

@@ -1,5 +1,5 @@
 <template>
-  <div class="app_container">
+  <div class="app__container">
     <left-menu></left-menu>
     <router-view :class="{'container':true, 'col-md-10':true}"></router-view>
   </div>

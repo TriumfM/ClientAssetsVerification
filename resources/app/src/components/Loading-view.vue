@@ -1,5 +1,5 @@
 <template>
-  <div class="app_container">
+  <div class="app__container">
     <div class="img_loading_middle">
       <img src="@/assets/img/loading-animated.gif" alt="Loading.."/>
     </div>
