@@ -17,10 +17,10 @@ class CreateCampaignsTable extends Migration
             $table->bigIncrements('id');
             $table->string('title');
             $table->string('description');
-            $table->text('sms_script');
-            $table->text('call_script');
-            $table->text('email_subject');
-            $table->text('email_html');
+            $table->text('sms_script')->nullable();
+            $table->text('call_script')->nullable();
+            $table->text('email_subject')->nullable();
+            $table->text('email_html')->nullable();
             $table->boolean('sms_verified')->default(false);
             $table->boolean('call_verified')->default(false);
             $table->boolean('email_verified')->default(false);
