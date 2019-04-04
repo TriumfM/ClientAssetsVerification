@@ -41,21 +41,36 @@
       float: left;
       border-bottom: 1px solid $borderMenu;
       text-align: center;
-      height: 140px;
-      padding: 40px calc(50% - 240px);
+      height: 120px;
+      padding: 30px calc(50% - 200px);
       position: relative;
 
       .step {
         float: left;
-        width: 50px;
+        width: 80px;
         cursor: pointer;
+        text-decoration: none;
 
         .icon {
           font-size: 24px;
           text-align: center;
+          color: $greenAlphaColor;
         }
         .details {
           font-size: 16px;
+          color: $alphabetContent;
+
+          font-weight: 600;
+        }
+      }
+
+      .step_active {
+        .icon {
+          color: $greenColor !important;
+        }
+        .details {
+          font-size: 17px !important;
+          color: $alphabetContent;
         }
       }
 
@@ -64,21 +79,36 @@
         float: left;
         height: 1px;
         width: 80px;
-        background-color: $alphabetContent;
+
+      }
+
+      .close_modal {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        cursor: pointer;
       }
     }
 
     .modal-body-customize {
       padding: 20px 10px 20px 13px;
       border-bottom: 1px solid $borderMenu;
-      min-height: 200px;
+      min-height: 250px;
       max-height: 520px;
       overflow-x: auto;
+    }
+
+    .modal-body-stepper {
+      height: 400px !important;
     }
 
     .modal-footer-customize {
       padding: 12px 16px;
       text-align: right;
+
+      .btn-left {
+        float: left !important;
+      }
     }
   }
 

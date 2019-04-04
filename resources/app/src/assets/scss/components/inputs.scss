@@ -81,15 +81,31 @@
     }
   }
 }
-//if input is col-md-6
+
 .col-md-6 {
   padding: 0 3px 0 0!important;
 }
-.cnf__textarea {
-  height: 245px !important;
+
+.cnt__textarea{
+  height: 80px !important;
   float: left;
   resize: none;
   font-size: 14px;
+}
+
+.cnt__textarea-233 {
+  @extend .cnt__textarea;
+  height: 233px !important;
+}
+
+.cnt__textarea-188 {
+  @extend .cnt__textarea;
+  height: 188px !important;
+}
+
+.cnt__textarea-174 {
+  @extend .cnt__textarea;
+  height: 174px !important;
 }
 
 .vue-treeselect__control {

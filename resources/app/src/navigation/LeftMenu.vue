@@ -68,12 +68,19 @@ export default {
   },
   watch: {
     '$route': function () {
+      this.watchRoute()
     }
   },
   mounted: function () {
+    this.watchRoute()
   },
   methods: {
-
+    watchRoute: function () {
+      this.routes = String(this.$route.path).split('/')
+      if (this.routes[2] === undefined) {
+        this.routes[2] = 'clients'
+      }
+    },
   }
 }
 </script>

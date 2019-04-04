@@ -18,7 +18,7 @@
           <div class='table__td table_td--click'>Devolli</div>
         </div>
         <div class="table__button">
-          <button class="btn btn__row">Campaigns</button>
+          <button class="btn btn__row" @click="$router.push('campaigns')">Campaigns</button>
         </div>
         <div class="table__td--action">
           <div class="dropdown">
@@ -95,7 +95,7 @@ export default{
   data () {
     return {
       brands: {},
-      clients: ['1321',"123",'13212',"123"],
+      clients: ["Bosh",'Google'],
       details: {},
       errors: {},
       showModal: false,

@@ -16,6 +16,7 @@
     "@riophae/vue-treeselect": "0.0.38",
     "axios": "^0.18.0",
     "bootstrap": "^4.3.1",
+    "flat-icons": "^1.0.0",
     "font-awesome": "^4.7.0",
     "jquery": "^3.3.1",
     "node-sass": "^4.11.0",

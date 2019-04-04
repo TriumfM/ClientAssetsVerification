@@ -2,17 +2,18 @@
 @import 'variables';
 @import 'general';
 
+//import components
+@import 'components/mixin';
+@import 'components/leftMenu';
+@import 'components/tables';
+@import 'components/modal';
+@import 'components/inputs';
+
 //import page
 @import 'pages/loading';
 @import 'pages/campaigns/campaigns';
 @import 'pages/campaigns/details';
 
-//import components
-@import 'components/leftMenu';
-@import 'components/tables';
-@import 'components/modal';
-@import 'components/inputs';
-@import 'components/search';
 
 @font-face {
   font-family: "Roboto";

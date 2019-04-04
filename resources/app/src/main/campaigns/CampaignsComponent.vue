@@ -7,37 +7,6 @@
       </div>
     </div>
     <div class="horizontal__line"></div>
-    <!--<div class="filter__search">-->
-      <!--<div class="search__row">-->
-        <!--<div class="input-group" id="adv-search">-->
-          <!--<input type="text" class="form-control" placeholder="Search by campaign title ..." v-model="search.identifier_name" v-on:keyup.enter="getAll()"/>-->
-          <!--<div class="input-group-btn">-->
-            <!--<div class="btn-group" role="group">-->
-              <!--<div>-->
-                <!--<button type="button" class="btn btn__filter-open dropdown-toggle" v-on:click="showFilter = !showFilter"><span class="caret"></span></button>-->
-              <!--</div>-->
-            <!--</div>-->
-          <!--</div>-->
-          <!--<div class="dropdown_filter-content">-->
-            <!--<transition name="fade">-->
-              <!--<div class="dropdown__filter" v-if="showFilter">-->
-                <!--<div class="option__filter">-->
-                  <!--<span class="option__filter-name"> Campaign:</span>-->
-                  <!--<div class="option__filter-value">-->
-                    <!--<input type="text" class="option__filter-value&#45;&#45;input" v-model="search.identifier_name"/>-->
-                  <!--</div>-->
-                <!--</div>-->
-                <!--<div class="option__filter-submit">-->
-                  <!--<div class="btn_submit&#45;&#45;search">-->
-                    <!--<button class="btn btn-light" v-on:click="getAll()">Search</button>-->
-                  <!--</div>-->
-                <!--</div>-->
-              <!--</div>-->
-            <!--</transition>-->
-          <!--</div>-->
-        <!--</div>-->
-      <!--</div>-->
-    <!--</div>-->
     <div class="table__main">
       <div class="table__row" v-for="n in 10">
         <div class='table__th--data'>
@@ -49,9 +18,9 @@
           <span class="tag">Vita</span>
         </div>
         <div class="table__button">
-          <button class="btn btn__ btn-danger">SMS</button>
-          <button class="btn btn__ btn-success">Call</button>
-          <button class="btn btn__ btn-danger">Email</button>
+          <button class="btn btn__ btn-danger" @click="showModalSMS = true">SMS</button>
+          <button class="btn btn__ btn-success" @click="showModalCall = true">Call</button>
+          <button class="btn btn__ btn-danger" @click="showModalEmail = true">Email</button>
         </div>
         <div class="table__td--action">
           <div class="dropdown">
@@ -59,11 +28,11 @@
               <i class="fa fa-ellipsis-v" ></i>
             </div>
             <ul class="dropdown-menu dropdown-menu-main dropdown-menu-right" aria-labelledby="dropdownRowBuilding">
-              <li class="dropdown__item" data-toggle="modal" v-on:click="getDetails(), modalEdit()">
+              <li class="dropdown__item" data-toggle="modal" v-on:click="returnBack()">
                 <div class="dropdown__item--icon"><i class="fa fa-send" aria-hidden="true"></i></div>
                 <span class="dropdown__item--description">Send to client</span>
               </li>
-              <li class="dropdown__item" data-toggle="modal" v-on:click="getDetails(), modalEdit()">
+              <li class="dropdown__item" data-toggle="modal" v-on:click="returnBack()">
                 <div class="dropdown__item--icon"><i class="fa fa-undo" aria-hidden="true"></i></div>
                 <span class="dropdown__item--description">Return back</span>
               </li>
@@ -85,35 +54,133 @@
         <div class="modal-wrapper">
           <div class="modal-container modal-container_lg">
             <div class="modal-header-stepper">
-              <router-link to="/campaigns/data" class="step">
+              <div :class="{'step': true, 'step_active': (step === 0)}" @click="step = 0">
                 <div class="icon"><i class="fa fa-circle"></i></div>
                 <span class="details">Details</span>
-              </router-link>
+              </div>
               <div class="line"></div>
-              <router-link to="/campaigns/sms" class="step">
+              <div :class="{'step': true, 'step_active': (step === 1)}" @click="step = 1">
                 <div class="icon"><i class="fa fa-circle"></i></div>
-                <span class="details">SMS</span>
-              </router-link>
+                <span class="details">SMS/Call</span>
+              </div>
               <div class="line"></div>
-              <router-link to="/campaigns/call" class="step">
-                <div class="icon"><i class="fa fa-circle"></i></div>
-                <span class="details">Call</span>
-              </router-link>
-              <div class="line"></div>
-              <router-link to="/campaigns/email" class="step">
+              <div :class="{'step': true, 'step_active': (step === 2)}" @click="step = 2">
                 <div class="icon"><i class="fa fa-circle"></i></div>
                 <span class="details">Email</span>
-              </router-link>
+              </div>
+              <i class="fa fa-times close_modal" @click="showModal = false"></i>
             </div>
-            <div class="modal-body-customize">
-              <router-view></router-view>
+            <div class="modal-body-customize modal-body-stepper">
+              <campaign-details-data v-if="step === 0"></campaign-details-data>
+              <campaign-details-sms-call v-if="step === 1"></campaign-details-sms-call>
+              <campaign-details-email v-if="step === 2"></campaign-details-email>
             </div>
             <div class="modal-footer-customize">
-              <button class="btn btn-primary">Next</button>
-              <button class="btn btn-primary" @click="showModal = false">Close</button>
-              <!--<button class="btn btn-primary" :disabled="showLoading" @click="save()">-->
-                <!--<i class="fa fa-refresh fa-spin" v-if="showLoading"></i> Save-->
-              <!--</button>-->
+              <button class="btn btn-primary" @click="step++" v-if="step !== 2">Next</button>
+              <button class="btn btn-primary" :disabled="showLoading" @click="save()" v-if="step === 2">
+                <i class="fa fa-refresh fa-spin" v-if="showLoading"></i> Save
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </transition>
+    <transition name="modal-sms" v-if="showModalSMS">
+      <div class="modal-mask">
+        <div class="modal-wrapper">
+          <div class="modal-container">
+            <div class="modal-header-customize">
+              <span class="modal-title">SMS</span>
+              <div class="modal-close" @click="showModalSMS = false"><i class="fa fa-times"></i></div>
+            </div>
+            <div class="modal-body-customize">
+              <div class="container container_100">
+                <div class="form-line">
+                  <div class="cnf__input ">
+                    <label>SMS content(160 characters)</label>
+                    <textarea type="text" class="form-control cnt__textarea-188" v-model="details.email_html" :disabled="approveMode"></textarea>
+                    <span class="error__span" v-if="errors.email_html">{{ errors.email_html[0] }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer-customize">
+              <button class="btn btn-success" @click="approve()" v-if="approveMode">
+                <i class="fa fa-refresh fa-spin" v-if="showLoading"></i> Approve
+              </button>
+              <button class="btn btn-info btn-left" @click="approveMode = false" v-if="approveMode">Change</button>
+              <button class="btn btn-primary" @click="approveMode = true" v-if="!approveMode">
+                <i class="fa fa-refresh fa-spin" v-if="showLoading"></i> Save
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </transition>
+    <transition name="modal-call" v-if="showModalCall">
+      <div class="modal-mask">
+        <div class="modal-wrapper">
+          <div class="modal-container">
+            <div class="modal-header-customize">
+              <span class="modal-title">Call</span>
+              <div class="modal-close" @click="showModalCall = false"><i class="fa fa-times"></i></div>
+            </div>
+            <div class="modal-body-customize">
+              <div class="container container_100">
+                <div class="form-line">
+                  <div class="cnf__input ">
+                    <label>Call content(1500 characters)</label>
+                    <textarea type="text" class="form-control cnt__textarea-188" v-model="details.call" :disabled="approveMode"></textarea>
+                    <span class="error__span" v-if="errors.call">{{ errors.call[0] }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer-customize">
+              <button class="btn btn-success" @click="approve()" v-if="approveMode">
+                <i class="fa fa-refresh fa-spin" v-if="showLoading"></i> Approve
+              </button>
+              <button class="btn btn-info btn-left" @click="approveMode = false" v-if="approveMode">Change</button>
+              <button class="btn btn-primary" @click="approveMode = true" v-if="!approveMode">
+                <i class="fa fa-refresh fa-spin" v-if="showLoading"></i> Save
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </transition>
+    <transition name="modal-email" v-if="showModalEmail">
+      <div class="modal-mask">
+        <div class="modal-wrapper">
+          <div class="modal-container modal-container_lg">
+            <div class="modal-header-customize">
+              <span class="modal-title">Email</span>
+              <div class="modal-close" @click="showModalEmail = false"><i class="fa fa-times"></i></div>
+            </div>
+            <div class="modal-body-customize">
+              <div class="container container_100">
+                <div class="form-line">
+                  <div class="cnf__input col-md-12">
+                    <label>Subject</label>
+                    <input type="text" class="form-control" placeholder=" Enter subject" v-model="details.email_subject" :disabled="approveMode">
+                    <span class="error__span" v-if="errors.email_subject">{{ errors.email_subject[0] }}</span>
+                  </div>
+                  <div class="cnf__input ">
+                    <label>Email content</label>
+                    <textarea type="text" class="form-control cnt__textarea-233" v-model="details.email_html" :disabled="approveMode"></textarea>
+                    <span class="error__span" v-if="errors.email_html">{{ errors.email_html[0] }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer-customize">
+              <button class="btn btn-success" @click="approve()" v-if="approveMode">
+                <i class="fa fa-refresh fa-spin" v-if="showLoading"></i> Approve
+              </button>
+              <button class="btn btn-info btn-left" @click="approveMode = false" v-if="approveMode">Change</button>
+              <button class="btn btn-primary" @click="approveMode = true" v-if="!approveMode">
+                <i class="fa fa-refresh fa-spin" v-if="showLoading"></i> Save
+              </button>
             </div>
           </div>
         </div>
@@ -123,106 +190,130 @@
 </template>
 
 <script>
-  import {Http} from '@/helpers/http-helper'
+import {Http} from '@/helpers/http-helper'
 
-  import Treeselect from '@riophae/vue-treeselect'
-  import '@riophae/vue-treeselect/dist/vue-treeselect.css'
-  import alert from '@/services/sweetAlert.js'
-  import swal from 'sweetalert2/dist/sweetalert2.js'
+import Treeselect from '@riophae/vue-treeselect'
+import '@riophae/vue-treeselect/dist/vue-treeselect.css'
+import alert from '@/services/sweetAlert.js'
+import swal from 'sweetalert2/dist/sweetalert2.js'
 
-  export default{
-    components: {
-      Treeselect
+import CampaignDetailsEmail from '@/main/campaigns/details/email'
+import CampaignDetailsSmsCall from '@/main/campaigns/details/sms_call'
+import CampaignDetailsData from '@/main/campaigns/details/detailsData'
+
+export default{
+  components: {
+    Treeselect,
+    CampaignDetailsEmail,
+    CampaignDetailsSmsCall,
+    CampaignDetailsData
+  },
+  data () {
+    return {
+      clients: [],
+      brands: [],
+      roles: ['Super Admin', 'Client Admin', 'Client User', 'Client Viewer'],
+      details: {},
+      search: {},
+      errors: {},
+      showModal: false,
+      showModalSMS: false,
+      showModalCall: false,
+      showModalEmail: false,
+      approveMode: true,
+      showLoading: false,
+      showFilter: false,
+      modal: '',
+      step: 0
+    }
+  },
+  computed: {
+  },
+  watch: {
+  },
+  mounted: function () {
+  },
+  methods: {
+    getAll: function () {
+      Http.get(`/users`)
+        .then(response => {
+          this.clients = response.data
+        })
     },
-    data () {
-      return {
-        clients: [],
-        brands: [],
-        roles: ['Super Admin', 'Client Admin', 'Client User', 'Client Viewer'],
-        details: {},
-        search: {},
-        errors: {},
-        showModal: false,
-        showLoading: false,
-        showFilter: false,
-        modal: '',
-      }
+    getDetails: function (idUser) {
+      this.errors = {}
+
     },
-    computed: {
-    },
-    watch: {
-    },
-    mounted: function () {
-    },
-    methods: {
-      getAll: function () {
-        Http.get(`/users`)
+    save: function (data) {
+      let vm = this
+      vm.errors = {}
+      vm.showLoading = true
+      if (data.id !== undefined) {
+        Http.put('/clients/' + data.id, vm.details)
           .then(response => {
-            this.clients = response.data
+            vm.getAll()
+            vm.errors = {}
+            vm.showLoading = false
+            swal({title: 'Success!', timer: 1000, text: null, type: 'success', showConfirmButton: false})
           })
-      },
-      getDetails: function (idUser) {
-        this.errors = {}
-        // Http.get(`/clients/` + idClient)
-        //   .then(response => {
-        //     this.details = response.data
-        //   })
-        //   .catch(e => {
-        //     this.errors = e.body
-        //   })
-      },
-      save: function (data) {
-        let vm = this
-        vm.errors = {}
-        vm.showLoading = true
-        if (data.id !== undefined) {
-          Http.put('/clients/' + data.id, vm.details)
-            .then(response => {
-              vm.getAll()
-              vm.errors = {}
-              vm.showLoading = false
-              swal({title: 'Success!', timer: 1000, text: null, type: 'success', showConfirmButton: false})
-            })
-            .catch(e => {
-              vm.showLoading = false
-              vm.errors = e.response.data.errors
-            })
-        } else {
-          Http.post(`/vehicles`, this.details)
-            .then(response => {
-              vm.getAll()
-              this.showLoading = false
-              vm.errors = {}
-              vm.details = {}
-              swal({title: 'Success!', timer: 1000, text: null, type: 'success', showConfirmButton: false})
-            })
-            .catch(e => {
-              vm.showLoading = false
-              vm.errors = e.response.data.errors
-            })
-        }
-      },
-      destroy: function (idVehicle) {
-        let vm = this
-        alert.deletePopUp(function () {
-          Http.delete(`/vehicles/` + idVehicle)
-            .then(response => {
-              vm.getAll()
-              swal({title: 'Success!', timer: 1000, text: null, type: 'success', showConfirmButton: false})
-            })
-            .catch(e => {
-              swal({title: 'Error!', timer: 1500, text: null, type: 'error', showConfirmButton: false})
-            })
-        }, '')
-      },
-      modalAdd: function() {
-        this.modal = 'Add new'
-        this.showModal = true
-      },
-      modalEdit: function() {
-        this.modal = 'Edit'
-        this.showModal = true
+          .catch(e => {
+            vm.showLoading = false
+            vm.errors = e.response.data.errors
+          })
+      } else {
+        Http.post(`/vehicles`, this.details)
+          .then(response => {
+            vm.getAll()
+            this.showLoading = false
+            vm.errors = {}
+            vm.details = {}
+            swal({title: 'Success!', timer: 1000, text: null, type: 'success', showConfirmButton: false})
+          })
+          .catch(e => {
+            vm.showLoading = false
+            vm.errors = e.response.data.errors
+          })
       }
+    },
+    destroy: function (idVehicle) {
+      let vm = this
+      alert.deletePopUp(function () {
+        Http.delete(`/vehicles/` + idVehicle)
+          .then(response => {
+            vm.getAll()
+            swal({title: 'Success!', timer: 1000, text: null, type: 'success', showConfirmButton: false})
+          })
+          .catch(e => {
+            swal({title: 'Error!', timer: 1500, text: null, type: 'error', showConfirmButton: false})
+          })
+      }, '')
+    },
+    modalAdd: function() {
+      this.modal = 'Add new'
+      this.showModal = true
+    },
+    modalEdit: function() {
+      this.modal = 'Edit'
+      this.showModal = true
+    },
+    returnBack: function() {
+      swal.fire({
+        title: 'Are you sure?',
+        type: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes',
+        cancelButtonText: 'No',
+        closeOnConfirm: false,
+        customClass: 'sweetalert-sm'
+      })
+    },
+    approve: function () {
+      this.returnBack()
+    },
+    sendEmail: function() {
     }
   }
+}
 </script>
