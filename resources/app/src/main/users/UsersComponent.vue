@@ -14,12 +14,12 @@
           <div class='table__td table_td--click'> DevolliU1</div>
         </div>
         <div class='table__th--data'>
-          <div class="table__th">Role: </div>
+          <div class="table__th"></div>
           <div class='table__td table_td--click'> Client Admin</div>
         </div>
         <div class='table__th--data'>
-          <div class="table__th">Active: </div>
-          <div class='table__td table_td--click'> True</div>
+          <div class="table__th"></div>
+          <div class='table__td table_td--click'><i class="fa fa-circle text-success"></i></div>
         </div>
         <div class="table__td--action">
           <div class="dropdown">
@@ -89,6 +89,24 @@
                       </label>
                     </treeselect>
                     <span class="error__span" v-if="errors.role_id">{{ errors.role_id[0] }}</span>
+                  </div>
+                  <div class="cnf__input col-md-6">
+                    <label>Client</label>
+                    <treeselect :options="roles" placeholder=" Choose client" v-model="details.client_id">
+                      <label slot="option-label" slot-scope="{ node }">
+                        {{ node.raw }}
+                      </label>
+                    </treeselect>
+                    <span class="error__span" v-if="errors.role_id">{{ errors.role_id[0] }}</span>
+                  </div>
+                  <div class="cnf__input col-md-6">
+                    <label>Brands</label>
+                    <treeselect :options="roles" placeholder=" Choose brands" v-model="details.brands">
+                      <label slot="option-label" slot-scope="{ node }">
+                        {{ node.raw }}
+                      </label>
+                    </treeselect>
+                    <span class="error__span" v-if="errors.brands">{{ errors.brands[0] }}</span>
                   </div>
                   <div class="cnf__input ">
                     <input type="checkbox" v-model="details.active">

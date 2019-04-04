@@ -29,10 +29,6 @@
             </div>
             <ul class="dropdown-menu dropdown-menu-main dropdown-menu-right" aria-labelledby="dropdownRowBuilding">
               <li class="dropdown__item" data-toggle="modal" v-on:click="returnBack()">
-                <div class="dropdown__item--icon"><i class="fa fa-send" aria-hidden="true"></i></div>
-                <span class="dropdown__item--description">Send to client</span>
-              </li>
-              <li class="dropdown__item" data-toggle="modal" v-on:click="returnBack()">
                 <div class="dropdown__item--icon"><i class="fa fa-undo" aria-hidden="true"></i></div>
                 <span class="dropdown__item--description">Return back</span>
               </li>
@@ -61,10 +57,15 @@
               <div class="line"></div>
               <div :class="{'step': true, 'step_active': (step === 1)}" @click="step = 1">
                 <div class="icon"><i class="fa fa-circle"></i></div>
-                <span class="details">SMS/Call</span>
+                <span class="details">SMS</span>
               </div>
               <div class="line"></div>
               <div :class="{'step': true, 'step_active': (step === 2)}" @click="step = 2">
+                <div class="icon"><i class="fa fa-circle"></i></div>
+                <span class="details">Call</span>
+              </div>
+              <div class="line"></div>
+              <div :class="{'step': true, 'step_active': (step === 3)}" @click="step = 3">
                 <div class="icon"><i class="fa fa-circle"></i></div>
                 <span class="details">Email</span>
               </div>
@@ -72,12 +73,13 @@
             </div>
             <div class="modal-body-customize modal-body-stepper">
               <campaign-details-data v-if="step === 0"></campaign-details-data>
-              <campaign-details-sms-call v-if="step === 1"></campaign-details-sms-call>
-              <campaign-details-email v-if="step === 2"></campaign-details-email>
+              <campaign-details-sms v-if="step === 1"></campaign-details-sms>
+              <campaign-details-call v-if="step === 2"></campaign-details-call>
+              <campaign-details-email v-if="step === 3"></campaign-details-email>
             </div>
             <div class="modal-footer-customize">
-              <button class="btn btn-primary" @click="step++" v-if="step !== 2">Next</button>
-              <button class="btn btn-primary" :disabled="showLoading" @click="save()" v-if="step === 2">
+              <button class="btn btn-primary" @click="step++" v-if="step !== 3">Next</button>
+              <button class="btn btn-primary" :disabled="showLoading" @click="save()" v-if="step === 3">
                 <i class="fa fa-refresh fa-spin" v-if="showLoading"></i> Save
               </button>
             </div>
@@ -198,14 +200,16 @@ import alert from '@/services/sweetAlert.js'
 import swal from 'sweetalert2/dist/sweetalert2.js'
 
 import CampaignDetailsEmail from '@/main/campaigns/details/email'
-import CampaignDetailsSmsCall from '@/main/campaigns/details/sms_call'
+import CampaignDetailsSms from '@/main/campaigns/details/sms'
+import CampaignDetailsCall from '@/main/campaigns/details/call'
 import CampaignDetailsData from '@/main/campaigns/details/detailsData'
 
 export default{
   components: {
     Treeselect,
     CampaignDetailsEmail,
-    CampaignDetailsSmsCall,
+    CampaignDetailsSms,
+    CampaignDetailsCall,
     CampaignDetailsData
   },
   data () {

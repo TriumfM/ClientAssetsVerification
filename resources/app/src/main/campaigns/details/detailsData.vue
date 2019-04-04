@@ -38,6 +38,7 @@
   import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 
   export default{
+
     components: {
       Treeselect
     },

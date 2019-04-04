@@ -82,6 +82,30 @@
   }
 }
 
+.cnf__input-html {
+  display: block;
+  width: 100%;
+  float: left;
+
+
+  label {
+    font-size: 12px;
+    font-family: $roboto;
+    font-weight: 400;
+    color: $labelColor;
+    margin-bottom: 3px;
+  }
+
+  .view-html {
+    display: block;
+    width: 100%;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    float: left;
+    padding: 10px;
+  }
+}
+
 .col-md-6 {
   padding: 0 3px 0 0!important;
 }
@@ -106,6 +130,11 @@
 .cnt__textarea-174 {
   @extend .cnt__textarea;
   height: 174px !important;
+}
+
+.cnt__textarea-lg {
+  @extend .cnt__textarea;
+  height: 300px !important;
 }
 
 .vue-treeselect__control {

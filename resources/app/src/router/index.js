@@ -55,7 +55,7 @@ export default new Router({
     },
     {
       path: '*',
-      redirect: '/app',
+      redirect: '/',
 
     },
   ]
