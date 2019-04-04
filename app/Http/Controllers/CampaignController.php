@@ -33,10 +33,10 @@ class CampaignController extends Controller
 
         $campaign->title = $request->json("title");
         $campaign->description = $request->json("description");
-        $campaign->sms_script = '';
-        $campaign->call_script ='';
-        $campaign->email_subject = '';
-        $campaign->email_html = '';
+        $campaign->sms_script = $request->json("sms_script");
+        $campaign->call_script = $request->json("call_script");
+        $campaign->email_subject = $request->json("email_subject");
+        $campaign->email_html = $request->json("email_html");
 
         $campaign->brand_id = $request->json("brand_id");
 

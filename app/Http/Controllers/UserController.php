@@ -30,7 +30,9 @@ class UserController extends Controller
     {
         $user = new User();
 
-        $user->name = $request->json('name');
+        $user->first_name = $request->json("first_name");
+        $user->last_name = $request->json("last_name");
+        $user->username = $request->json("username");
         $user->email = $request->json('email');
         $user->password = bcrypt($request->json('password'));
         $user->active = $request->json('active');
@@ -40,9 +42,11 @@ class UserController extends Controller
 
     public function update(UserUpdateRequest $request, $id)
     {
-        $user = $this->service->findById($id);
+        $user = User::findOrFail($id);
 
-        $user->name = $request->json("name");
+        $user->first_name = $request->json("first_name");
+        $user->last_name = $request->json("last_name");
+        $user->username = $request->json("username");
         $user->email = $request->json('email');
         $user->active = $request->json('active');
 

@@ -6,7 +6,6 @@ use App\Brand;
 use App\Http\Requests\BrandSaveRequest;
 use App\Http\Requests\BrandUpdateRequest;
 use App\Services\BrandService;
-use Illuminate\Http\Request;
 
 class BrandController extends Controller
 {

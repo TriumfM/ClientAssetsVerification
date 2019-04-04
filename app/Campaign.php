@@ -15,7 +15,7 @@ class Campaign extends Model
 
     public function client()
     {
-        return $this->brand->client();
+        return $this->hasOneThrough(Client::class, Brand::class, 'id', 'id');
     }
 
     public function getClientIdAttribute()

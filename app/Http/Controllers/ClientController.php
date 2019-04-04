@@ -6,7 +6,6 @@ use App\Client;
 use App\Http\Requests\ClientSaveRequest;
 use App\Http\Requests\ClientUpdateRequest;
 use App\Services\ClientService;
-use Illuminate\Http\Request;
 
 class ClientController extends Controller
 {

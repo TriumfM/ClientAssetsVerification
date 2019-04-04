@@ -1,12 +1,20 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Artisan;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 class RoleTableSeeder extends Seeder
 {
     public function run()
     {
+        $query = "SELECT *
+                  FROM oauth_clients";
+
+        if(!(\DB::select($query))) {
+            Artisan::call("passport:install");
+        }
+
         // Reset cached roles and permissions
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
