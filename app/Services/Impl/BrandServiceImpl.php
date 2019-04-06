@@ -3,10 +3,15 @@
 namespace App\Services\Impl;
 
 use App\Brand;
+use App\Filters\ApiRequest;
+use App\Filters\FilterConstants;
 use App\Services\BrandService;
 
 class BrandServiceImpl implements BrandService
 {
+    private $allowFilters = [];
+    private $allowIncludes = FilterConstants::BRAND_INCLUDES;
+
     /**
      * Find All
      *
@@ -14,7 +19,8 @@ class BrandServiceImpl implements BrandService
      */
     public function findAll()
     {
-        return Brand::get();
+        $brands = ApiRequest::applyQuery($this->allowFilters,$this->allowIncludes,Brand::class)->get();
+        return $brands;
     }
 
     /**
@@ -23,7 +29,10 @@ class BrandServiceImpl implements BrandService
      */
     public function show($id)
     {
-        return Brand::findOrFail($id);
+        Brand::findOrFail($id);
+        return ApiRequest::applyQuery([],$this->allowIncludes,Brand::class)
+            ->where('id',$id)
+            ->first();
     }
 
     /**

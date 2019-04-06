@@ -18,12 +18,12 @@ class UserController extends Controller
 
     public function index()
     {
-        return User::get();
+        return $this->service->findAll();
     }
 
     public function show($id)
     {
-        return User::findOrFail($id);
+        return $this->service->show($id);
     }
 
     public function store(UserSaveRequest $request)

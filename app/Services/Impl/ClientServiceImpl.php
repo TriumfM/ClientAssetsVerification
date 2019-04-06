@@ -3,12 +3,15 @@
 namespace App\Services\Impl;
 
 
+use App\Filters\ApiRequest;
 use App\Client;
+use App\Filters\FilterConstants;
 use App\Services\ClientService;
 
 class ClientServiceImpl implements ClientService
 {
-
+    private $allowFilters = [];
+    private $allowIncludes = FilterConstants::CLIENT_INCLUDES;
     /**
      * Find All
      *
@@ -16,7 +19,8 @@ class ClientServiceImpl implements ClientService
      */
     public function findAll()
     {
-        return Client::get();
+        $clients = ApiRequest::applyQuery($this->allowFilters,$this->allowIncludes,Client::class)->get();
+        return $clients;
     }
 
     /**
@@ -25,7 +29,10 @@ class ClientServiceImpl implements ClientService
      */
     public function show($id)
     {
-        return Client::findOrFail($id);
+        Client::findOrFail($id);
+        return ApiRequest::applyQuery([],$this->allowIncludes,Client::class)
+            ->where('id',$id)
+            ->first();
     }
 
     /**
