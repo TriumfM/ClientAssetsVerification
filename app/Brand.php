@@ -12,4 +12,9 @@ class Brand extends Model
     {
         return $this->belongsTo(Client::class, 'client_id');
     }
+
+    public function campaigns()
+    {
+        return $this->hasMany(Campaign::class);
+    }
 }

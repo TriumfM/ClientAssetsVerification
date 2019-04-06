@@ -18,12 +18,12 @@ class BrandController extends Controller
 
     public function index()
     {
-        return Brand::get();
+        return $this->service->findAll();
     }
 
     public function show($id)
     {
-        return Brand::findOrFail($id);
+        return $this->service->show($id);
     }
 
     public function store(BrandSaveRequest $request)

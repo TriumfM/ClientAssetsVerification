@@ -4,11 +4,14 @@ namespace App\Services\Impl;
 
 
 use App\Campaign;
+use App\Filters\ApiRequest;
+use App\Filters\FilterConstants;
 use App\Services\CampaignService;
 
 class CampaignServiceImpl implements CampaignService
 {
-
+    private $allowFilters = [];
+    private $allowIncludes = FilterConstants::CAMPAIGN_INCLUDES;
     /**
      * Find All
      *
@@ -16,7 +19,8 @@ class CampaignServiceImpl implements CampaignService
      */
     public function findAll()
     {
-        return Campaign::get();
+        $campaings = ApiRequest::applyQuery($this->allowFilters,$this->allowIncludes,Campaign::class)->get();
+        return $campaings;
     }
 
     /**
@@ -25,7 +29,10 @@ class CampaignServiceImpl implements CampaignService
      */
     public function show($id)
     {
-        return Campaign::findOrFail($id);
+        Campaign::findOrFail($id);
+        return ApiRequest::applyQuery([],$this->allowIncludes,Campaign::class)
+            ->where('id',$id)
+            ->first();
     }
 
     /**

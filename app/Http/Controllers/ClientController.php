@@ -18,12 +18,12 @@ class ClientController extends Controller
 
     public function index()
     {
-        return Client::get();
+        return $this->service->findAll();
     }
 
     public function show($id)
     {
-        return Client::findOrFail($id);
+        return $this->service->show($id);
     }
 
     public function store(ClientSaveRequest $request)

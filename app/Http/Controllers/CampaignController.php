@@ -24,7 +24,6 @@ class CampaignController extends Controller
     public function show($id)
     {
         return $this->service->show($id);
-
     }
 
     public function store(CampaignSaveRequest $request)
