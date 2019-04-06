@@ -8,10 +8,10 @@
     </div>
     <div class="horizontal__line"></div>
     <div class="table__main table_with-out--tags">
-      <div class="table__row" v-for="n in 10">
+      <div class="table__row" v-for="client in clients">
         <div class='table__th--data'>
           <div class="table__th">Name: </div>
-          <div class='table__td table_td--click'> Devolli</div>
+          <div class='table__td table_td--click'>{{client.name}}</div>
         </div>
         <div class="table__button">
           <button class="btn btn__row" @click="$router.push('brands')">Brands</button>
@@ -23,11 +23,11 @@
               <i class="fa fa-ellipsis-v" ></i>
             </div>
             <ul class="dropdown-menu dropdown-menu-main dropdown-menu-right" aria-labelledby="dropdownRowBuilding">
-              <li class="dropdown__item" data-toggle="modal" v-on:click="getDetails(), modalEdit()">
+              <li class="dropdown__item" data-toggle="modal" v-on:click="getDetails(client.id), modalEdit()">
                 <div class="dropdown__item--icon"><i class="fa fa-pencil" aria-hidden="true"></i></div>
                 <span class="dropdown__item--description">Edit</span>
               </li>
-              <li class="dropdown__item" v-on:click="destroy()">
+              <li class="dropdown__item" v-on:click="destroy(client.id)">
                 <div class="dropdown__item--icon"><i class="fa fa-trash" aria-hidden="true"></i></div>
                 <span class="dropdown__item--description">Delete</span>
               </li>
@@ -53,21 +53,21 @@
                     <span class="error__span" v-if="errors.name">{{ errors.name[0] }}</span>
                   </div>
                   <div class="cnf__input col-md-12">
-                    <label>API Key</label>
-                    <input type="text" class="form-control" placeholder=" Enter api key" v-model="details.api_key">
-                    <span class="error__span" v-if="errors.api_key">{{ errors.api_key[0] }}</span>
+                    <label>iWinBack API Key</label>
+                    <input type="text" class="form-control" placeholder=" Enter iwinback api key" v-model="details.iwinback_api_key">
+                    <span class="error__span" v-if="errors.iwinback_api_key">{{ errors.iwinback_api_key[0] }}</span>
                   </div>
                   <div class="cnf__input col-md-12">
-                    <label>API Secret</label>
-                    <input type="text" class="form-control" placeholder=" Enter api secret" v-model="details.api_secret">
-                    <span class="error__span" v-if="errors.api_secret">{{ errors.api_secret[0] }}</span>
+                    <label>iWinBack API Secret</label>
+                    <input type="text" class="form-control" placeholder=" Enter iwinback api secret" v-model="details.iwinback_api_secret">
+                    <span class="error__span" v-if="errors.iwinback_api_secret">{{ errors.iwinback_api_secret[0] }}</span>
                   </div>
                 </div>
               </div>
             </div>
             <div class="modal-footer-customize">
               <button class="btn btn-light" @click="showModal = false">Close</button>
-              <button class="btn btn-primary" :disabled="showLoading" @click="save()">
+              <button class="btn btn-primary" :disabled="showLoading" @click="save(details)">
                 <i class="fa fa-refresh fa-spin" v-if="showLoading"></i> Save
               </button>
             </div>
@@ -98,8 +98,11 @@ export default{
   computed: {
   },
   watch: {
+    showModal: function() {
+    }
   },
   mounted: function () {
+    this.getAll()
   },
   methods: {
     getAll: function () {
@@ -110,13 +113,13 @@ export default{
     },
     getDetails: function (idClient) {
       this.errors = {}
-      // Http.get(`/clients/` + idClient)
-      //   .then(response => {
-      //     this.details = response.data
-      //   })
-      //   .catch(e => {
-      //     this.errors = e.body
-      //   })
+      Http.get(`/clients/` + idClient)
+        .then(response => {
+          this.details = response.data
+        })
+        .catch(e => {
+          this.errors = e.body
+        })
     },
     save: function (data) {
       let vm = this
@@ -128,42 +131,53 @@ export default{
             vm.getAll()
             vm.errors = {}
             vm.showLoading = false
-            swal({title: 'Success!', timer: 1000, text: null, type: 'success', showConfirmButton: false})
+            vm.showModal = false
+            alert.success()
           })
           .catch(e => {
             vm.showLoading = false
             vm.errors = e.response.data.errors
+            console.log(vm.errors)
+            if(vm.errors === {}) {
+              alert.failed()
+            }
           })
       } else {
-        Http.post(`/vehicles`, this.details)
+        Http.post(`/clients`, this.details)
           .then(response => {
             vm.getAll()
-            this.showLoading = false
+            vm.showLoading = false
+            vm.showModal = false
             vm.errors = {}
             vm.details = {}
-            swal({title: 'Success!', timer: 1000, text: null, type: 'success', showConfirmButton: false})
+            alert.success()
           })
           .catch(e => {
             vm.showLoading = false
             vm.errors = e.response.data.errors
+            if(vm.errors === {}) {
+              alert.failed()
+            }
+            console.log(vm.errors)
           })
       }
     },
-    destroy: function (idVehicle) {
+    destroy: function (idClient) {
       let vm = this
       alert.deletePopUp(function () {
-        Http.delete(`/vehicles/` + idVehicle)
+        Http.delete(`/clients/` + idClient)
           .then(response => {
             vm.getAll()
-            swal({title: 'Success!', timer: 1000, text: null, type: 'success', showConfirmButton: false})
+            alert.success()
           })
           .catch(e => {
-            swal({title: 'Error!', timer: 1500, text: null, type: 'error', showConfirmButton: false})
+            alert.failed()
           })
       }, '')
     },
     modalAdd: function() {
       this.modal = 'Add new'
+      this.details = {}
       this.showModal = true
     },
     modalEdit: function() {

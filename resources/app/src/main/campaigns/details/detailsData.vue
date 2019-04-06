@@ -7,21 +7,21 @@
     </div>
     <div class="cnf__input col-md-6">
       <label>Client</label>
-      <treeselect :options="clients" placeholder=" Choose client" v-model="details.client_id">
+      <treeselect :options="clients" placeholder=" Choose client" :normalizer="normalizerName" v-model="details.client_id">
         <label slot="option-label" slot-scope="{ node }">
-          {{ node.raw }}
+          {{ node.raw.name }}
         </label>
       </treeselect>
-      <span class="error__span" v-if="errors.role_id">{{ errors.role_id[0] }}</span>
+      <span class="error__span" v-if="errors.client_id">{{ errors.client_id[0] }}</span>
     </div>
     <div class="cnf__input col-md-6">
       <label>Brand</label>
-      <treeselect :options="clients" placeholder=" Choose brand" v-model="details.brand_id">
+      <treeselect :options="clients" placeholder=" Choose brand" :normalizer="normalizerName" v-model="details.brand_id">
         <label slot="option-label" slot-scope="{ node }">
-          {{ node.raw }}
+          {{ node.raw.name }}
         </label>
       </treeselect>
-      <span class="error__span" v-if="errors.role_id">{{ errors.role_id[0] }}</span>
+      <span class="error__span" v-if="errors.brand_id">{{ errors.brand_id[0] }}</span>
     </div>
     <div class="cnf__input ">
       <label>Description</label>
@@ -32,43 +32,49 @@
 </template>
 
 <script>
-  import {Http} from '@/helpers/http-helper'
+import {Http} from '@/helpers/http-helper'
 
-  import Treeselect from '@riophae/vue-treeselect'
-  import '@riophae/vue-treeselect/dist/vue-treeselect.css'
+import Treeselect from '@riophae/vue-treeselect'
+import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 
-  export default{
-
-    components: {
-      Treeselect
-    },
-    data () {
-      return {
-        clients: {},
-        brands: {},
-        details: {},
-        errors: {}
+export default{
+  props:['details','errors'],
+  components: {
+    Treeselect
+  },
+  data () {
+    return {
+      clients: [],
+      brands: [],
+      normalizerName (node) {
+        return {
+          id: node.id,
+          label: node.name
+        }
       }
-    },
-    computed: {
-    },
-    watch: {
-    },
-    mounted: function () {
-    },
-    methods: {
-      fetchClients: function () {
-        Http.get(`/clients`)
-          .then(response => {
-            this.clients = response.data
-          })
-      },
-      fetchBrands: function () {
-        Http.get(`/brands`)
-          .then(response => {
-            this.clients = response.data
-          })
-      },
     }
+  },
+  computed: {
+  },
+  watch: {
+  },
+  mounted: function () {
+    this.fetchClients()
+    this.fetchBrands()
+  },
+  methods: {
+    fetchClients: function () {
+      Http.get(`/clients`)
+        .then(response => {
+          this.clients = response.data
+        })
+    },
+    fetchBrands: function () {
+      Http.get(`/brands`)
+        .then(response => {
+          this.brands = response.data
+        })
+    },
   }
+}
 </script>

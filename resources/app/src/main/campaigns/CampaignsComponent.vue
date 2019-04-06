@@ -8,19 +8,19 @@
     </div>
     <div class="horizontal__line"></div>
     <div class="table__main">
-      <div class="table__row" v-for="n in 10">
+      <div class="table__row" v-for="campaign in campaigns">
         <div class='table__th--data'>
           <div class='table__th'>Title:</div>
-          <div class='table__td table_td--click'>Me qumshtin Vita u rrita!</div>
+          <div class='table__td table_td--click'>{{campaign.title}}!</div>
         </div>
         <div class="table__tags">
           <span class="tag">Devolli</span>
           <span class="tag">Vita</span>
         </div>
         <div class="table__button">
-          <button class="btn btn__ btn-danger" @click="showModalSMS = true">SMS</button>
-          <button class="btn btn__ btn-success" @click="showModalCall = true">Call</button>
-          <button class="btn btn__ btn-danger" @click="showModalEmail = true">Email</button>
+          <button :class="{'btn': true, 'btn__': true, 'btn-danger': (campaign.sms_verified === false),'btn-success': (campaign.sms_verified === true)}" @click="showModalSMS = true, getDetails(campaign.id)">SMS</button>
+          <button :class="{'btn': true, 'btn__': true, 'btn-danger': (campaign.call_verified === false),'btn-success': (campaign.call_verified === true)}" @click="showModalCall= true, getDetails(campaign.id)">Call</button>
+          <button :class="{'btn': true, 'btn__': true, 'btn-danger': (campaign.email_verified === false),'btn-success': (campaign.email_verified === true)}" @click="showModalEmail = true, getDetails(campaign.id)">Email</button>
         </div>
         <div class="table__td--action">
           <div class="dropdown">
@@ -32,11 +32,11 @@
                 <div class="dropdown__item--icon"><i class="fa fa-undo" aria-hidden="true"></i></div>
                 <span class="dropdown__item--description">Return back</span>
               </li>
-              <li class="dropdown__item" data-toggle="modal" v-on:click="getDetails(), modalEdit()">
+              <li class="dropdown__item" data-toggle="modal" v-on:click="getDetails(campaign.id), modalEdit()">
                 <div class="dropdown__item--icon"><i class="fa fa-pencil" aria-hidden="true"></i></div>
                 <span class="dropdown__item--description">Edit</span>
               </li>
-              <li class="dropdown__item" v-on:click="destroy()">
+              <li class="dropdown__item" v-on:click="destroy(campaign.id)">
                 <div class="dropdown__item--icon"><i class="fa fa-trash" aria-hidden="true"></i></div>
                 <span class="dropdown__item--description">Delete</span>
               </li>
@@ -72,14 +72,14 @@
               <i class="fa fa-times close_modal" @click="showModal = false"></i>
             </div>
             <div class="modal-body-customize modal-body-stepper">
-              <campaign-details-data v-if="step === 0"></campaign-details-data>
-              <campaign-details-sms v-if="step === 1"></campaign-details-sms>
-              <campaign-details-call v-if="step === 2"></campaign-details-call>
-              <campaign-details-email v-if="step === 3"></campaign-details-email>
+              <campaign-details-data v-if="step === 0" :details="details" :errors="errors"></campaign-details-data>
+              <campaign-details-sms v-if="step === 1" :details="details" :errors="errors"></campaign-details-sms>
+              <campaign-details-call v-if="step === 2" :details="details" :errors="errors"></campaign-details-call>
+              <campaign-details-email v-if="step === 3" :details="details" :errors="errors"></campaign-details-email>
             </div>
             <div class="modal-footer-customize">
               <button class="btn btn-primary" @click="step++" v-if="step !== 3">Next</button>
-              <button class="btn btn-primary" :disabled="showLoading" @click="save()" v-if="step === 3">
+              <button class="btn btn-primary" :disabled="showLoading" @click="save(details)" v-if="step === 3">
                 <i class="fa fa-refresh fa-spin" v-if="showLoading"></i> Save
               </button>
             </div>
@@ -93,25 +93,19 @@
           <div class="modal-container">
             <div class="modal-header-customize">
               <span class="modal-title">SMS</span>
-              <div class="modal-close" @click="showModalSMS = false"><i class="fa fa-times"></i></div>
+              <div class="modal-close" @click="showModalSMS = false, canChangeAsset = true"><i class="fa fa-times"></i></div>
             </div>
             <div class="modal-body-customize">
               <div class="container container_100">
-                <div class="form-line">
-                  <div class="cnf__input ">
-                    <label>SMS content(160 characters)</label>
-                    <textarea type="text" class="form-control cnt__textarea-188" v-model="details.email_html" :disabled="approveMode"></textarea>
-                    <span class="error__span" v-if="errors.email_html">{{ errors.email_html[0] }}</span>
-                  </div>
-                </div>
+                <campaign-details-sms :details="details" :errors="errors" :disabled="canChangeAsset"></campaign-details-sms>
               </div>
             </div>
-            <div class="modal-footer-customize">
-              <button class="btn btn-success" @click="approve()" v-if="approveMode">
+            <div class="modal-footer-customize" v-if="!details.sms_verified">
+              <button class="btn btn-success" @click="approve('sms')" v-if="!details.sms_verified && canChangeAsset">
                 <i class="fa fa-refresh fa-spin" v-if="showLoading"></i> Approve
               </button>
-              <button class="btn btn-info btn-left" @click="approveMode = false" v-if="approveMode">Change</button>
-              <button class="btn btn-primary" @click="approveMode = true" v-if="!approveMode">
+              <button class="btn btn-info btn-left" @click="canChangeAsset = false" v-if="!details.sms_verified && canChangeAsset">Change</button>
+              <button class="btn btn-primary" @click="save(details)" v-if="!canChangeAsset">
                 <i class="fa fa-refresh fa-spin" v-if="showLoading"></i> Save
               </button>
             </div>
@@ -125,25 +119,19 @@
           <div class="modal-container">
             <div class="modal-header-customize">
               <span class="modal-title">Call</span>
-              <div class="modal-close" @click="showModalCall = false"><i class="fa fa-times"></i></div>
+              <div class="modal-close" @click="showModalCall = false, canChangeAsset = true"><i class="fa fa-times"></i></div>
             </div>
             <div class="modal-body-customize">
               <div class="container container_100">
-                <div class="form-line">
-                  <div class="cnf__input ">
-                    <label>Call content(1500 characters)</label>
-                    <textarea type="text" class="form-control cnt__textarea-188" v-model="details.call" :disabled="approveMode"></textarea>
-                    <span class="error__span" v-if="errors.call">{{ errors.call[0] }}</span>
-                  </div>
-                </div>
+                <campaign-details-call :details="details" :errors="errors" :disabled="canChangeAsset"></campaign-details-call>
               </div>
             </div>
-            <div class="modal-footer-customize">
-              <button class="btn btn-success" @click="approve()" v-if="approveMode">
+            <div class="modal-footer-customize" v-if="!details.call_verified">
+              <button class="btn btn-success" @click="approve('call')" v-if="!details.call_verified && canChangeAsset">
                 <i class="fa fa-refresh fa-spin" v-if="showLoading"></i> Approve
               </button>
-              <button class="btn btn-info btn-left" @click="approveMode = false" v-if="approveMode">Change</button>
-              <button class="btn btn-primary" @click="approveMode = true" v-if="!approveMode">
+              <button class="btn btn-info btn-left" @click="canChangeAsset = false" v-if="!details.call_verified && canChangeAsset">Change</button>
+              <button class="btn btn-primary" @click="save(details)" v-if="!canChangeAsset">
                 <i class="fa fa-refresh fa-spin" v-if="showLoading"></i> Save
               </button>
             </div>
@@ -157,30 +145,19 @@
           <div class="modal-container modal-container_lg">
             <div class="modal-header-customize">
               <span class="modal-title">Email</span>
-              <div class="modal-close" @click="showModalEmail = false"><i class="fa fa-times"></i></div>
+              <div class="modal-close" @click="showModalEmail = false, canChangeAsset = true"><i class="fa fa-times"></i></div>
             </div>
             <div class="modal-body-customize">
               <div class="container container_100">
-                <div class="form-line">
-                  <div class="cnf__input col-md-12">
-                    <label>Subject</label>
-                    <input type="text" class="form-control" placeholder=" Enter subject" v-model="details.email_subject" :disabled="approveMode">
-                    <span class="error__span" v-if="errors.email_subject">{{ errors.email_subject[0] }}</span>
-                  </div>
-                  <div class="cnf__input ">
-                    <label>Email content</label>
-                    <textarea type="text" class="form-control cnt__textarea-233" v-model="details.email_html" :disabled="approveMode"></textarea>
-                    <span class="error__span" v-if="errors.email_html">{{ errors.email_html[0] }}</span>
-                  </div>
-                </div>
+                <campaign-details-email :details="details" :errors="errors" :disabled="canChangeAsset"></campaign-details-email>
               </div>
             </div>
-            <div class="modal-footer-customize">
-              <button class="btn btn-success" @click="approve()" v-if="approveMode">
+            <div class="modal-footer-customize" v-if="!details.email_verified">
+              <button class="btn btn-success" @click="approve('call')" v-if="!details.email_verified && canChangeAsset">
                 <i class="fa fa-refresh fa-spin" v-if="showLoading"></i> Approve
               </button>
-              <button class="btn btn-info btn-left" @click="approveMode = false" v-if="approveMode">Change</button>
-              <button class="btn btn-primary" @click="approveMode = true" v-if="!approveMode">
+              <button class="btn btn-info btn-left" @click="canChangeAsset = false" v-if="!details.email_verified && canChangeAsset">Change</button>
+              <button class="btn btn-primary" @click="save(details)" v-if="!canChangeAsset">
                 <i class="fa fa-refresh fa-spin" v-if="showLoading"></i> Save
               </button>
             </div>
@@ -214,8 +191,7 @@ export default{
   },
   data () {
     return {
-      clients: [],
-      brands: [],
+      campaigns: {},
       roles: ['Super Admin', 'Client Admin', 'Client User', 'Client Viewer'],
       details: {},
       search: {},
@@ -226,9 +202,15 @@ export default{
       showModalEmail: false,
       approveMode: true,
       showLoading: false,
-      showFilter: false,
+      canChangeAsset: true,
       modal: '',
-      step: 0
+      step: 0,
+      normalizerName (node) {
+        return {
+          id: node.id,
+          label: node.name
+        }
+      }
     }
   },
   computed: {
@@ -236,65 +218,82 @@ export default{
   watch: {
   },
   mounted: function () {
+    this.getAll()
   },
   methods: {
     getAll: function () {
-      Http.get(`/users`)
+      Http.get(`/campaigns`)
         .then(response => {
-          this.clients = response.data
+          this.campaigns = response.data
         })
     },
-    getDetails: function (idUser) {
+    getDetails: function (idCampaign) {
       this.errors = {}
-
+      Http.get(`/campaigns/` + idCampaign)
+        .then(response => {
+          this.details = response.data
+        })
+        .catch(e => {
+          this.errors = e.body
+        })
     },
     save: function (data) {
       let vm = this
       vm.errors = {}
       vm.showLoading = true
       if (data.id !== undefined) {
-        Http.put('/clients/' + data.id, vm.details)
+        Http.put('/campaigns/' + data.id, vm.details)
           .then(response => {
             vm.getAll()
             vm.errors = {}
             vm.showLoading = false
-            swal({title: 'Success!', timer: 1000, text: null, type: 'success', showConfirmButton: false})
+            vm.showModal = false
+            vm.canChangeAsset = true
+            alert.success()
           })
           .catch(e => {
             vm.showLoading = false
             vm.errors = e.response.data.errors
+            if(vm.errors === {}) {
+              alert.failed()
+            }
           })
       } else {
-        Http.post(`/vehicles`, this.details)
+        Http.post(`/campaigns`, this.details)
           .then(response => {
             vm.getAll()
-            this.showLoading = false
+            vm.showLoading = false
+            vm.showModal = false
             vm.errors = {}
             vm.details = {}
-            swal({title: 'Success!', timer: 1000, text: null, type: 'success', showConfirmButton: false})
+            alert.success()
           })
           .catch(e => {
             vm.showLoading = false
             vm.errors = e.response.data.errors
+            if(vm.errors === {}) {
+              alert.failed()
+            }
           })
       }
     },
-    destroy: function (idVehicle) {
+    destroy: function (idBrand) {
       let vm = this
       alert.deletePopUp(function () {
-        Http.delete(`/vehicles/` + idVehicle)
+        Http.delete(`/campaigns/` + idBrand)
           .then(response => {
             vm.getAll()
-            swal({title: 'Success!', timer: 1000, text: null, type: 'success', showConfirmButton: false})
+            alert.success()
           })
           .catch(e => {
-            swal({title: 'Error!', timer: 1500, text: null, type: 'error', showConfirmButton: false})
+            alert.failed()
           })
       }, '')
     },
     modalAdd: function() {
       this.modal = 'Add new'
       this.showModal = true
+      this.step = 0
     },
     modalEdit: function() {
       this.modal = 'Edit'
@@ -313,8 +312,26 @@ export default{
         customClass: 'sweetalert-sm'
       })
     },
-    approve: function () {
-      this.returnBack()
+    approve: function (asset) {
+      let vm = this
+      vm.errors = {}
+      vm.showLoading = true
+      if(asset === 'sms') this.details.sms_verified = true
+      if(asset === 'call') this.details.call_verified = true
+      if(asset === 'email') this.details.email_verified = true
+      Http.put('/campaigns/' + data.id, vm.details)
+        .then(response => {
+          vm.getAll()
+          vm.showLoading = false
+          alert.success()
+        })
+        .catch(e => {
+          vm.showLoading = false
+          vm.errors = e.response.data.errors
+          if(vm.errors === {}) {
+            alert.failed()
+          }
+        })
     },
     sendEmail: function() {
     }

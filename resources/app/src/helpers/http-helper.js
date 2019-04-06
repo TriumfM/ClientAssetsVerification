@@ -1,6 +1,4 @@
 import axios from 'axios'
-import swal from 'sweetalert2/dist/sweetalert2.js'
-
 export const Http = axios.create({
   baseURL: 'api/'
 })

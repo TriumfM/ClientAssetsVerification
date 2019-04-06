@@ -2,16 +2,16 @@ import swal from 'sweetalert2/dist/sweetalert2.js'
 export default {
 
   informationPopUp (title, text, type) {
-    swal({
+    swal.fire({
       title: title,
       text: text,
       type: type,
-      customClass: 'sweetalert-lg'
+      customClass: 'sweetalert-sm'
     })
   },
 
   loading: function () {
-    swal({
+    swal.fire({
       title: 'Loading!',
       text: '',
       imageUrl: 'https://mbtskoudsalg.com/images/loading-animated-png-5.gif',
@@ -19,12 +19,12 @@ export default {
       imageHeight: 50,
       imageAlt: 'loading',
       showConfirmButton: false,
-      customClass: 'sweetalert-lg'
+      customClass: 'sweetalert-sm'
     })
   },
 
   deletePopUp: function (action, text) {
-    swal({
+    swal.fire({
       title: 'Are you sure?',
       type: 'question',
       text: text,
@@ -34,13 +34,13 @@ export default {
       confirmButtonText: 'Yes',
       cancelButtonText: 'No',
       closeOnConfirm: false,
-      customClass: 'sweetalert-lg'
+      customClass: 'sweetalert-sm'
 
     })
       .then((result) => {
         if (result.value) {
           action()
-          swal({
+          swal.fire({
             title: 'Loading!',
             text: '',
             imageUrl: 'https://mbtskoudsalg.com/images/loading-animated-png-5.gif',
@@ -48,7 +48,7 @@ export default {
             imageHeight: 50,
             imageAlt: 'loading',
             showConfirmButton: false,
-            customClass: 'sweetalert-lg'
+            customClass: 'sweetalert-sm'
           })
         } else {
         }
@@ -56,7 +56,7 @@ export default {
   },
 
   modifyPopUp: function (action) {
-    swal({
+    swal.fire({
       title: 'Are you sure?',
       type: 'question',
       showCancelButton: true,
@@ -65,12 +65,12 @@ export default {
       confirmButtonText: 'Yes',
       cancelButtonText: 'No',
       closeOnConfirm: false,
-      customClass: 'sweetalert-lg'
+      customClass: 'sweetalert-sm'
     })
       .then((result) => {
         if (result.value) {
           action()
-          swal({
+          swal.fire({
             title: 'Loading!',
             text: null,
             imageUrl: 'https://mbtskoudsalg.com/images/loading-animated-png-5.gif',
@@ -85,7 +85,7 @@ export default {
   },
 
   addPopUp: function (action) {
-    swal({
+    swal.fire({
       title: 'Are you sure?',
       text: 'You will not be able to recover this!',
       type: 'warning',
@@ -94,19 +94,19 @@ export default {
       cancelButtonColor: '#d33',
       confirmButtonText: 'Confirm',
       closeOnConfirm: false,
-      customClass: 'sweetalert-lg'
+      customClass: 'sweetalert-sm'
     })
       .then((result) => {
         if (result.value) {
           action()
-          swal({
+          swal.fire({
             title: 'Added!',
             text: 'Row has been added.',
             type: 'success',
-            customClass: 'sweetalert-lg'
+            customClass: 'sweetalert-sm'
           })
         } else {
-          swal({
+          swal.fire({
             title: 'Loading!',
             text: 'Modal with a custom image.',
             imageUrl: 'https://mbtskoudsalg.com/images/loading-animated-png-5.gif',
@@ -119,7 +119,7 @@ export default {
   },
 
   removeBuilding: function (action) {
-    swal({
+    swal.fire({
       title: 'Are you sure?',
       text: 'You will remove building from access list!',
       type: 'warning',
@@ -128,8 +128,29 @@ export default {
       cancelButtonColor: '#d33',
       confirmButtonText: 'Confirm',
       closeOnConfirm: true,
-      customClass: 'sweetalert-lg'
+      customClass: 'sweetalert-sm'
 
+    })
+  },
+
+  success: function () {
+    swal.fire({
+      title: 'Success!',
+      timer: 1000,
+      text: null,
+      type: 'success',
+      showConfirmButton: false,
+      customClass: 'sweetalert-sm'
+    })
+  },
+
+  failed: function () {
+    swal.fire({
+      title: 'Error!',
+      text: null,
+      type: 'error',
+      showConfirmButton: false,
+      customClass: 'sweetalert-sm'
     })
   }
 }
