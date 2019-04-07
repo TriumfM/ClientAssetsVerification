@@ -146,7 +146,6 @@ export default{
             this.brands = response.data
           })
       }
-
     },
     getDetails: function (idBrand) {
       this.errors = {}
