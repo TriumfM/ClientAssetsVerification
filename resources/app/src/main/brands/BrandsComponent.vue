@@ -8,14 +8,14 @@
     </div>
     <div class="horizontal__line"></div>
     <div class="table_2td">
-      <div class="table__row" v-for="brand in (clientId === null ? brands : brands.brands) ">
+      <div class="table__row" v-for="brand in brands">
         <div class='table__th--data'>
           <div class="table__th">Name: </div>
           <div class='table__td table_td--click'>{{brand.name}}</div>
         </div>
         <div class='table__th--data'>
           <div class="table__th">Client: </div>
-          <div class='table__td table_td--click'>{{ clientId === null ? brand.client.name : brands.name }}</div>
+          <div class='table__td table_td--click'>{{brand.client.name}}</div>
         </div>
         <div class="table__button">
           <button class="btn btn__row" @click="$router.push({ name: 'brands-campaigns', params: { brandId: brand.id }})">Campaigns</button>
@@ -135,8 +135,8 @@ export default{
   },
   methods: {
     getAll: function () {
-      if(this.clientId !== undefined && this.clientId !== null ) {
-        Http.get(`/clients/`+ this.$route.params.clientId + '?include=brands')
+      if(this.$route.name === 'clients-brands' ) {
+        Http.get(`/brands/clients/`+ this.$route.params.clientId + '?include=client')
           .then(response => {
             this.brands = response.data
           })

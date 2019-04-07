@@ -17,26 +17,20 @@ export default {
   components: {
     LeftMenu
   },
+  mounted: function () {
+    if (localStorage.getItem('vuex') === '') {
+      this.$router.push('login')
+    }
+    if (localStorage.getItem('vuex') === null) {
+      localStorage.setItem('vuex', '')
+      this.$router.push('login')
+    }
+  },
   watch: {
     route: function () {
       if (this.$route.path === '/') {
-        // if (localStorage.getItem('vuex') !== '') {
         this.$router.push('clients')
-        // } else {
-        //   localStorage.setItem('vuex', '')
-        //   this.$router.push('root')
-        // }
       }
-    }
-  },
-  mounted: function () {
-    if (this.$route.path === '/') {
-      console.log('123')
-      // if (localStorage.getItem('vuex') === '') {
-      this.$router.push('clients')
-      // } else {
-      //   this.$router.push('dashboard')
-      // }
     }
   }
 }

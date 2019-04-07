@@ -39,8 +39,8 @@ const actions = {
 
     AuthHttp.post('api/auth/login', formData)
       .then(response => {
-        commit('setToken', response.data.aye_token)
-        router.push({name: 'dashboard'})
+        commit('setToken', response.data)
+        router.push({name: '/'})
       }).catch(e => {
       commit('setError', e.response.data.errors)
       localStorage.setItem('vuex', '')

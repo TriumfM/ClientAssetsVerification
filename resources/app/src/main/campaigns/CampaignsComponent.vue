@@ -222,10 +222,22 @@ export default{
   },
   methods: {
     getAll: function () {
-      Http.get(`/campaigns?include=client,brand`)
-        .then(response => {
-          this.campaigns = response.data
-        })
+      if(this.$route.name === 'clients-campaigns' ) {
+        Http.get(`/campaigns/clients/`+ this.$route.params.clientId + '?include=client,brand')
+          .then(response => {
+            this.campaigns = response.data
+          })
+      } else if(this.$route.name === 'brands-campaigns' ) {
+        Http.get(`/brands/clients/`+ this.$route.params.brandId + '?include=client,brand')
+          .then(response => {
+            this.campaigns = response.data
+          })
+      } else {
+        Http.get(`/campaigns?include=client,brand`)
+          .then(response => {
+            this.campaigns = response.data
+          })
+      }
     },
     getDetails: function (idCampaign) {
       this.errors = {}
