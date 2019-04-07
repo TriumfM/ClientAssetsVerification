@@ -32,8 +32,28 @@ export default new Router({
           component: ClientComponent
         },
         {
+          path: '/clients/brands/:clientId',
+          name: 'clients-brands',
+          component: BrandsComponent
+        },
+        {
+          path: '/clients/campaigns/:clientId',
+          name: 'clients-campaigns',
+          component: CampaignsComponent
+        },
+        {
           path: '/brands',
           name: 'brands',
+          component: BrandsComponent
+        },
+        {
+          path: '/brands/campaigns/:brandId',
+          name: 'brands-campaigns',
+          component: CampaignsComponent
+        },
+        {
+          path: '/clients/brands/:clientId',
+          name: 'clients-brands',
           component: BrandsComponent
         },
         {

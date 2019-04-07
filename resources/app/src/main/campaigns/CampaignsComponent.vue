@@ -14,8 +14,8 @@
           <div class='table__td table_td--click'>{{campaign.title}}!</div>
         </div>
         <div class="table__tags">
-          <span class="tag">Devolli</span>
-          <span class="tag">Vita</span>
+          <span class="tag">{{campaign.client.name}}</span>
+          <span class="tag">{{campaign.brand.name}}</span>
         </div>
         <div class="table__button">
           <button :class="{'btn': true, 'btn__': true, 'btn-danger': (campaign.sms_verified === false),'btn-success': (campaign.sms_verified === true)}" @click="showModalSMS = true, getDetails(campaign.id)">SMS</button>
@@ -50,7 +50,7 @@
         <div class="modal-wrapper">
           <div class="modal-container modal-container_lg">
             <div class="modal-header-stepper">
-              <div :class="{'step': true, 'step_active': (step === 0)}" @click="step = 0">
+              <div :class="{'step': true, 'step_active': (step === 0)}" @click="step = 0" >
                 <div class="icon"><i class="fa fa-circle"></i></div>
                 <span class="details">Details</span>
               </div>
@@ -101,7 +101,7 @@
               </div>
             </div>
             <div class="modal-footer-customize" v-if="!details.sms_verified">
-              <button class="btn btn-success" @click="approve('sms')" v-if="!details.sms_verified && canChangeAsset">
+              <button class="btn btn-success" @click="approve(details,'sms')" v-if="!details.sms_verified && canChangeAsset">
                 <i class="fa fa-refresh fa-spin" v-if="showLoading"></i> Approve
               </button>
               <button class="btn btn-info btn-left" @click="canChangeAsset = false" v-if="!details.sms_verified && canChangeAsset">Change</button>
@@ -127,7 +127,7 @@
               </div>
             </div>
             <div class="modal-footer-customize" v-if="!details.call_verified">
-              <button class="btn btn-success" @click="approve('call')" v-if="!details.call_verified && canChangeAsset">
+              <button class="btn btn-success" @click="approve(details,'sms')"v-if="!details.call_verified && canChangeAsset">
                 <i class="fa fa-refresh fa-spin" v-if="showLoading"></i> Approve
               </button>
               <button class="btn btn-info btn-left" @click="canChangeAsset = false" v-if="!details.call_verified && canChangeAsset">Change</button>
@@ -153,7 +153,7 @@
               </div>
             </div>
             <div class="modal-footer-customize" v-if="!details.email_verified">
-              <button class="btn btn-success" @click="approve('call')" v-if="!details.email_verified && canChangeAsset">
+              <button class="btn btn-success" @click="approve(details,'email')" v-if="!details.email_verified && canChangeAsset">
                 <i class="fa fa-refresh fa-spin" v-if="showLoading"></i> Approve
               </button>
               <button class="btn btn-info btn-left" @click="canChangeAsset = false" v-if="!details.email_verified && canChangeAsset">Change</button>
@@ -222,7 +222,7 @@ export default{
   },
   methods: {
     getAll: function () {
-      Http.get(`/campaigns`)
+      Http.get(`/campaigns?include=client,brand`)
         .then(response => {
           this.campaigns = response.data
         })
@@ -254,6 +254,7 @@ export default{
           .catch(e => {
             vm.showLoading = false
             vm.errors = e.response.data.errors
+            vm.step = 0
             if(vm.errors === {}) {
               alert.failed()
             }
@@ -271,6 +272,7 @@ export default{
           .catch(e => {
             vm.showLoading = false
             vm.errors = e.response.data.errors
+            vm.step = 0
             if(vm.errors === {}) {
               alert.failed()
             }
@@ -293,11 +295,13 @@ export default{
     modalAdd: function() {
       this.modal = 'Add new'
       this.showModal = true
+      this.details = {}
       this.step = 0
     },
     modalEdit: function() {
       this.modal = 'Edit'
       this.showModal = true
+      this.step = 0
     },
     returnBack: function() {
       swal.fire({
@@ -312,7 +316,7 @@ export default{
         customClass: 'sweetalert-sm'
       })
     },
-    approve: function (asset) {
+    approve: function (data,asset) {
       let vm = this
       vm.errors = {}
       vm.showLoading = true
@@ -328,6 +332,9 @@ export default{
         .catch(e => {
           vm.showLoading = false
           vm.errors = e.response.data.errors
+          if(asset === 'sms') this.details.sms_verified = false
+          if(asset === 'call') this.details.call_verified = false
+          if(asset === 'email') this.details.email_verified = false
           if(vm.errors === {}) {
             alert.failed()
           }

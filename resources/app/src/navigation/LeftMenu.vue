@@ -56,7 +56,8 @@ export default {
   props: [],
   data () {
     return {
-      routes: []
+      routes: [],
+      user: {}
     }
   },
   filters: {
@@ -64,6 +65,11 @@ export default {
       if (!value) return ''
       value = value.toString()
       return value.charAt(0).toUpperCase() + value.slice(1)
+    },
+    firstLetter: function (value) {
+      if (!value) return ''
+      value = value.toString()
+      return value.charAt(0)
     }
   },
   watch: {
@@ -81,6 +87,17 @@ export default {
         this.routes[2] = 'clients'
       }
     },
+    logout: function () {
+      localStorage.setItem('vuex', '')
+      this.$router.push({name: 'login'})
+      Http.get(`/auth/logout`)
+    },
+    getUser: function () {
+      Http.get(`auth/details`)
+        .then(response => {
+          this.user = response.data
+        })
+    }
   }
 }
 </script>
