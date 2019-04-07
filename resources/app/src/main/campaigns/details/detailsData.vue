@@ -16,7 +16,7 @@
     </div>
     <div class="cnf__input col-md-6">
       <label>Brand</label>
-      <treeselect :options="clients" placeholder=" Choose brand" :normalizer="normalizerName" v-model="details.brand_id">
+      <treeselect :options="brands" placeholder=" Choose brand" :normalizer="normalizerName" v-model="details.brand_id">
         <label slot="option-label" slot-scope="{ node }">
           {{ node.raw.name }}
         </label>

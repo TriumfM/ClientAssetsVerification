@@ -1,7 +1,9 @@
 <template>
   <div class="col-md-12 menu-content">
     <div class="menu-content_header">
-      <h2 class="title_side">All Campaigns</h2>
+      <h2 class="title_side" v-if="$route.name === 'campaigns'">All Campaigns</h2>
+      <h2 class="title_side" v-if="$route.name === 'clients-campaigns'">Campaigns of client: {{client.name}}</h2>
+      <h2 class="title_side" v-if="$route.name === 'brands-campaigns'">Campaigns of brands: {{brand.name}}</h2>
       <div class="add_new-button">
         <button class="btn btn-primary" @click="modalAdd()">Add new</button>
       </div>
@@ -11,7 +13,7 @@
       <div class="table__row" v-for="campaign in campaigns">
         <div class='table__th--data'>
           <div class='table__th'>Title:</div>
-          <div class='table__td table_td--click'>{{campaign.title}}!</div>
+          <div class='table__td table_td--click'>{{campaign.title}}</div>
         </div>
         <div class="table__tags">
           <span class="tag">{{campaign.client.name}}</span>
@@ -127,7 +129,7 @@
               </div>
             </div>
             <div class="modal-footer-customize" v-if="!details.call_verified">
-              <button class="btn btn-success" @click="approve(details,'sms')"v-if="!details.call_verified && canChangeAsset">
+              <button class="btn btn-success" @click="approve(details,'call')"v-if="!details.call_verified && canChangeAsset">
                 <i class="fa fa-refresh fa-spin" v-if="showLoading"></i> Approve
               </button>
               <button class="btn btn-info btn-left" @click="canChangeAsset = false" v-if="!details.call_verified && canChangeAsset">Change</button>
@@ -196,6 +198,8 @@ export default{
       details: {},
       search: {},
       errors: {},
+      client: {},
+      brand: {},
       showModal: false,
       showModalSMS: false,
       showModalCall: false,
@@ -223,11 +227,13 @@ export default{
   methods: {
     getAll: function () {
       if(this.$route.name === 'clients-campaigns' ) {
+        this.getClientDetails(this.$route.params.clientId)
         Http.get(`/campaigns/clients/`+ this.$route.params.clientId + '?include=client,brand')
           .then(response => {
             this.campaigns = response.data
           })
       } else if(this.$route.name === 'brands-campaigns' ) {
+        this.getBrandDetails(this.$route.params.brandId)
         Http.get(`/brands/clients/`+ this.$route.params.brandId + '?include=client,brand')
           .then(response => {
             this.campaigns = response.data
@@ -353,7 +359,25 @@ export default{
         })
     },
     sendEmail: function() {
-    }
+    },
+    getClientDetails: function (clientID) {
+      this.errors = {}
+      Http.get(`/clients/` + clientID)
+        .then(response => {
+          this.client = response.data
+        })
+        .catch(e => {
+        })
+    },
+    getBrandDetails: function (brandID) {
+      this.errors = {}
+      Http.get(`/brands/` + brandID)
+        .then(response => {
+          this.brand = response.data
+        })
+        .catch(e => {
+        })
+    },
   }
 }
 </script>

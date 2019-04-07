@@ -1,10 +1,10 @@
 <template>
   <div :class="{'menu':true, 'sidebar':true,}">
     <div class="logo">
-      <div class="first__letters">s
-        <p>JD</p>
+      <div class="first__letters">
+        <p>{{user.username | firstLetter}}</p>
       </div>
-      <p class="user__name">John Doe</p>
+      <p class="user__name">{{user.username}}</p>
     </div>
     <div class="user__actions">
       <a @click="logout()"><i class="fa fa-power-off" aria-hidden="true"></i></a>

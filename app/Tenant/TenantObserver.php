@@ -9,8 +9,7 @@ class TenantObserver
 {
     public function creating(Model $model)
     {
-         if (auth()->user()) {
-            if(\Auth::user()->getClientId())
+        if (auth()->user() != null & \Auth::user()->getClientId() != null ) {
                 $model->setAttribute('client_id', \Auth::user()->getClientId());
         }
         elseif (request()->has('client_id')) {

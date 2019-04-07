@@ -8,18 +8,18 @@
     </div>
     <div class="horizontal__line"></div>
     <div class="table_3td">
-      <div class="table__row" v-for="n in 10">
+      <div class="table__row" v-for="user in users">
         <div class='table__th--data'>
           <div class="table__th">Username: </div>
-          <div class='table__td table_td--click'> DevolliU1</div>
+          <div class='table__td table_td--click'>{{user.username}}</div>
         </div>
         <div class='table__th--data'>
           <div class="table__th"></div>
-          <div class='table__td table_td--click'> Client Admin</div>
+          <div class='table__td table_td--click'>user.role</div>
         </div>
         <div class='table__th--data'>
           <div class="table__th"></div>
-          <div class='table__td table_td--click'><i class="fa fa-circle text-success"></i></div>
+          <div class='table__td table_td--click'><i :class="{'fa': true, 'fa-circle': true, 'text-success': (user.active === 1), 'text-danger': (user.active === false)}"></i></div>
         </div>
         <div class="table__td--action">
           <div class="dropdown">
@@ -27,11 +27,11 @@
               <i class="fa fa-ellipsis-v" ></i>
             </div>
             <ul class="dropdown-menu dropdown-menu-main dropdown-menu-right" aria-labelledby="dropdownRowBuilding">
-              <li class="dropdown__item" data-toggle="modal" v-on:click="getDetails(), modalEdit()">
+              <li class="dropdown__item" data-toggle="modal" v-on:click="getDetails(user.id), modalEdit()">
                 <div class="dropdown__item--icon"><i class="fa fa-pencil" aria-hidden="true"></i></div>
                 <span class="dropdown__item--description">Edit</span>
               </li>
-              <li class="dropdown__item" v-on:click="destroy()">
+              <li class="dropdown__item" v-on:click="destroy(user.id)">
                 <div class="dropdown__item--icon"><i class="fa fa-trash" aria-hidden="true"></i></div>
                 <span class="dropdown__item--description">Delete</span>
               </li>
@@ -83,31 +83,31 @@
                   </div>
                   <div class="cnf__input col-md-12">
                     <label>Role</label>
-                    <treeselect :options="roles" placeholder=" Choose role" v-model="details.role_id">
+                    <treeselect :options="roles" placeholder=" Choose role" :normalizer='normalizer' v-model="details.role">
                       <label slot="option-label" slot-scope="{ node }">
-                        {{ node.raw }}
+                      {{ node.raw.name }}
                       </label>
                     </treeselect>
                     <span class="error__span" v-if="errors.role_id">{{ errors.role_id[0] }}</span>
                   </div>
-                  <div class="cnf__input col-md-6">
-                    <label>Client</label>
-                    <treeselect :options="roles" placeholder=" Choose client" v-model="details.client_id">
-                      <label slot="option-label" slot-scope="{ node }">
-                        {{ node.raw }}
-                      </label>
-                    </treeselect>
-                    <span class="error__span" v-if="errors.role_id">{{ errors.role_id[0] }}</span>
-                  </div>
-                  <div class="cnf__input col-md-6">
-                    <label>Brands</label>
-                    <treeselect :options="roles" placeholder=" Choose brands" v-model="details.brands">
-                      <label slot="option-label" slot-scope="{ node }">
-                        {{ node.raw }}
-                      </label>
-                    </treeselect>
-                    <span class="error__span" v-if="errors.brands">{{ errors.brands[0] }}</span>
-                  </div>
+                  <!--<div class="cnf__input col-md-6">-->
+                    <!--<label>Client</label>-->
+                    <!--<treeselect :options="roles" placeholder=" Choose client" v-model="details.client_id">-->
+                      <!--<label slot="option-label" slot-scope="{ node }">-->
+                        <!--{{ node.raw }}-->
+                      <!--</label>-->
+                    <!--</treeselect>-->
+                    <!--<span class="error__span" v-if="errors.role_id">{{ errors.role_id[0] }}</span>-->
+                  <!--</div>-->
+                  <!--<div class="cnf__input col-md-6">-->
+                    <!--<label>Brands</label>-->
+                    <!--<treeselect :options="roles" placeholder=" Choose brands" v-model="details.brands">-->
+                      <!--<label slot="option-label" slot-scope="{ node }">-->
+                        <!--{{ node.raw }}-->
+                      <!--</label>-->
+                    <!--</treeselect>-->
+                    <!--<span class="error__span" v-if="errors.brands">{{ errors.brands[0] }}</span>-->
+                  <!--</div>-->
                   <div class="cnf__input ">
                     <input type="checkbox" v-model="details.active">
                     <label>Active</label>
@@ -142,14 +142,21 @@ export default{
   },
   data () {
     return {
+      users: {},
       clients: [],
       brands: [],
-      roles: ['Super Admin', 'Client Admin', 'Client User', 'Client Viewer'],
+      roles: [{name:'Super Admin'}, {name:'Client Admin'}, {name:'Client User'}, {name:'Client Viewer'}],
       details: {},
       errors: {},
       showModal: false,
       showLoading: false,
       modal: '',
+      normalizer (node) {
+        return {
+          id: node.name,
+          label: node.name
+        }
+      },
     }
   },
   computed: {
@@ -157,70 +164,82 @@ export default{
   watch: {
   },
   mounted: function () {
+    this.getAll()
   },
   methods: {
     getAll: function () {
       Http.get(`/users`)
         .then(response => {
-          this.clients = response.data
+          this.users = response.data
         })
     },
     getDetails: function (idUser) {
       this.errors = {}
-      // Http.get(`/clients/` + idClient)
-      //   .then(response => {
-      //     this.details = response.data
-      //   })
-      //   .catch(e => {
-      //     this.errors = e.body
-      //   })
+      Http.get(`/users/` + idUser)
+        .then(response => {
+          this.details = response.data
+        })
+        .catch(e => {
+          this.errors = e.body
+        })
     },
     save: function (data) {
       let vm = this
       vm.errors = {}
       vm.showLoading = true
       if (data.id !== undefined) {
-        Http.put('/clients/' + data.id, vm.details)
+        Http.put('/users/' + data.id, vm.details)
           .then(response => {
             vm.getAll()
             vm.errors = {}
             vm.showLoading = false
-            swal({title: 'Success!', timer: 1000, text: null, type: 'success', showConfirmButton: false})
+            vm.showModal = false
+            alert.success()
           })
           .catch(e => {
             vm.showLoading = false
             vm.errors = e.response.data.errors
+            console.log(vm.errors)
+            if(vm.errors === {}) {
+              alert.failed()
+            }
           })
       } else {
-        Http.post(`/vehicles`, this.details)
+        Http.post(`/users`, this.details)
           .then(response => {
             vm.getAll()
-            this.showLoading = false
+            vm.showLoading = false
+            vm.showModal = false
             vm.errors = {}
             vm.details = {}
-            swal({title: 'Success!', timer: 1000, text: null, type: 'success', showConfirmButton: false})
+            alert.success()
           })
           .catch(e => {
             vm.showLoading = false
             vm.errors = e.response.data.errors
+            if(vm.errors === {}) {
+              alert.failed()
+            }
+            console.log(vm.errors)
           })
       }
     },
-    destroy: function (idVehicle) {
+    destroy: function (idUser) {
       let vm = this
       alert.deletePopUp(function () {
-        Http.delete(`/vehicles/` + idVehicle)
+        Http.delete(`/users/` + idUser)
           .then(response => {
             vm.getAll()
-            swal({title: 'Success!', timer: 1000, text: null, type: 'success', showConfirmButton: false})
+            alert.success()
           })
           .catch(e => {
-            swal({title: 'Error!', timer: 1500, text: null, type: 'error', showConfirmButton: false})
+            alert.failed()
           })
       }, '')
     },
     modalAdd: function() {
       this.modal = 'Add new'
+      this.details = {}
       this.showModal = true
     },
     modalEdit: function() {

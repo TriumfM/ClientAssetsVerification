@@ -1,7 +1,8 @@
 <template>
   <div class="col-md-12 menu-content">
     <div class="menu-content_header">
-      <h2 class="title_side">All Brands</h2>
+      <h2 class="title_side" v-if="$route.name === 'brands'">All Brands</h2>
+      <h2 class="title_side" v-if="$route.name === 'clients-brands'">Brands of client: {{client.name}}</h2>
       <div class="add_new-button">
         <button class="btn btn-primary" @click="modalAdd()">Add new</button>
       </div>
@@ -96,6 +97,7 @@ export default{
     return {
       brands: {},
       clients: [],
+      client: {},
       details: {},
       errors: {},
       showModal: false,
@@ -136,6 +138,7 @@ export default{
   methods: {
     getAll: function () {
       if(this.$route.name === 'clients-brands' ) {
+        this.getClientDetails(this.$route.params.clientId)
         Http.get(`/brands/clients/`+ this.$route.params.clientId + '?include=client')
           .then(response => {
             this.brands = response.data
@@ -225,7 +228,16 @@ export default{
       this.modal = 'Edit'
       this.showModal = true
       this.fetchClients()
-    }
+    },
+    getClientDetails: function (clientID) {
+      this.errors = {}
+      Http.get(`/clients/` + clientID)
+        .then(response => {
+          this.client = response.data
+        })
+        .catch(e => {
+        })
+    },
   }
 }
 </script>
