@@ -14,8 +14,8 @@
           <div class='table__td table_td--click'>{{client.name}}</div>
         </div>
         <div class="table__button">
-          <button class="btn btn__row" @click="$router.push('brands')">Brands</button>
-          <button class="btn btn__row" @click="$router.push('campaigns')">Campaigns</button>
+          <button class="btn btn__row" @click="$router.push({ name: 'clients-brands', params: { clientId: client.id }})">Brands</button>
+          <button class="btn btn__row" @click="$router.push({ name: 'clients-campaigns', params: { clientId: client.id }})">Campaigns</button>
         </div>
         <div class="table__td--action">
           <div class="dropdown">

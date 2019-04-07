@@ -1,13 +1,13 @@
 <template>
-  <div class="html_text--details">
-    <div class="form-line">
+  <div class="html_text--details" >
+    <div class="form-line" v-if="!details.call_verified">
       <div class="cnf__input ">
         <label>Call HTML/Text</label>
         <textarea type="text" class="form-control cnt__textarea-lg" v-model="callHTML" :disabled="disabled"></textarea>
         <span class="error__span" v-if="errors.call_script">{{ errors.call_script[0] }}</span>
       </div>
     </div>
-    <div class="cnf__input-html" v-if="callHTML !== null && callHTML !== ''">
+    <div class="cnf__input-html" v-if="(callHTML !== null && callHTML !== '') && details.call_verified">
        <label>Call content (1500 characters)</label>
        <div class="view-html" v-html="callHTML"></div>
      </div>
@@ -33,12 +33,16 @@ export default{
   watch: {
     callHTML: function () {
       this.details.call_script = this.callHTML
+      if(this.callHTML === undefined) {
+        this.callHTML = null
+      }
     },
     callSync: function () {
       this.callHTML = this.callSync
     }
   },
   mounted: function () {
+    this.callHTML = this.details.call_script
   },
   methods: {
   }

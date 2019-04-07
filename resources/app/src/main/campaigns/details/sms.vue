@@ -1,9 +1,17 @@
 <template>
-  <div class="form-line">
-    <div class="cnf__input ">
-      <label>SMS content (1 sms/160 characters)</label>
-      <textarea type="text" class="form-control cnt__textarea-lg" v-model="details.sms_script" :disabled="disabled"></textarea>
-      <span class="error__span" v-if="errors.sms_script">{{ errors.sms_script[0] }}</span>
+  <div class="html_text--details" >
+    <div class="form-line" v-if="!details.sms_verified">
+      <div class="cnf__input ">
+        <label>SMS content (1 sms/160 characters)</label>
+        <textarea type="text" class="form-control cnt__textarea-lg" v-model="details.sms_script" :disabled="disabled"></textarea>
+        <span class="error__span" v-if="errors.sms_script">{{ errors.sms_script[0] }}</span>
+      </div>
+    </div>
+    <div class="form-line" v-if="details.sms_verified">
+      <div class="cnf__input cursorDedault">
+        <label>SMS content</label>
+        <span class="form-control cnt__textarea-lg">{{ details.sms_script }}</span>
+      </div>
     </div>
   </div>
 </template>
