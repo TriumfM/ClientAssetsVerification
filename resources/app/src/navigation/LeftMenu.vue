@@ -51,6 +51,7 @@
 </template>
 
 <script>
+import {Http} from '@/helpers/http-helper'
 
 export default {
   props: [],
@@ -78,6 +79,7 @@ export default {
     }
   },
   mounted: function () {
+    this.getUser()
     this.watchRoute()
   },
   methods: {

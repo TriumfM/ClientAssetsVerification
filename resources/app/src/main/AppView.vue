@@ -22,24 +22,23 @@ export default {
   watch: {
     route: function () {
       if (this.$route.path === '/') {
-        // if (localStorage.getItem('vuex') !== '') {
+        if (localStorage.getItem('vuex') !== '') {
           this.$router.push('clients')
-        // } else {
-        //   localStorage.setItem('vuex', '')
-        //   this.$router.push('root')
-        // }
+        } else {
+          localStorage.setItem('vuex', '')
+          this.$router.push('login')
+        }
       }
     }
   },
   mounted: function () {
-      if (this.$route.path === '/') {
-        console.log('123')
-        // if (localStorage.getItem('vuex') === '') {
-        this.$router.push('clients')
-        // } else {
-        //   this.$router.push('dashboard')
-        // }
-      }
+    if (localStorage.getItem('vuex') === '') {
+      this.$router.push('login')
+    }
+    if (localStorage.getItem('vuex') === null) {
+      localStorage.setItem('vuex', '')
+      this.$router.push('login')
+    }
   },
 
 }
