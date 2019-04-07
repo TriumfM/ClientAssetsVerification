@@ -21,6 +21,6 @@ class Client extends Model
 
     public function campaigns()
     {
-        return $this->hasManyThrough(Campaign::class, Brand::class);
+        return $this->hasMany(Campaign::class);
     }
 }

@@ -16,9 +16,9 @@ Route::post('/auth/login', 'AuthController@login');
 
 Route::group(['middleware' => 'auth:api'], function() {
 
-    Route::get('/brands/clients/{client_id}', 'BrandController@getByClientId');
-    Route::get('/campaigns/brands/{brand_id}', 'CampaignController@getByBrandId');
-    Route::get('/campaigns/clients/{clientId}', 'CampaignController@getByClientId');
+    Route::get('/brands/clients/{client_id}', 'ClientController@getWithBrands');
+    Route::get('/campaigns/brands/{brand_id}', 'BrandController@getWithCampaigns');
+    Route::get('/campaigns/clients/{clientId}', 'ClientController@getWithCampaigns');
 
     Route::get('/auth/details', 'AuthController@details');
     Route::get('/auth/logout', 'AuthController@logout');

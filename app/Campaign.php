@@ -18,6 +18,6 @@ class Campaign extends Model
 
     public function client()
     {
-        return $this->hasOneThrough(Client::class, Brand::class, 'id', 'id');
+        return $this->belongsTo(Client::class, 'client_id');
     }
 }

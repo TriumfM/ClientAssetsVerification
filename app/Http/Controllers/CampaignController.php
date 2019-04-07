@@ -72,14 +72,4 @@ class CampaignController extends Controller
     {
         return $this->service->delete($id);
     }
-
-    public function getByClientId($client_id)
-    {
-        return Campaign::where('client_id', $client_id)->get();
-    }
-
-    public function getByBrandId($brand_id)
-    {
-        return Campaign::where('brand_id', $brand_id)->get();
-    }
 }
