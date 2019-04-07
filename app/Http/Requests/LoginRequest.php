@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CampaignUpdateRequest extends FormRequest
+class LoginRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,10 +24,8 @@ class CampaignUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required',
-            'description' => 'required',
-            'brand_id' => 'required|exists:brands,id',
-            'client_id' => 'required|exists:clients,id',
+            'email' => 'required|string|email',
+            'password' => 'required|string',
         ];
     }
 }

@@ -50,4 +50,9 @@ class BrandController extends Controller
     {
         return $this->service->delete($id);
     }
+
+    public function getByClientId($client_id)
+    {
+        return Brand::where('client_id', $client_id)->get();
+    }
 }

@@ -10,6 +10,7 @@ use App\Services\Impl\CampaignServiceImpl;
 use App\Services\Impl\ClientServiceImpl;
 use App\Services\Impl\UserServiceImpl;
 use App\Services\UserService;
+use App\Tenant\TenantObserver;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -34,6 +35,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        $this->app->singleton(TenantObserver::class, function (){
+            return new TenantObserver();
+        });
     }
 }

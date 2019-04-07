@@ -27,6 +27,7 @@ class CampaignSaveRequest extends FormRequest
             'title' => 'required',
             'description' => 'required',
             'brand_id' => 'required|exists:brands,id',
+            'client_id' => 'required|exists:clients,id',
         ];
     }
 }

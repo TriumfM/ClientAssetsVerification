@@ -2,10 +2,13 @@
 
 namespace App;
 
+use App\Tenant\ForTenant;
 use Illuminate\Database\Eloquent\Model;
 
 class Brand extends Model
 {
+    use ForTenant;
+
     protected $table = 'brands';
 
     public function client()

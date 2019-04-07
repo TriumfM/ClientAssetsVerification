@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\LoginRequest;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
-    public function login(Request $request)
+    public function login(LoginRequest $request)
     {
         $user = User::where('email', $request->input('email'))->first();
 
@@ -16,6 +18,12 @@ class AuthController extends Controller
 
         if ($user != null && \Auth::attempt($credentials))
         {
+            if ($user->active == false) {
+                return response()->json([
+                    'message' => 'No access.',
+                    'errors' => [ 'email' => [ 'User is not active.' ] ]
+                ], 403);
+            }
             $user = $request->user();
 
             $tokenResult = $user->createToken('Client Assets Token');
@@ -35,5 +43,18 @@ class AuthController extends Controller
             'message' => 'The given data was invalid.',
             'errors' => ['email' => [ 'Email or password is invalid.' ] ]
         ], 403);
+    }
+
+    public function logout(Request $request)
+    {
+        $request->user()->token()->revoke();
+        return response()->json([
+            'message' => 'Successfully logged out'
+        ]);
+    }
+    public function details()
+    {
+        $user = Auth::user();
+        return $user;
     }
 }

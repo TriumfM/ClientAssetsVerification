@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Tenant\ForTenant;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Passport\HasApiTokens;
@@ -9,7 +10,7 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use Notifiable, HasRoles, HasApiTokens;
+    use Notifiable, HasRoles, HasApiTokens, ForTenant;
 
     /**
      * The attributes that are mass assignable.
@@ -28,4 +29,9 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function getClientId()
+    {
+        return $this->client_id;
+    }
 }

@@ -30,6 +30,7 @@ class ClientsTableSeeder extends Seeder
         $campaign->email_subject = 'Email Subject';
         $campaign->call_script = 'Call Script';
         $campaign->brand_id = $brand->id;
+        $campaign->client_id = $brand->client_id;
         $campaign->save();
 
         $user = new \App\User();
@@ -43,5 +44,14 @@ class ClientsTableSeeder extends Seeder
 
         $user->assignRole('super-admin');
 
+        $clientUser = new \App\User();
+        $clientUser->first_name = "Client Admin";
+        $clientUser->last_name = "Admini";
+        $clientUser->username = "clientAdmin";
+        $clientUser->email = "client@admin.com";
+        $clientUser->password = bcrypt("client");
+        $clientUser->active = true;
+        $clientUser->client_id = $client->id;
+        $clientUser->save();
     }
 }

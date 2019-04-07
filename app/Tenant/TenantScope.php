@@ -11,10 +11,10 @@ class TenantScope implements Scope
 {
     public function apply(Builder $builder, Model $model)
     {
-        if(auth()->user())
-            return $builder->where('client_id', '=', \Auth::user()->getClientId());
-        else if(request()->has('client_id')){
-            return $builder->where('client_id', '=', request('client_id'));
+        if(auth()->user()) {
+            if(!\Auth::user()->hasRole('super-admin')) {
+                return $builder->where('client_id', '=', \Auth::user()->getClientId());
+            }
         }
         return $builder;
     }

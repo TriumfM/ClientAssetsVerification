@@ -2,10 +2,13 @@
 
 namespace App;
 
+use App\Tenant\ForTenant;
 use Illuminate\Database\Eloquent\Model;
 
 class Campaign extends Model
 {
+    use ForTenant;
+
     protected $table = 'campaigns';
 
     public function brand()
@@ -16,10 +19,5 @@ class Campaign extends Model
     public function client()
     {
         return $this->hasOneThrough(Client::class, Brand::class, 'id', 'id');
-    }
-
-    public function getClientIdAttribute()
-    {
-        return $this->client->id;
     }
 }
