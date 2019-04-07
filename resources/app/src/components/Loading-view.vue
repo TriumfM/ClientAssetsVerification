@@ -17,6 +17,7 @@ export default {
   components: {
   },
   mounted: function () {
+    this.$router.push('clients')
   },
   watch: {
   }

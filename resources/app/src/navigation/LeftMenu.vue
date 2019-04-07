@@ -51,55 +51,55 @@
 </template>
 
 <script>
-import {Http} from '@/helpers/http-helper'
+  import {Http} from '@/helpers/http-helper'
 
-export default {
-  props: [],
-  data () {
-    return {
-      routes: [],
-      user: {}
-    }
-  },
-  filters: {
-    capitalize: function (value) {
-      if (!value) return ''
-      value = value.toString()
-      return value.charAt(0).toUpperCase() + value.slice(1)
-    },
-    firstLetter: function (value) {
-      if (!value) return ''
-      value = value.toString()
-      return value.charAt(0)
-    }
-  },
-  watch: {
-    '$route': function () {
-      this.watchRoute()
-    }
-  },
-  mounted: function () {
-    this.getUser()
-    this.watchRoute()
-  },
-  methods: {
-    watchRoute: function () {
-      this.routes = String(this.$route.path).split('/')
-      if (this.routes[2] === undefined) {
-        this.routes[2] = 'clients'
+  export default {
+    props: [],
+    data () {
+      return {
+        routes: [],
+        user: {}
       }
     },
-    logout: function () {
-      localStorage.setItem('vuex', '')
-      this.$router.push({name: 'login'})
-      Http.get(`/auth/logout`)
+    filters: {
+      capitalize: function (value) {
+        if (!value) return ''
+        value = value.toString()
+        return value.charAt(0).toUpperCase() + value.slice(1)
+      },
+      firstLetter: function (value) {
+        if (!value) return ''
+        value = value.toString()
+        return value.charAt(0)
+      }
     },
-    getUser: function () {
-      Http.get(`auth/details`)
-        .then(response => {
-          this.user = response.data
-        })
+    watch: {
+      '$route': function () {
+        this.watchRoute()
+      }
+    },
+    mounted: function () {
+      this.getUser()
+      this.watchRoute()
+    },
+    methods: {
+      watchRoute: function () {
+        this.routes = String(this.$route.path).split('/')
+        if (this.routes[2] === undefined) {
+          this.routes[2] = 'clients'
+        }
+      },
+      logout: function () {
+        localStorage.setItem('vuex', '')
+        this.$router.push({name: 'login'})
+        Http.get(`/auth/logout`)
+      },
+      getUser: function () {
+        Http.get(`auth/details`)
+          .then(response => {
+            this.user = response.data
+          })
+      }
     }
   }
-}
 </script>

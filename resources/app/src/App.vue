@@ -5,7 +5,6 @@
 </template>
 
 <script>
-import LeftMenu from '@/navigation/LeftMenu'
 
 export default {
   name: 'app',
@@ -15,7 +14,6 @@ export default {
     }
   },
   components: {
-    LeftMenu
   },
   mounted: function () {
     if (localStorage.getItem('vuex') === '') {
