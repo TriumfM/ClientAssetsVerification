@@ -51,8 +51,8 @@ class BrandController extends Controller
         return $this->service->delete($id);
     }
 
-    public function getWithCampaigns($brand_id)
+    public function getByClientId($client_id)
     {
-        return Brand::with('campaigns')->findOrFail($brand_id);
+        return Brand::with('client')->where('client_id', $client_id)->get();
     }
 }

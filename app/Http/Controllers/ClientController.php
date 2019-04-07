@@ -52,14 +52,4 @@ class ClientController extends Controller
     {
         return $this->service->delete($id);
     }
-
-    public function getWithBrands($client_id)
-    {
-        return Client::with('brands')->findOrFail($client_id);
-    }
-
-    public function getWithCampaigns($client_id)
-    {
-        return Client::with('campaigns')->findOrFail($client_id);
-    }
 }
