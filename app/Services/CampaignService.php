@@ -44,4 +44,8 @@ interface CampaignService
      * @return Campaign|\Illuminate\Http\JsonResponse|mixed
      */
     public function delete($id);
+
+    public function getByClientId($client_id);
+
+    public function getByBrandId($brand_id);
 }

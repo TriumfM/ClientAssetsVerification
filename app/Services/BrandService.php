@@ -43,4 +43,6 @@ interface BrandService
      * @return Brand|\Illuminate\Http\JsonResponse|mixed
      */
     public function delete($id);
+
+    public function getByClientId($client_id);
 }

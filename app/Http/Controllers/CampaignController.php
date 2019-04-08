@@ -75,11 +75,12 @@ class CampaignController extends Controller
 
     public function getByClientId($client_id)
     {
-        return Campaign::with('client')->where('client_id', $client_id)->get();
+        return $this->service->getByClientId($client_id);
     }
 
     public function getByBrandId($brand_id)
     {
+        return $this->service->getByBrandId($brand_id);
         return Campaign::with('brand')->where('brand_id', $brand_id)->get();
     }
 }

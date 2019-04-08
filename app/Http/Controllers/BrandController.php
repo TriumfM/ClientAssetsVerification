@@ -53,6 +53,6 @@ class BrandController extends Controller
 
     public function getByClientId($client_id)
     {
-        return Brand::with('client')->where('client_id', $client_id)->get();
+        return $this->service->getByClientId($client_id);
     }
 }

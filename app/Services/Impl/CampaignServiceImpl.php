@@ -19,7 +19,7 @@ class CampaignServiceImpl implements CampaignService
      */
     public function findAll()
     {
-        $campaings = ApiRequest::applyQuery($this->allowFilters,$this->allowIncludes,Campaign::class)->get();
+        $campaings = ApiRequest::applyQuery($this->allowFilters,$this->allowIncludes,Campaign::class)->orderBy('created_at')->get();
         return $campaings;
     }
 
@@ -72,5 +72,15 @@ class CampaignServiceImpl implements CampaignService
         $campaign = Campaign::findOrFail($id);
 
         $campaign->delete();
+    }
+
+    public function getByClientId($client_id)
+    {
+        return ApiRequest::applyQuery($this->allowFilters, $this->allowIncludes, Campaign::class)->where('client_id', $client_id)->orderBy('created_at')->get();
+    }
+
+    public function getByBrandId($brand_id)
+    {
+        return ApiRequest::applyQuery($this->allowFilters, $this->allowIncludes, Campaign::class)->where('brand_id', $brand_id)->orderBy('created_at')->get();
     }
 }

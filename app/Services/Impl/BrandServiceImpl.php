@@ -19,7 +19,7 @@ class BrandServiceImpl implements BrandService
      */
     public function findAll()
     {
-        $brands = ApiRequest::applyQuery($this->allowFilters,$this->allowIncludes,Brand::class)->get();
+        $brands = ApiRequest::applyQuery($this->allowFilters,$this->allowIncludes,Brand::class)->orderBy('created_at')->get();
         return $brands;
     }
 
@@ -72,5 +72,10 @@ class BrandServiceImpl implements BrandService
         $brand = Brand::findOrFail($id);
 
         $brand->delete();
+    }
+
+    public function getByClientId($client_id)
+    {
+        return ApiRequest::applyQuery($this->allowFilters, $this->allowIncludes, Brand::class)->where('client_id', $client_id)->orderBy('created_at')->get();
     }
 }
