@@ -7,7 +7,7 @@
         <span class="error__span" v-if="errors.call_script">{{ errors.call_script[0] }}</span>
       </div>
     </div>
-    <div class="cnf__input-html" v-if="(callHTML !== null && callHTML !== '') && details.call_verified">
+    <div class="cnf__input-html" v-if="(callHTML !== null && callHTML !== '') ">
        <label>Call content (1500 characters)</label>
        <div class="view-html" v-html="callHTML"></div>
      </div>

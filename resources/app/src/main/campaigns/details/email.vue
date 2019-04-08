@@ -16,7 +16,7 @@
       <label>Subject</label>
       <span class="form-control cursorDedault">{{details.email_subject}}</span>
     </div>
-    <div class="cnf__input-html" v-if="(emailHTML !== null && emailHTML !== '') && details.email_verified">
+    <div class="cnf__input-html" v-if="(emailHTML !== null && emailHTML !== '')">
       <label>Email content </label>
       <div class="view-html" v-html="emailHTML"></div>
     </div>

@@ -57,7 +57,7 @@
                     <span class="error__span" v-if="errors.name">{{ errors.name[0] }}</span>
                   </div>
                   <div class="cnf__input col-md-12">
-                    <label>Category</label>
+                    <label>Client</label>
                     <treeselect :options="clients" placeholder=" Choose client" :normalizer="normalizerName" v-model="details.client_id">
                       <label slot="option-label" slot-scope="{ node }">
                         {{ node.raw.name }}
@@ -100,6 +100,7 @@ export default{
       client: {},
       details: {},
       errors: {},
+      user: {},
       showModal: false,
       showLoading: false,
       modal: '',
@@ -127,6 +128,7 @@ export default{
     paramClientId: function () {}
   },
   mounted: function () {
+    this.getUser()
     if(this.$route.params.clientId === undefined) {
       this.clientId = null
     }
@@ -213,10 +215,18 @@ export default{
       }, '')
     },
     fetchClients: function () {
-      Http.get(`/clients`)
-        .then(response => {
-          this.clients = response.data
-        })
+      if(this.user.client_id === null) {
+        Http.get(`/clients`)
+          .then(response => {
+            this.clients = response.data
+          })
+      } else {
+        Http.get(`/clients?filter[id]=`+ this.user.client_id)
+          .then(response => {
+            this.clients = response.data
+          })
+      }
+
     },
     modalAdd: function() {
       this.modal = 'Add new'
@@ -238,6 +248,12 @@ export default{
         .catch(e => {
         })
     },
+    getUser: function () {
+      Http.get(`auth/details`)
+        .then(response => {
+          this.user = response.data
+        })
+    }
   }
 }
 </script>

@@ -234,7 +234,7 @@ export default{
           })
       } else if(this.$route.name === 'brands-campaigns' ) {
         this.getBrandDetails(this.$route.params.brandId)
-        Http.get(`/brands/clients/`+ this.$route.params.brandId + '?include=client,brand')
+        Http.get(`/campaigns/brands/`+ this.$route.params.brandId + '?include=client,brand')
           .then(response => {
             this.campaigns = response.data
           })

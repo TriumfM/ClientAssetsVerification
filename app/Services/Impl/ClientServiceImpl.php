@@ -10,7 +10,10 @@ use App\Services\ClientService;
 
 class ClientServiceImpl implements ClientService
 {
-    private $allowFilters = [];
+    private $allowFilters = [
+    'exact' =>FilterConstants::CLIENT_EXACT,
+        'partial' => []
+        ];
     private $allowIncludes = FilterConstants::CLIENT_INCLUDES;
     /**
      * Find All

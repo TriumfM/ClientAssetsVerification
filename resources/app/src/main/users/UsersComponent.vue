@@ -15,11 +15,11 @@
         </div>
         <div class='table__th--data'>
           <div class="table__th"></div>
-          <div class='table__td table_td--click'>user.role</div>
+          <div class='table__td table_td--click'>user.name</div>
         </div>
         <div class='table__th--data'>
           <div class="table__th"></div>
-          <div class='table__td table_td--click'><i :class="{'fa': true, 'fa-circle': true, 'text-success': (user.active === 1), 'text-danger': (user.active === false)}"></i></div>
+          <div class='table__td table_td--click'><i :class="{'fa': true, 'fa-circle': true, 'text-success': (user.active === true), 'text-danger': (user.active === false)}"></i></div>
         </div>
         <div class="table__td--action">
           <div class="dropdown">
@@ -168,7 +168,7 @@ export default{
   },
   methods: {
     getAll: function () {
-      Http.get(`/users`)
+      Http.get(`/users?include=role`)
         .then(response => {
           this.users = response.data
         })

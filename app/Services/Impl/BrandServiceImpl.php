@@ -9,7 +9,10 @@ use App\Services\BrandService;
 
 class BrandServiceImpl implements BrandService
 {
-    private $allowFilters = [];
+    private $allowFilters = [
+    'exact' =>FilterConstants::BRAND_EXACT,
+    'partial' => []
+    ];
     private $allowIncludes = FilterConstants::BRAND_INCLUDES;
 
     /**
