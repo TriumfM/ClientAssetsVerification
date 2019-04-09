@@ -13,6 +13,8 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "@ckeditor/ckeditor5-build-classic": "^12.0.0",
+    "@ckeditor/ckeditor5-vue": "^1.0.0-beta.1",
     "@riophae/vue-treeselect": "0.0.38",
     "axios": "^0.18.0",
     "bootstrap": "^4.3.1",
@@ -24,12 +26,15 @@
     "sass-loader": "^7.1.0",
     "sweetalert2": "^8.7.0",
     "vue": "^2.5.2",
+    "vue-ckeditor5": "^0.4.1",
     "vue-router": "^3.0.1",
     "vue-stepper": "^1.4.2",
     "vuex": "^3.1.0",
-    "vuex-persistedstate": "^2.5.4"
+    "vuex-persistedstate": "^2.5.4",
+    "yimo-vue-editor": "^1.1.2"
   },
   "devDependencies": {
+    "@ckeditor/ckeditor5-comments": "^2.0.0",
     "autoprefixer": "^7.1.2",
     "babel-core": "^6.22.1",
     "babel-helper-vue-jsx-merge-props": "^2.0.3",
