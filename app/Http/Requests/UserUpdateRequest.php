@@ -31,6 +31,8 @@ class UserUpdateRequest extends FormRequest
             'active' => 'required',
             'password' => 'sometimes|required',
             'retype_password' => 'required_with:password|same:password',
+            'role' => 'required',
+            'client_id' => 'exists:clients,id',
         ];
     }
 }

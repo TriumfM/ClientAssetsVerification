@@ -10,7 +10,10 @@ use App\Services\CampaignService;
 
 class CampaignServiceImpl implements CampaignService
 {
-    private $allowFilters = [];
+    private $allowFilters = [
+        'exact' => FilterConstants::CAMPAIGN_EXACT,
+        'partial' => FilterConstants::CAMPAIGN_PARTIAL,
+    ];
     private $allowIncludes = FilterConstants::CAMPAIGN_INCLUDES;
     /**
      * Find All

@@ -12,7 +12,7 @@ class ClientServiceImpl implements ClientService
 {
     private $allowFilters = [
     'exact' =>FilterConstants::CLIENT_EXACT,
-        'partial' => []
+        'partial' => FilterConstants::CLIENT_PARTIAL
         ];
     private $allowIncludes = FilterConstants::CLIENT_INCLUDES;
     /**

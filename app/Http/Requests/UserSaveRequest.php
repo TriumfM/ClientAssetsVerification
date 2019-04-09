@@ -30,7 +30,9 @@ class UserSaveRequest extends FormRequest
             'email' => 'required|email|unique:users',
             'password' => 'required',
             'retype_password' => 'required|same:password',
-            'active' => 'required'
+            'active' => 'required',
+            'role' => 'required',
+            'client_id' => 'exists:clients,id',
         ];
     }
 }

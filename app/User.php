@@ -6,11 +6,10 @@ use App\Tenant\ForTenant;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Passport\HasApiTokens;
-use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use Notifiable, HasRoles, HasApiTokens, ForTenant;
+    use Notifiable, HasApiTokens, ForTenant;
 
     /**
      * The attributes that are mass assignable.
@@ -30,8 +29,18 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    public function role()
+    {
+        return $this->belongsTo(Role::class, 'role_id');
+    }
+
     public function getClientId()
     {
         return $this->client_id;
+    }
+
+    public function hasRole($role)
+    {
+        return $this->role->name == $role;
     }
 }

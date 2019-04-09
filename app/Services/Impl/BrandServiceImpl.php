@@ -11,7 +11,7 @@ class BrandServiceImpl implements BrandService
 {
     private $allowFilters = [
     'exact' =>FilterConstants::BRAND_EXACT,
-    'partial' => []
+    'partial' => FilterConstants::BRAND_PARTIAL,
     ];
     private $allowIncludes = FilterConstants::BRAND_INCLUDES;
 

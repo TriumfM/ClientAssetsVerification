@@ -3,13 +3,18 @@
 namespace App\Services\Impl;
 
 
+use App\Filters\ApiRequest;
+use App\Filters\FilterConstants;
 use App\Services\UserService;
 use App\User;
 
 class UserServiceImpl implements UserService
 {
-
-
+    private $allowFilters = [
+        'partial' =>FilterConstants::USER_PARTIAL,
+        'exact' =>FilterConstants::USER_EXACT,
+    ];
+    private $allowIncludes = FilterConstants::USER_INCLUDES;
     /**
      * Find All
      *
@@ -17,7 +22,7 @@ class UserServiceImpl implements UserService
      */
     public function findAll()
     {
-        return User::get();
+        return ApiRequest::applyQuery($this->allowFilters,$this->allowIncludes,User::class)->get();
     }
 
     /**
@@ -26,7 +31,10 @@ class UserServiceImpl implements UserService
      */
     public function show($id)
     {
-        return User::findOrFail($id);
+        $user = User::findOrFail($id);
+        return ApiRequest::applyQuery([],$this->allowIncludes,User::class)
+            ->where('id',$id)
+            ->first();
     }
 
     /**

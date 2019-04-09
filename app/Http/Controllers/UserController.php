@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UserSaveRequest;
 use App\Http\Requests\UserUpdateRequest;
+use App\Role;
 use App\Services\UserService;
 use App\User;
 
@@ -37,6 +38,10 @@ class UserController extends Controller
         $user->password = bcrypt($request->json('password'));
         $user->active = $request->json('active');
 
+        $user->role_id = $this->getRoleId($request->json('role'));
+        if($user->role_id == null)
+            return response(['errors'=>['general'=>['Role does not exist.']]], 422);
+
         return $this->service->save($user);
     }
 
@@ -54,11 +59,27 @@ class UserController extends Controller
             $user->password = bcrypt($request->json('password'));
         }
 
+        $user->role_id = $this->getRoleId($request->json('role'));
+        if($user->role_id == null)
+            return response(['errors'=>['general'=>['Role does not exist.']]], 422);
+
         return $this->service->update($user);
     }
 
     public function destroy($id)
     {
         return $this->service->delete($id);
+    }
+
+    private function getRoleId($role)
+    {
+        if(strtolower($role) == 'super admin' && \Auth::user()->role->name != 'super admin')
+            return null;
+
+        $userRole = Role::where('name', strtolower($role))->first();
+        if($userRole == null)
+            return $userRole;
+
+        return $userRole->id;
     }
 }
