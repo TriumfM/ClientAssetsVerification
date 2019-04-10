@@ -3,6 +3,7 @@
 namespace App\Services\Impl;
 
 
+use App\Brand;
 use App\Filters\ApiRequest;
 use App\Filters\FilterConstants;
 use App\Services\UserService;
@@ -41,12 +42,22 @@ class UserServiceImpl implements UserService
      * Save new
      *
      * @param User $user
+     * @param array $brands
      * @return User|\Illuminate\Http\JsonResponse|mixed
      */
-    public function save(User $user)
+    public function save(User $user, $brands = [])
     {
+        if($user->role_id == 2)
+        {
+            $brands = Brand::where('client_id', $user->client_id)->pluck('id');
+        }
+        elseif($brands != [])
+        {
+            $brands = Brand::where('client_id', $user->client_id)->whereIn('id', $brands)->pluck('id');
+        }
         $user->save();
 
+        $user->brands()->attach($brands);
         return $user;
     }
 
@@ -74,5 +85,16 @@ class UserServiceImpl implements UserService
         $user = User::findOrFail($id);
 
         $user->delete();
+    }
+
+    public function addUserBrand($userId, $brandId, $flag)
+    {
+        $user = User::findOrFail($userId);
+        $brand = Brand::where('client_id', $user->client_id)->where('id', $brandId)->pluck('id');
+        if ($flag == "add") {
+            $user->brands()->attach($brand);
+        } else {
+            $user->brands()->detach($brand);
+        }
     }
 }

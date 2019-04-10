@@ -28,6 +28,7 @@ Route::group(['middleware' => ['auth:api', 'role:client admin']], function() {
     Route::post('/users', 'UserController@store');
     Route::put('/users/{id}', 'UserController@update');
     Route::delete('/users/{id}', 'UserController@destroy');
+    Route::post('/users/brands/{userId}/{brandId}/{flag}', 'UserController@addUserBrand');
 });
 
 Route::group(['middleware' => ['auth:api', 'role:client user']], function() {

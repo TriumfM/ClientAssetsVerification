@@ -25,9 +25,10 @@ interface UserService
      * Save new
      *
      * @param User $user
+     * @param array $brands
      * @return User|\Illuminate\Http\JsonResponse|mixed
      */
-    public function save(User $user);
+    public function save(User $user, $brands = []);
 
 
     /**
@@ -45,4 +46,6 @@ interface UserService
      * @return User|\Illuminate\Http\JsonResponse|mixed
      */
     public function delete($id);
+
+    public function addUserBrand($userId, $brandId, $flag);
 }

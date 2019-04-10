@@ -37,11 +37,15 @@ class UserController extends Controller
         $user->email = $request->json('email');
         $user->password = bcrypt($request->json('password'));
         $user->active = $request->json('active');
+        $user->client_id = $request->json('client_id');
+        $brands = $request->json('brands');
 
-        $user->role_id = $this->checkRoleId($request->json('role'));
+        $user->role_id = $this->checkRoleId($request->json('role_id'));
         if($user->role_id == null)
             return response(['errors'=>['general'=>['Role does not exist.']]], 422);
 
+        if(is_array($brands))
+            return $this->service->save($user, $brands);
         return $this->service->save($user);
     }
 
@@ -54,12 +58,13 @@ class UserController extends Controller
         $user->username = $request->json("username");
         $user->email = $request->json('email');
         $user->active = $request->json('active');
+        $user->client_id = $request->json('client_id');
 
         if ($request->has('password')) {
             $user->password = bcrypt($request->json('password'));
         }
 
-        $user->role_id = $this->checkRoleId($request->json('role'));
+        $user->role_id = $this->checkRoleId($request->json('role_id'));
         if($user->role_id == null)
             return response(['errors'=>['general'=>['Role does not exist.']]], 422);
 
@@ -69,6 +74,19 @@ class UserController extends Controller
     public function destroy($id)
     {
         return $this->service->delete($id);
+    }
+
+    /**
+     * Add Brand User
+     *
+     * @param $userId
+     * @param $brandId
+     * @param $flag
+     * @return mixed
+     */
+    public function addUserBrand($userId, $brandId, $flag)
+    {
+        return $this->service->addUserBrand($userId, $brandId, $flag);
     }
 
     private function checkRoleId($role_id)

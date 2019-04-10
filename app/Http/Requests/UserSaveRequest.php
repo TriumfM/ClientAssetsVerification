@@ -33,6 +33,7 @@ class UserSaveRequest extends FormRequest
             'active' => 'required',
             'role_id' => 'required',
             'client_id' => 'exists:clients,id',
+            'brands' => 'array',
         ];
     }
 }
