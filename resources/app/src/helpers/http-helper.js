@@ -28,7 +28,7 @@ Http.interceptors.response.use(response => {
   // } else {
   //   console.log('Time !!')
   // }
-  // return Promise.reject(error)
+  return Promise.reject(error)
 })
 
 export const AuthHttp = axios.create({

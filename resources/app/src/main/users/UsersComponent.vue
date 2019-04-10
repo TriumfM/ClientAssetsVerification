@@ -15,7 +15,7 @@
         </div>
         <div class='table__th--data'>
           <div class="table__th"></div>
-          <div class='table__td table_td--click'>user.name</div>
+          <div class='table__td table_td--click'>{{user.role.name}}</div>
         </div>
         <div class='table__th--data'>
           <div class="table__th"></div>
@@ -73,13 +73,13 @@
                   </div>
                   <div class="cnf__input col-md-6">
                     <label>Password</label>
-                    <input type="text" class="form-control" placeholder=" Enter email" v-model="details.password">
+                    <input type="password" class="form-control" placeholder=" Enter email" v-model="details.password">
                     <span class="error__span" v-if="errors.password">{{ errors.password[0] }}</span>
                   </div>
                   <div class="cnf__input col-md-6">
                     <label>Confirm Password</label>
-                    <input type="text" class="form-control" placeholder=" Enter email" v-model="details.cnf_password">
-                    <span class="error__span" v-if="errors.cnf_password">{{ errors.cnf_password[0] }}</span>
+                    <input type="password" class="form-control" placeholder=" Enter email" v-model="details.retype_password">
+                    <span class="error__span" v-if="errors.retype_password">{{ errors.retype_password[0] }}</span>
                   </div>
                   <div class="cnf__input col-md-12">
                     <label>Role</label>
@@ -88,26 +88,26 @@
                       {{ node.raw.name }}
                       </label>
                     </treeselect>
+                    <span class="error__span" v-if="errors.role">{{ errors.role[0] }}</span>
+                  </div>
+                  <div class="cnf__input col-md-12" v-if="customizeUser.clients">
+                    <label>Client</label>
+                    <treeselect :options="clients" placeholder=" Choose client" :normalizer="normalizer" v-model="details.client_id">
+                      <label slot="option-label" slot-scope="{ node }">
+                        {{ node.raw.name }}
+                      </label>
+                    </treeselect>
                     <span class="error__span" v-if="errors.role_id">{{ errors.role_id[0] }}</span>
                   </div>
-                  <!--<div class="cnf__input col-md-6">-->
-                    <!--<label>Client</label>-->
-                    <!--<treeselect :options="roles" placeholder=" Choose client" v-model="details.client_id">-->
-                      <!--<label slot="option-label" slot-scope="{ node }">-->
-                        <!--{{ node.raw }}-->
-                      <!--</label>-->
-                    <!--</treeselect>-->
-                    <!--<span class="error__span" v-if="errors.role_id">{{ errors.role_id[0] }}</span>-->
-                  <!--</div>-->
-                  <!--<div class="cnf__input col-md-6">-->
-                    <!--<label>Brands</label>-->
-                    <!--<treeselect :options="roles" placeholder=" Choose brands" v-model="details.brands">-->
-                      <!--<label slot="option-label" slot-scope="{ node }">-->
-                        <!--{{ node.raw }}-->
-                      <!--</label>-->
-                    <!--</treeselect>-->
-                    <!--<span class="error__span" v-if="errors.brands">{{ errors.brands[0] }}</span>-->
-                  <!--</div>-->
+                  <div class="cnf__input col-md-12" v-if="customizeUser.brands">
+                    <label>Brands</label>
+                    <treeselect :options="brands" :multiple="true" placeholder=" Choose brands" :normalizer="normalizer" v-model="details.brands">
+                      <label slot="option-label" slot-scope="{ node }">
+                        {{ node.raw.name }}
+                      </label>
+                    </treeselect>
+                    <span class="error__span" v-if="errors.brands">{{ errors.brands[0] }}</span>
+                  </div>
                   <div class="cnf__input ">
                     <input type="checkbox" v-model="details.active">
                     <label>Active</label>
@@ -117,7 +117,7 @@
             </div>
             <div class="modal-footer-customize">
               <button class="btn btn-light" @click="showModal = false">Close</button>
-              <button class="btn btn-primary" :disabled="showLoading" @click="save()">
+              <button class="btn btn-primary" :disabled="showLoading" @click="save(details)">
                 <i class="fa fa-refresh fa-spin" v-if="showLoading"></i> Save
               </button>
             </div>
@@ -145,23 +145,57 @@ export default{
       users: {},
       clients: [],
       brands: [],
-      roles: [{name:'Super Admin'}, {name:'Client Admin'}, {name:'Client User'}, {name:'Client Viewer'}],
-      details: {},
+      roles: [
+        {id: 1, name:'Super Admin'},
+        {id: 2, name:'Client Admin'},
+        {id: 3,name:'Client User'},
+        {id: 4, name:'Client Viewer'}
+      ],
+      details: {
+        active: true
+      },
       errors: {},
       showModal: false,
       showLoading: false,
       modal: '',
+      customizeUser: {
+        clients: false,
+        brands: false
+      },
       normalizer (node) {
         return {
-          id: node.name,
+          id: node.id,
           label: node.name
         }
       },
     }
   },
   computed: {
+    roleId () {
+      return this.details.role
+    },
+    clientId () {
+      return this.details.client_id
+    }
   },
   watch: {
+    clientId: function () {
+      this.details.brands = []
+      this.fetchBrands(this.clientId)
+    },
+    roleId: function () {
+      this.fetchClients()
+      if (this.roleId === 2) {
+        this.customizeUser.clients = true
+        this.customizeUser.brands = false
+      } else if (this.roleId === 3 || this.roleId === 4) {
+        this.customizeUser.clients = true
+        this.customizeUser.brands = true
+      } else {
+        this.customizeUser.clients = false
+        this.customizeUser.brands = false
+      }
+    }
   },
   mounted: function () {
     this.getAll()
@@ -240,12 +274,25 @@ export default{
     modalAdd: function() {
       this.modal = 'Add new'
       this.details = {}
+      this.details.active = true
       this.showModal = true
     },
     modalEdit: function() {
       this.modal = 'Edit'
       this.showModal = true
-    }
+    },
+    fetchClients: function () {
+      Http.get(`/clients`)
+        .then(response => {
+          this.clients = response.data
+        })
+    },
+    fetchBrands: function (clientId) {
+      Http.get(`/brands/clients/`+ clientId + '?include=client')
+        .then(response => {
+          this.brands = response.data
+        })
+    },
   }
 }
 </script>

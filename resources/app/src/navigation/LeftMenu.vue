@@ -10,7 +10,7 @@
       <a @click="logout()"><i class="fa fa-power-off" aria-hidden="true"></i></a>
     </div>
     <div class='list'>
-      <router-link to="/clients" :class="{'list__tile--link' : true, 'list__tile--link-active' : (routes[1] === 'clients')}">
+      <router-link to="/clients" v-if="user.role_id === 1" :class="{'list__tile--link' : true, 'list__tile--link-active' : (routes[1] === 'clients')}">
         <span class="active__span"></span>
         <div :class="{'list__tile__icon':true, 'active__icon': true}">
           <i class="fa fa-building-o"></i>
@@ -37,7 +37,7 @@
           <span>Campaigns</span>
         </div>
       </router-link>
-      <router-link to="/users" :class="{'list__tile--link' : true, 'list__tile--link-active' : (routes[1] === 'users')}">
+      <router-link to="/users" v-if="user.role_id === 1 || user.role_id === 2" :class="{'list__tile--link' : true, 'list__tile--link-active' : (routes[1] === 'users')}">
         <span class="active__span"></span>
         <div :class="{'list__tile__icon':true, 'active__icon': true}">
           <i class="fa fa-users"></i>
@@ -85,9 +85,17 @@
     methods: {
       watchRoute: function () {
         this.routes = String(this.$route.path).split('/')
-        if (this.routes[2] === undefined) {
-          this.routes[2] = 'clients'
+        if (this.user.role_id === 2) {
+          if (this.routes[2] === undefined) {
+            this.routes[2] = 'brands'
+          }
         }
+        else {
+          if (this.routes[2] === undefined) {
+            this.routes[2] = 'clients'
+          }
+        }
+
       },
       logout: function () {
         localStorage.setItem('vuex', '')

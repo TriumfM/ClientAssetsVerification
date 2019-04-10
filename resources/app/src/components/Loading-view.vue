@@ -6,9 +6,17 @@
   </div>
 </template>
 <script>
+import {Http} from '@/helpers/http-helper'
 
 export default {
+
+
   name: 'app',
+  data () {
+    return {
+      user: {}
+    }
+  },
   computed: {
     route () {
       return this.$route.path
@@ -17,9 +25,23 @@ export default {
   components: {
   },
   mounted: function () {
-    this.$router.push('clients')
+    this.getUser()
   },
   watch: {
+  },
+  methods: {
+    getUser: function () {
+      Http.get(`auth/details`)
+        .then(response => {
+          this.user = response.data
+
+          if( response.data.role_id !== 1 || response.data.role_id !== 2) {
+            this.$router.push({name: 'brands'})
+          } else {
+            this.$router.push({name: 'clients'})
+          }
+        })
+    }
   }
 }
 </script>

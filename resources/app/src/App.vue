@@ -27,7 +27,7 @@ export default {
   watch: {
     route: function () {
       if (this.$route.path === '/') {
-        this.$router.push('clients')
+        this.$router.push('/')
       }
     }
   }

@@ -92,6 +92,7 @@ export default{
       errors: {},
       showModal: false,
       showLoading: false,
+      user: {},
       modal: '',
     }
   },
@@ -102,6 +103,7 @@ export default{
     }
   },
   mounted: function () {
+    // this.getUser()
     this.getAll()
   },
   methods: {
@@ -183,6 +185,15 @@ export default{
     modalEdit: function() {
       this.modal = 'Edit'
       this.showModal = true
+    },
+    getUser: function () {
+      Http.get(`auth/details`)
+        .then(response => {
+          this.user = response.data
+          if (response.data.role_id !== 1) {
+            this.$router.push('brands')
+          }
+        })
     }
   }
 }

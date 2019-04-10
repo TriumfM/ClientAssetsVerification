@@ -4,7 +4,7 @@
       <h2 class="title_side" v-if="$route.name === 'brands'">All Brands</h2>
       <h2 class="title_side" v-if="$route.name === 'clients-brands'">Brands of client: {{client.name}}</h2>
       <div class="add_new-button">
-        <button class="btn btn-primary" @click="modalAdd()">Add new</button>
+        <button class="btn btn-primary" @click="modalAdd()" v-if="user.role_id === 1 || user.role_id === 2">Add new</button>
       </div>
     </div>
     <div class="horizontal__line"></div>
@@ -21,7 +21,7 @@
         <div class="table__button">
           <button class="btn btn__row" @click="$router.push({ name: 'brands-campaigns', params: { brandId: brand.id }})">Campaigns</button>
         </div>
-        <div class="table__td--action">
+        <div class="table__td--action" v-if="user.role_id !== 4">
           <div class="dropdown">
             <div class="icon__dropdown"  id="dropdownRowBuilding" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
               <i class="fa fa-ellipsis-v" ></i>
@@ -220,6 +220,8 @@ export default{
           .then(response => {
             this.clients = response.data
           })
+      } else if (this.user.role_id === 3) {
+
       } else {
         Http.get(`/clients?filter[id]=`+ this.user.client_id)
           .then(response => {

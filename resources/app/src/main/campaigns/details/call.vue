@@ -1,52 +1,59 @@
 <template>
-  <div class="html_text--details" >
-    <div class="form-line" v-if="!details.call_verified">
-      <div class="cnf__input ">
-        <label>Call HTML/Text</label>
-        <textarea type="text" class="form-control cnt__textarea-lg" v-model="callHTML" :disabled="disabled"></textarea>
-        <span class="error__span" v-if="errors.call_script">{{ errors.call_script[0] }}</span>
+  <div>
+    <div class="html_text--details" v-if="user.role_id !== 4">
+      <div class="form-line" v-if="cCAsset.btn_c === false || details.call_veridied === false">
+        <div class="cnf__input ">
+          <label>Call content (1600/character)</label>
+          <ckeditor :editor="editor" v-model="details.call_script"  type="classic"></ckeditor>
+          <span class="error__span" v-if="errors.call_script">{{ errors.call_script[0] }}</span>
+        </div>
+      </div>
+      <div class="cnf__input-html" v-if="cCAsset.btn_c">
+        <label>Call content</label>
+        <div class="view-html" v-html="details.call_script"></div>
       </div>
     </div>
-    <div class="cnf__input-html" v-if="(callHTML !== null && callHTML !== '') ">
-       <label>Call content (1500 characters)</label>
-       <div class="view-html" v-html="callHTML"></div>
-     </div>
+    <div class="html_text--details" v-if="user.role_id === 4">
+      <div class="cnf__input-html" >
+        <label>Call content</label>
+        <div class="view-html" v-html="details.call_script"></div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import {Http} from '@/helpers/http-helper'
+  import {Http} from '@/helpers/http-helper'
+  import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
-export default{
-  props:['details','errors','disabled'],
+  export default{
+    props:['details','errors', 'cCAsset', 'step'],
+    components: {
 
-  data () {
-    return {
-      callHTML: null
-    }
-  },
-  computed: {
-    callSync: function () {
-      return this.details.call_script
-    }
-  },
-  watch: {
-    callHTML: function () {
-      this.details.call_script = this.callHTML
-      if(this.callHTML === undefined) {
-        this.callHTML = null
+    },
+    data () {
+      return {
+        editor: ClassicEditor,
+        editorDisabled: true,
+        user: {}
       }
     },
-    callSync: function () {
-      this.callHTML = this.callSync
+    computed: function () {
+    },
+    watch: {
+    },
+    mounted: function () {
+      this.getUser()
+    },
+    methods: {
+      getUser: function () {
+        Http.get(`auth/details`)
+          .then(response => {
+            this.user = response.data
+          })
+      }
     }
-  },
-  mounted: function () {
-    this.callHTML = this.details.call_script
-  },
-  methods: {
   }
-}
 </script>
 
 

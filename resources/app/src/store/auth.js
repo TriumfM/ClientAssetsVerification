@@ -8,7 +8,8 @@ const state = {
     expires_in: '',
     scope: '',
     jti: '',
-    test: ''
+    test: '',
+    loginUser: '',
   },
   errors: {
     email: '',
@@ -27,6 +28,9 @@ const mutations = {
   },
   setError (state, errors) {
     state.errors = errors
+  },
+  setUser (state, loginUser) {
+    state.loginUser = loginUser
   }
 }
 
@@ -45,6 +49,13 @@ const actions = {
       commit('setError', e.response.data.errors)
       localStorage.setItem('vuex', '')
     })
+  },
+  user_ ({ commit }) {
+    AuthHttp.get(`auth/details`)
+      .then(response => {
+        commit('setUser', response.data)
+        console.log(response.data)
+      })
   }
 }
 

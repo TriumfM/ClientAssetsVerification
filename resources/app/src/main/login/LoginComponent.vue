@@ -13,7 +13,7 @@
         <span class="error__span" v-if="errors.general">{{ errors.general[0] }}</span>
       </div>
       <div class="btn_login">
-        <button type="submit" class="btn btn-primary login_btn" :disabled="showLoading" @click="login(user), showLoading=true">
+        <button type="submit" class="btn btn-primary login_btn" :disabled="showLoading" @click="login(user), user_(), showLoading=true">
           <i class="fa fa-refresh fa-spin" v-if="showLoading"></i> Login
         </button>
       </div>
@@ -50,7 +50,7 @@ export default {
   },
   methods: {
     ...mapActions('authStore', [
-      'login'
+      'login','user_'
     ])
   }
 }

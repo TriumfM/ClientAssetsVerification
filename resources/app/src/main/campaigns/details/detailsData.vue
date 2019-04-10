@@ -55,12 +55,18 @@ export default{
     }
   },
   computed: {
+    clientId () {
+      return this.details.client_id
+    }
   },
   watch: {
+    clientId: function () {
+      this.fetchBrands(this.clientId)
+    }
   },
   mounted: function () {
+    this.clientId = 0
     this.fetchClients()
-    this.fetchBrands()
   },
   methods: {
     fetchClients: function () {
@@ -69,8 +75,8 @@ export default{
           this.clients = response.data
         })
     },
-    fetchBrands: function () {
-      Http.get(`/brands`)
+    fetchBrands: function (clientId) {
+      Http.get(`/brands/clients/`+ clientId + '?include=client')
         .then(response => {
           this.brands = response.data
         })
