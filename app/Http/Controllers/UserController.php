@@ -41,6 +41,7 @@ class UserController extends Controller
         $brands = $request->json('brands');
 
         $user->role_id = $this->checkRoleId($request->json('role_id'));
+
         if($user->role_id == null)
             return response(['errors'=>['general'=>['Role does not exist.']]], 422);
 
@@ -65,6 +66,7 @@ class UserController extends Controller
         }
 
         $user->role_id = $this->checkRoleId($request->json('role_id'));
+
         if($user->role_id == null)
             return response(['errors'=>['general'=>['Role does not exist.']]], 422);
 
