@@ -27,7 +27,7 @@
               <i class="fa fa-ellipsis-v" ></i>
             </div>
             <ul class="dropdown-menu dropdown-menu-main dropdown-menu-right" aria-labelledby="dropdownRowBuilding">
-              <li class="dropdown__item" data-toggle="modal" v-on:click="getDetails(user.id), modalEdit()">
+              <li class="dropdown__item" data-toggle="modal" v-on:click="getDetails(user.id), modalEdit(), fetchRole()">
                 <div class="dropdown__item--icon"><i class="fa fa-pencil" aria-hidden="true"></i></div>
                 <span class="dropdown__item--description">Edit</span>
               </li>
@@ -73,17 +73,17 @@
                   </div>
                   <div class="cnf__input col-md-6">
                     <label>Password</label>
-                    <input type="password" class="form-control" placeholder=" Enter email" v-model="details.password">
+                    <input type="password" class="form-control" placeholder=" Enter password" v-model="details.password">
                     <span class="error__span" v-if="errors.password">{{ errors.password[0] }}</span>
                   </div>
                   <div class="cnf__input col-md-6">
                     <label>Confirm Password</label>
-                    <input type="password" class="form-control" placeholder=" Enter email" v-model="details.retype_password">
+                    <input type="password" class="form-control" placeholder=" Retype password" v-model="details.retype_password">
                     <span class="error__span" v-if="errors.retype_password">{{ errors.retype_password[0] }}</span>
                   </div>
                   <div class="cnf__input col-md-12">
                     <label>Role</label>
-                    <treeselect :options="roles" placeholder=" Choose role" :normalizer='normalizer' v-model="details.role">
+                    <treeselect :options="roles" placeholder=" Choose role" :normalizer='normalizer' v-model="details.role_id">
                       <label slot="option-label" slot-scope="{ node }">
                       {{ node.raw.name }}
                       </label>
@@ -97,7 +97,7 @@
                         {{ node.raw.name }}
                       </label>
                     </treeselect>
-                    <span class="error__span" v-if="errors.role_id">{{ errors.role_id[0] }}</span>
+                    <span class="error__span" v-if="errors.client_id">{{ errors.client_id[0] }}</span>
                   </div>
                   <div class="cnf__input col-md-12" v-if="customizeUser.brands">
                     <label>Brands</label>
@@ -172,7 +172,7 @@ export default{
   },
   computed: {
     roleId () {
-      return this.details.role
+      return this.details.role_id
     },
     clientId () {
       return this.details.client_id
@@ -186,6 +186,9 @@ export default{
     roleId: function () {
       this.fetchClients()
       if (this.roleId === 2) {
+        if (this.details.role_id) {
+          this.roles = [{id: 2,name:'Client Admin'}, {id: 3,name:'Client User'}, {id: 4, name:'Client Viewer'}]
+        }
         this.customizeUser.clients = true
         this.customizeUser.brands = false
       } else if (this.roleId === 3 || this.roleId === 4) {
@@ -199,6 +202,7 @@ export default{
   },
   mounted: function () {
     this.getAll()
+    this.getUser()
   },
   methods: {
     getAll: function () {
@@ -275,17 +279,34 @@ export default{
       this.modal = 'Add new'
       this.details = {}
       this.details.active = true
+      if (this.user.role_id === 2) {
+        this.roles = [{id: 3,name:'Client User'}, {id: 4, name:'Client Viewer'}]
+      }
       this.showModal = true
     },
     modalEdit: function() {
       this.modal = 'Edit'
       this.showModal = true
+      if (this.user.role_id === 2) {
+        this.roles = [{id: 3,name:'Client User'}, {id: 4, name:'Client Viewer'}]
+      }
+    },
+    fetchRole: function () {
+
     },
     fetchClients: function () {
-      Http.get(`/clients`)
-        .then(response => {
-          this.clients = response.data
-        })
+      if (this.user.role_id !== 1) {
+        Http.get(`/auth/clients`)
+          .then(response => {
+            this.clients = response.data
+            this.fetchBrands_()
+          })
+      } else {
+        Http.get(`/clients`)
+          .then(response => {
+            this.clients = response.data
+          })
+      }
     },
     fetchBrands: function (clientId) {
       Http.get(`/brands/clients/`+ clientId + '?include=client')
@@ -293,6 +314,12 @@ export default{
           this.brands = response.data
         })
     },
+    getUser: function () {
+      Http.get(`auth/details`)
+        .then(response => {
+          this.user = response.data
+        })
+    }
   }
 }
 </script>

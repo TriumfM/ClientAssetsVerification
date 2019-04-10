@@ -5,6 +5,7 @@
         <p>{{user.username | firstLetter}}</p>
       </div>
       <p class="user__name">{{user.username}}</p>
+      <p class="user__client-name" v-if="user.client_id !== null">{{userClient[0].name}}</p>
     </div>
     <div class="user__actions">
       <a @click="logout()"><i class="fa fa-power-off" aria-hidden="true"></i></a>
@@ -58,7 +59,8 @@
     data () {
       return {
         routes: [],
-        user: {}
+        user: {},
+        userClient: {}
       }
     },
     filters: {
@@ -80,6 +82,7 @@
     },
     mounted: function () {
       this.getUser()
+      this.getUserClient()
       this.watchRoute()
     },
     methods: {
@@ -101,6 +104,12 @@
         localStorage.setItem('vuex', '')
         this.$router.push({name: 'login'})
         Http.get(`/auth/logout`)
+      },
+      getUserClient: function () {
+        Http.get(`auth/clients`)
+          .then(response => {
+            this.userClient = response.data
+          })
       },
       getUser: function () {
         Http.get(`auth/details`)

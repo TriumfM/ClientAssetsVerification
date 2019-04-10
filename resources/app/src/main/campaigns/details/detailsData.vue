@@ -46,6 +46,7 @@ export default{
     return {
       clients: [],
       brands: [],
+      user: {},
       normalizerName (node) {
         return {
           id: node.id,
@@ -70,10 +71,18 @@ export default{
   },
   methods: {
     fetchClients: function () {
-      Http.get(`/clients`)
-        .then(response => {
-          this.clients = response.data
-        })
+      if (this.user.role_id !== 1) {
+        Http.get(`/auth/clients`)
+          .then(response => {
+            this.clients = response.data
+            this.fetchBrands_()
+          })
+      } else {
+        Http.get(`/clients`)
+          .then(response => {
+            this.clients = response.data
+          })
+      }
     },
     fetchBrands: function (clientId) {
       Http.get(`/brands/clients/`+ clientId + '?include=client')
@@ -81,6 +90,12 @@ export default{
           this.brands = response.data
         })
     },
+    fetchBrands_: function () {
+      Http.get(`/brands/clients/`+ this.clients[0].id + '?include=client')
+        .then(response => {
+          this.brands = response.data
+        })
+    }
   }
 }
 </script>
