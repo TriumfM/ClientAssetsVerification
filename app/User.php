@@ -34,6 +34,11 @@ class User extends Authenticatable
         return $this->belongsTo(Role::class, 'role_id');
     }
 
+    public function brands()
+    {
+        return $this->belongsToMany(Brand::class);
+    }
+
     public function getClientId()
     {
         return $this->client_id;

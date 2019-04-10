@@ -31,7 +31,7 @@ class UserSaveRequest extends FormRequest
             'password' => 'required',
             'retype_password' => 'required|same:password',
             'active' => 'required',
-            'role' => 'required',
+            'role_id' => 'required',
             'client_id' => 'exists:clients,id',
         ];
     }

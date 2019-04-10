@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Client;
 use App\Http\Requests\LoginRequest;
 use App\User;
 use Carbon\Carbon;
@@ -56,5 +57,20 @@ class AuthController extends Controller
     {
         $user = Auth::user()->load('role');
         return $user;
+    }
+
+    public function clients()
+    {
+        $user = Auth::user();
+        if($user->client_id != null)
+            return [ Client::find($user->client_id) ];
+        elseif($user->role_id == 1)
+            return Client::get();
+        return null;
+    }
+
+    public function clientAdmin()
+    {
+        return ['status' => Auth::user()->role_id == 2];
     }
 }

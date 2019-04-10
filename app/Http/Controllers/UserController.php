@@ -38,7 +38,7 @@ class UserController extends Controller
         $user->password = bcrypt($request->json('password'));
         $user->active = $request->json('active');
 
-        $user->role_id = $this->getRoleId($request->json('role'));
+        $user->role_id = $this->checkRoleId($request->json('role'));
         if($user->role_id == null)
             return response(['errors'=>['general'=>['Role does not exist.']]], 422);
 
@@ -59,7 +59,7 @@ class UserController extends Controller
             $user->password = bcrypt($request->json('password'));
         }
 
-        $user->role_id = $this->getRoleId($request->json('role'));
+        $user->role_id = $this->checkRoleId($request->json('role'));
         if($user->role_id == null)
             return response(['errors'=>['general'=>['Role does not exist.']]], 422);
 
@@ -71,15 +71,15 @@ class UserController extends Controller
         return $this->service->delete($id);
     }
 
-    private function getRoleId($role)
+    private function checkRoleId($role_id)
     {
-        if(strtolower($role) == 'super admin' && \Auth::user()->role->name != 'super admin')
+        if($role_id == 1 && \Auth::user()->role_id != 1)
             return null;
 
-        $userRole = Role::where('name', strtolower($role))->first();
+        $userRole = Role::find($role_id);
         if($userRole == null)
             return $userRole;
 
-        return $userRole->id;
+        return $role_id;
     }
 }

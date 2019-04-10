@@ -47,6 +47,8 @@ Route::group(['middleware' => 'auth:api'], function() {
     Route::get('/campaigns/clients/{clientId}', 'CampaignController@getByClientId');
 
     Route::get('/auth/details', 'AuthController@details');
+    Route::get('/auth/clients', 'AuthController@clients');
+    Route::get('/auth/clientadmin', 'AuthController@clientAdmin');
     Route::get('/auth/logout', 'AuthController@logout');
 
     Route::get('/brands', 'BrandController@index');

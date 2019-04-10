@@ -48,17 +48,19 @@ class CampaignController extends Controller
 
         $campaign->title = $request->json("title");
         $campaign->description = $request->json("description");
-        if(!$campaign->sms_verified)
+        if(!$campaign->sms_verified) {
             $campaign->sms_script = $request->json("sms_script");
-        if(!$campaign->call_verified)
+            $campaign->sms_verified = $request->json("sms_verified");
+        }
+        if(!$campaign->call_verified) {
             $campaign->call_script = $request->json("call_script");
+            $campaign->call_verified = $request->json("call_verified");
+        }
         if(!$campaign->email_verified) {
             $campaign->email_subject = $request->json("email_subject");
             $campaign->email_html = $request->json("email_html");
+            $campaign->email_verified = $request->json("email_verified");
         }
-        $campaign->sms_verified = $request->json("sms_verified");
-        $campaign->call_verified = $request->json("call_verified");
-        $campaign->email_verified = $request->json("email_verified");
 
         $campaign->campaign_verified = $campaign->sms_verified & $campaign->call_verified &  $campaign->email_verified ? true : false;
 
@@ -81,6 +83,5 @@ class CampaignController extends Controller
     public function getByBrandId($brand_id)
     {
         return $this->service->getByBrandId($brand_id);
-        return Campaign::with('brand')->where('brand_id', $brand_id)->get();
     }
 }

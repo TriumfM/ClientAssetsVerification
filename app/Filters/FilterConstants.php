@@ -15,7 +15,7 @@ class FilterConstants
     ];
 
     // BRAND
-    const BRAND_INCLUDES = ['client', 'campaigns'];
+    const BRAND_INCLUDES = ['client', 'campaigns', 'users'];
     const BRAND_EXACT = ['id', 'client_id'];
     const BRAND_PARTIAL = ['name'];
 
@@ -32,7 +32,7 @@ class FilterConstants
     ];
 
     // USER
-    const USER_INCLUDES = ['role'];
+    const USER_INCLUDES = ['role', 'brands'];
     const USER_EXACT = ['id', 'role_id', 'client_id'];
     const USER_PARTIAL = [
         'first_name',
