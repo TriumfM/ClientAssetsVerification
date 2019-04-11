@@ -14,7 +14,7 @@ class AlterUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->bigInteger('client_id')->nullable();
+            $table->bigInteger('client_id')->unsigned()->nullable();
 
             $table->foreign('client_id')->references('id')->on('clients')->onDelete('cascade');
         });

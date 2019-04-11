@@ -20,6 +20,15 @@
           <span>Clients</span>
         </div>
       </router-link>
+      <router-link to="/" v-if="user.role_id === 1 || user.role_id === 2" :class="{'list__tile--link' : true, 'list__tile--link-active' : (routes[1] === '')}">
+        <span class="active__span"></span>
+        <div :class="{'list__tile__icon':true, 'active__icon': true}">
+          <i class="fa fa-bell-o"></i>
+        </div>
+        <div :class="{'list__tile__title':true}">
+          <span>Asset request</span>
+        </div>
+      </router-link>
       <router-link to="/brands" :class="{'list__tile--link' : true, 'list__tile--link-active' : (routes[1] === 'brands')}">
         <span class="active__span"></span>
         <div :class="{'list__tile__icon':true, 'active__icon': true}">

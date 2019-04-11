@@ -14,7 +14,7 @@ class CreateCampaignsTable extends Migration
     public function up()
     {
         Schema::create('campaigns', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->bigIncrements('id')->unsigned();
             $table->string('title');
             $table->string('description');
             $table->text('sms_script')->nullable();
@@ -26,7 +26,7 @@ class CreateCampaignsTable extends Migration
             $table->boolean('email_verified')->default(false);
             $table->boolean('campaign_verified')->default(false);
 
-            $table->bigInteger('brand_id');
+            $table->bigInteger('brand_id')->unsigned();
 
             $table->foreign('brand_id')->references('id')->on('brands')->onDelete('cascade');
             $table->timestamps();

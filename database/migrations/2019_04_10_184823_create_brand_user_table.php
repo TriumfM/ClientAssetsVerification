@@ -14,9 +14,9 @@ class CreateBrandUserTable extends Migration
     public function up()
     {
         Schema::create('brand_user', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->bigInteger('brand_id');
-            $table->bigInteger('user_id');
+            $table->bigIncrements('id')->unsigned();
+            $table->bigInteger('brand_id')->unsigned();
+            $table->bigInteger('user_id')->unsigned();
             $table->timestamps();
         });
     }

@@ -12,6 +12,7 @@ use App\Services\Impl\UserServiceImpl;
 use App\Services\UserService;
 use App\Tenant\TenantObserver;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Schema;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -35,6 +36,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        Schema::defaultStringLength(191);
         $this->app->singleton(TenantObserver::class, function (){
             return new TenantObserver();
         });
