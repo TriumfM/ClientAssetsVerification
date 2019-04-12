@@ -28,6 +28,9 @@ export default {
     this.getUser()
   },
   watch: {
+    route: function () {
+      console.log('123')
+    }
   },
   methods: {
     getUser: function () {
@@ -39,6 +42,12 @@ export default {
             this.$router.push({name: 'brands'})
           } else {
             this.$router.push({name: 'clients'})
+          }
+        })
+        .catch(e => {
+          if (e.response.status !== 200) {
+            localStorage.setItem('vuex', '')
+            this.$router.push('login')
           }
         })
     }

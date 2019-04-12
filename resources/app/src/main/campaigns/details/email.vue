@@ -9,7 +9,7 @@
         </div>
         <div class="cnf__input ">
           <label>Email HTML/Text</label>
-          <ckeditor :editor="editor" v-model="details.email_html" ></ckeditor>
+          <ckeditor :editor="editor" v-model="details.email_html"  type="classic"></ckeditor>
           <span class="error__span" v-if="errors.email_html">{{ errors.email_html[0] }}</span>
         </div>
       </div>
