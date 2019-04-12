@@ -343,6 +343,12 @@
         this.modal = 'Add new'
         this.showModal = true
         this.details = {}
+        this.details.sms_verified= 0
+        this.details.call_verified = 0
+        this.details.sms_script= ''
+        this.details.call_script = ''
+        this.details.email_verified = 0
+
         this.step = 0
       },
       modalEdit: function() {
@@ -366,27 +372,34 @@
       approve: function (data,asset) {
         let vm = this
         vm.errors = {}
-        vm.showLoading = true
+
         if(asset === 'sms') this.details.sms_verified = true
         if(asset === 'call') this.details.call_verified = true
         if(asset === 'email') this.details.email_verified = true
-        Http.put('/campaigns/' + data.id, vm.details)
-          .then(response => {
-            vm.getAll()
-            vm.showLoading = false
-            vm.changeAssetControl(false, true, false)
-            alert.success()
-          })
-          .catch(e => {
-            vm.showLoading = false
-            vm.errors = e.response.data.errors
-            if(asset === 'sms') this.details.sms_verified = false
-            if(asset === 'call') this.details.call_verified = false
-            if(asset === 'email') this.details.email_verified = false
-            if(vm.errors === {}) {
-              alert.failed()
-            }
-          })
+        console.log(123)
+        alert.deletePopUp(function () {
+          vm.showLoading = true
+          Http.put('/campaigns/' + data.id, vm.details)
+            .then(response => {
+              vm.getAll()
+              console.log(123321)
+              vm.showLoading = false
+              vm.changeAssetControl(false, true, false)
+              alert.success()
+            })
+            .catch(e => {
+              console.log(123123321)
+
+              vm.showLoading = false
+              vm.errors = e.response.data.errors
+              if(asset === 'sms') this.details.sms_verified = false
+              if(asset === 'call') this.details.call_verified = false
+              if(asset === 'email') this.details.email_verified = false
+              if(vm.errors === {}) {
+                alert.failed()
+              }
+            })
+        }, '')
       },
       sendEmail: function() {
       },

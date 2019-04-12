@@ -27,7 +27,9 @@ class CampaignVerifiedListener
      */
     public function handle($event)
     {
-        Mail::to('ruben@iwinback.com')->cc('ces@tricycleltd.com')->send(new CampaignVerifiedMail($event->campaign));
+       // Mail::to('ruben@iwinback.com')->cc('ces@tricycleltd.com')->send(new CampaignVerifiedMail($event->campaign));
+          Mail::to('triumf.maqedonci@gmail.com')->send(new CampaignVerifiedMail($event->campaign));
+
     }
 }
 

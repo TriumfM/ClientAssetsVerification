@@ -37,7 +37,7 @@ import alert from '@/services/sweetAlert.js'
 export default {
   data() {
     return {
-      assets: {},
+      requests: {},
       errors: {},
       showModal: false,
       showLoading: false,
@@ -56,16 +56,26 @@ export default {
   },
   methods: {
     getAll: function () {
-      Http.get(`/clients`)
+      Http.get(`/requests`)
         .then(response => {
-          this.clients = response.data
+          this.requests = response.data
+        })
+    },
+    getDetails: function (idRequest) {
+      this.errors = {}
+      Http.get(`/requests/` + idRequest)
+        .then(response => {
+          this.details = response.data
+        })
+        .catch(e => {
+          this.errors = e.body
         })
     },
     save: function (data) {
       let vm = this
       vm.errors = {}
       vm.showLoading = true
-      Http.post(`/clients`, this.details)
+      Http.post(`/requests`, this.details)
         .then(response => {
           vm.getAll()
           vm.showLoading = false
@@ -79,30 +89,29 @@ export default {
           }
           console.log(vm.errors)
         })
+    },
+    destroy: function (idAsset) {
+      let vm = this
+      alert.deletePopUp(function () {
+        Http.delete(`/response/` + idAsset)
+          .then(response => {
+            vm.getAll()
+            alert.success()
+          })
+          .catch(e => {
+            alert.failed()
+          })
+      }, '')
+    },
+    getUser: function () {
+      Http.get(`auth/details`)
+        .then(response => {
+          this.user = response.data
+          if (response.data.role_id !== 1) {
+            this.$router.push('brands')
+          }
+        })
     }
   },
-  destroy: function (idAsset) {
-    let vm = this
-    alert.deletePopUp(function () {
-      Http.delete(`/clients/` + idAsset)
-        .then(response => {
-          vm.getAll()
-          alert.success()
-        })
-        .catch(e => {
-          alert.failed()
-        })
-    }, '')
-  },
-
-  getUser: function () {
-    Http.get(`auth/details`)
-      .then(response => {
-        this.user = response.data
-        if (response.data.role_id !== 1) {
-          this.$router.push('brands')
-        }
-      })
-  }
 }
 </script>

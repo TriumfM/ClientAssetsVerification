@@ -3,8 +3,8 @@
     <div class="html_text--details" v-if="user.role_id !== 4">
       <div class="form-line" v-if="cCAsset.btn_s === true && details.call_verified === 0" >
         <div class="cnf__input ">
-          <label>Call content (1600/character)</label>
-          <ckeditor :editor="editor" v-model="details.call_script"  type="classic"></ckeditor>
+          <label>Call content ({{totalcharacter}}/character)</label>
+          <ckeditor :editor="editor" v-model="details.call_script"  type="classic" @keyup='charCount()' :disabled="dis"></ckeditor>
           <span class="error__span" v-if="errors.call_script">{{ errors.call_script[0] }}</span>
         </div>
       </div>
@@ -35,7 +35,9 @@
       return {
         editor: ClassicEditor,
         editorDisabled: true,
-        user: {}
+        user: {},
+        totalcharacter: 0,
+        dis: false
       }
     },
     computed: function () {
@@ -44,6 +46,7 @@
     },
     mounted: function () {
       this.getUser()
+      this.charCount()
     },
     methods: {
       getUser: function () {
@@ -51,6 +54,13 @@
           .then(response => {
             this.user = response.data
           })
+      },
+      charCount: function(){
+        this.totalcharacter = this.details.call_script.length;
+
+        if(this.totalcharacter === 1600) {
+
+        }
       }
     }
   }
