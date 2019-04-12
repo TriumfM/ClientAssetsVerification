@@ -20,9 +20,9 @@
           <span class="tag">{{campaign.brand.name}}</span>
         </div>
         <div class="table__button">
-          <button :class="{'btn': true, 'btn__': true, 'btn-danger': (campaign.sms_verified === false),'btn-success': (campaign.sms_verified === true)}" @click="openModal(campaign.id, 'sms'), modalAsset('sms', campaign.sms_verified)">SMS</button>
-          <button :class="{'btn': true, 'btn__': true, 'btn-danger': (campaign.call_verified === false),'btn-success': (campaign.call_verified === true)}" @click="openModal(campaign.id, 'call'), modalAsset('call', campaign.call_verified)">Call</button>
-          <button :class="{'btn': true, 'btn__': true, 'btn-danger': (campaign.email_verified === false),'btn-success': (campaign.email_verified === true)}" @click="openModal(campaign.id, 'email'), modalAsset('email', campaign.email_verified)">Email</button>
+          <button :class="{'btn': true, 'btn__': true, 'btn-danger': (campaign.sms_verified === 0),'btn-success': (campaign.sms_verified === 1)}" @click="openModal(campaign.id, 'sms'), modalAsset('sms', campaign.sms_verified)">SMS</button>
+          <button :class="{'btn': true, 'btn__': true, 'btn-danger': (campaign.call_verified === 0),'btn-success': (campaign.call_verified === 1)}" @click="openModal(campaign.id, 'call'), modalAsset('call', campaign.call_verified)">Call</button>
+          <button :class="{'btn': true, 'btn__': true, 'btn-danger': (campaign.email_verified === 0),'btn-success': (campaign.email_verified === 1)}" @click="openModal(campaign.id, 'email'), modalAsset('email', campaign.email_verified)">Email</button>
         </div>
         <div class="table__td--action" v-if="user.role_id !== 4">
           <div class="dropdown">
@@ -32,9 +32,13 @@
             <ul class="dropdown-menu dropdown-menu-main dropdown-menu-right" aria-labelledby="dropdownRowBuilding">
               <li class="dropdown__item" data-toggle="modal" v-on:click="returnBack()"  v-if="user.role_id === 1 || user.role_id === 2">
                 <div class="dropdown__item--icon"><i class="fa fa-undo" aria-hidden="true"></i></div>
-                <span class="dropdown__item--description">Return back</span>
+                <span class="dropdown__item--description">Return back all</span>
               </li>
-              <li class="dropdown__item" data-toggle="modal" v-on:click="getDetails(campaign.id), modalEdit()">
+              <li class="dropdown__item" data-toggle="modal" v-on:click="returnBackAll()"  v-if=" user.role_id === 3">
+                <div class="dropdown__item--icon"><i class="fa fa-undo" aria-hidden="true"></i></div>
+                <span class="dropdown__item--description">Apply for change</span>
+              </li>
+              <li class="dropdown__item" data-toggle="modal" v-on:click="getDetails(campaign.id), modalEdit(), changeAssetControl(true, false, false)">
                 <div class="dropdown__item--icon"><i class="fa fa-pencil" aria-hidden="true"></i></div>
                 <span class="dropdown__item--description">Edit</span>
               </li>
@@ -75,52 +79,9 @@
             </div>
             <div class="modal-body-customize modal-body-stepper">
               <campaign-details-data v-if="step === 0" :details="details" :errors="errors"></campaign-details-data>
-              <div class="form-line" v-if="step === 1">
-                <div class="cnf__input" v-if="(details.sms_verified === false || modal==='Add new')">
-                  <label>SMS content (1 sms/160 characters)</label>
-                  <textarea type="text" class="form-control cnt__textarea-lg" v-model="details.sms_script" :disabled="disabled"></textarea>
-                  <span class="error__span" v-if="errors.sms_script">{{ errors.sms_script[0] }}</span>
-                </div>
-                <div class="cnf__input cursorDedault" v-if="details.sms_verified === true">
-                  <label>SMS content</label>
-                  <span class="form-control cnt__textarea-lg">{{ details.sms_script }}</span>
-                </div>
-              </div>
-              <div class="form-line" v-if="step === 2">
-                <div class="form-line" v-if="(details.call_verified === false || modal==='Add new')">
-                  <div class="cnf__input ">
-                    <label>Call content (1600/character)</label>
-                    <ckeditor :editor="editor" v-model="details.call_script"  type="classic"></ckeditor>
-                    <span class="error__span" v-if="errors.call_script">{{ errors.call_script[0] }}</span>
-                  </div>
-                </div>
-                <div class="cnf__input-html" v-if="details.call_verified === true">
-                  <label>Call content</label>
-                  <div class="view-html" v-html="details.call_script"></div>
-                </div>
-              </div>
-              <div class="form-line" v-if="step === 3">
-                <div class="form-line" v-if="(details.call_verified === false || modal==='Add new')">
-                  <div class="cnf__input col-md-12">
-                    <label>Subject</label>
-                    <input type="text" class="form-control" placeholder=" Enter subject" v-model="details.email_subject">
-                    <span class="error__span" v-if="errors.email_subject">{{ errors.email_subject[0] }}</span>
-                  </div>
-                  <div class="cnf__input ">
-                    <label>Email HTML/Text</label>
-                    <ckeditor :editor="editor" v-model="details.email_html"  type="classic"></ckeditor>
-                    <span class="error__span" v-if="errors.email_html">{{ errors.email_html[0] }}</span>
-                  </div>
-                </div>
-                <div class="cnf__input col-md-12" v-if="details.call_verified === true">
-                  <label>Subject</label>
-                  <span class="form-control cursorDedault">{{details.email_subject}}</span>
-                </div>
-                <div class="cnf__input-html" v-if="details.call_verified === true">
-                  <label>Email content </label>
-                  <div class="view-html" v-html="details.email_html"></div>
-                </div>
-              </div>
+              <campaign-details-sms v-if="step === 1" :details="details" :errors="errors" :disabled="disabled" :cCAsset="cCAsset"></campaign-details-sms>
+              <campaign-details-call v-if="step === 2" :details="details" :errors="errors" :disabled="disabled" :cCAsset="cCAsset"></campaign-details-call>
+              <campaign-details-email v-if="step === 3" :details="details" :errors="errors" :disabled="disabled" :cCAsset="cCAsset"></campaign-details-email>
             </div>
             <div class="modal-footer-customize" v-if="user.role_id !== 4">
               <button class="btn btn-primary" @click="step++" v-if="step !== 3">Next</button>
@@ -138,7 +99,7 @@
           <div class="modal-container">
             <div class="modal-header-customize">
               <span :class="{'modal-title': true, 'text-success': details.sms_verified, 'text-danger': !details.sms_verified}">SMS</span>
-              <div class="modal-close" @click="showModalSMS = false, changeAssetControl(true, false, false)"><i class="fa fa-times"></i></div>
+              <div class="modal-close" @click="showModalSMS = false, changeAssetControl(false, false, false)"><i class="fa fa-times"></i></div>
             </div>
             <div class="modal-body-customize">
               <div class="container container_100">
@@ -149,8 +110,8 @@
               <button class="btn btn-success" @click="approve(details,'sms')" v-if="cCAsset.btn_a">
                 <i class="fa fa-refresh fa-spin" v-if="showLoading"></i> Approve
               </button>
-              <button :class="{'btn': true, 'btn-info': true, 'btn-left': (cCAsset.btn_a)}" @click="changeAssetControl(true, false, false)" v-if="cCAsset.btn_c">Change</button>
-              <button class="btn btn-primary" @click="save(details, 'sms')" v-if="cCAsset.btn_s">
+              <button :class="{'btn': true, 'btn-info': true, 'btn-left': !cCAsset.btn_c}" v-if="cCAsset.btn_c">Apply for change</button>
+              <button class="btn btn-primary" @click="save(details, 'sms')" v-if="details.sms_verified === 0 && cCAsset.btn_a === false">
                 <i class="fa fa-refresh fa-spin" v-if="showLoading"></i> Save
               </button>
             </div>
@@ -164,7 +125,7 @@
           <div class="modal-container modal-container_lg">
             <div class="modal-header-customize ">
               <span :class="{'modal-title': true, 'text-success': details.call_verified, 'text-danger': !details.call_verified}">Call</span>
-              <div class="modal-close" @click="showModalCall = false, changeAssetControl(true, false, false)"><i class="fa fa-times"></i></div>
+              <div class="modal-close" @click="showModalCall = false"><i class="fa fa-times"></i></div>
             </div>
             <div class="modal-body-customize">
               <div class="container container_100">
@@ -175,8 +136,8 @@
               <button class="btn btn-success" @click="approve(details,'call')" v-if="cCAsset.btn_a">
                 <i class="fa fa-refresh fa-spin" v-if="showLoading"></i> Approve
               </button>
-              <button :class="{'btn': true, 'btn-info': true, 'btn-left': (cCAsset.btn_a)}" @click="changeAssetControl(true, false, false)" v-if="cCAsset.btn_c">Change</button>
-              <button class="btn btn-primary" @click="save(details, 'call')" v-if="cCAsset.btn_s">
+              <button :class="{'btn': true, 'btn-info': true, 'btn-left': !cCAsset.btn_c}" v-if="cCAsset.btn_c">Apply for change</button>
+              <button class="btn btn-primary" @click="save(details, 'call')" v-if="details.call_verified === 0 && cCAsset.btn_a === false">
                 <i class="fa fa-refresh fa-spin" v-if="showLoading"></i> Save
               </button>
             </div>
@@ -201,8 +162,8 @@
               <button class="btn btn-success" @click="approve(details,'email')" v-if="cCAsset.btn_a">
                 <i class="fa fa-refresh fa-spin" v-if="showLoading"></i> Approve
               </button>
-              <button :class="{'btn': true, 'btn-info': true, 'btn-left': (cCAsset.btn_a)}" @click="changeAssetControl(true, false, false)" v-if="cCAsset.btn_c">Change</button>
-              <button class="btn btn-primary" @click="save(details, 'email')" v-if="cCAsset.btn_s">
+              <button :class="{'btn': true, 'btn-info': true, 'btn-left': !cCAsset.btn_c}" v-if="cCAsset.btn_c">Apply for change</button>
+              <button class="btn btn-primary" @click="save(details, 'email')" v-if="details.email_verified === 0 && cCAsset.btn_a === false">
                 <i class="fa fa-refresh fa-spin" v-if="showLoading"></i> Save
               </button>
             </div>
@@ -237,7 +198,6 @@
     data () {
       return {
         campaigns: {},
-        roles: ['Super Admin', 'Client Admin', 'Client User', 'Client Viewer'],
         details: {},
         search: {},
         errors: {},
@@ -323,22 +283,16 @@
               vm.showModal = false
 
               if (asset === 'sms') {
-                if(vm.details.sms_verified) {
-                  vm.changeAssetControl(false, true, false)
-                } else {
-                  vm.changeAssetControl(false, true, true)
+                if(response.data.sms_verified === 0) {
+                  vm.changeAssetControl(false, false, true)
                 }
               } else if (asset === 'call') {
-                if(vm.details.call_verified && asset === 'call') {
-                  vm.changeAssetControl(false, true, false)
-                } else {
-                  vm.changeAssetControl(false, true, true)
+                if(vm.details.call_verified === 0) {
+                  vm.changeAssetControl(false, false, true)
                 }
               } else if (asset === 'email') {
-                if(vm.details.email_verified && asset === 'email') {
-                  vm.changeAssetControl(false, true, false)
-                } else {
-                  vm.changeAssetControl(false, true, true)
+                if(vm.details.email_verified === 0) {
+                  vm.changeAssetControl(false, false, true)
                 }
               }
               alert.success()
@@ -420,7 +374,7 @@
           .then(response => {
             vm.getAll()
             vm.showLoading = false
-            this.changeAssetControl(false, true, false)
+            vm.changeAssetControl(false, true, false)
             alert.success()
           })
           .catch(e => {
@@ -448,10 +402,10 @@
       modalAsset :function (asset, verified) {
         var vm = this
         if(asset === 'sms' || asset === 'call' || asset === 'email') {
-          if(verified === true) {
+          if(verified === 1) {
             this.changeAssetControl(false, true, false)
           } else {
-            this.changeAssetControl(true, false, false)
+            vm.changeAssetControl(true, false, false)
           }
         }
       },

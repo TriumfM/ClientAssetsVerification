@@ -73,6 +73,9 @@
         font-weight: 900;
         margin: 3px 0;
       }
+      .btn__asset {
+        width: 45px !important;
+      }
 
       .btn__row {
         font-size: 12px !important;
@@ -148,7 +151,10 @@
 
   .table__row {
     .table__th--data {
-      width: calc(25% - 5px);
+      width: calc(33.3% - 40px);
+    }
+    .table__button {
+      width: 120px;
     }
   }
 }

@@ -10,6 +10,7 @@ import LoginView from '@/main/login/LoginComponent'
 import ClientComponent from '@/main/clients/ClientsComponent'
 import BrandsComponent from '@/main/brands/BrandsComponent'
 import CampaignsComponent from '@/main/campaigns/CampaignsComponent'
+import AssetRequest from '@/main/assetRequest/AssetRequest'
 import UsersComponent from '@/main/users/UsersComponent'
 
 Vue.use(Router)
@@ -55,6 +56,11 @@ export default new Router({
           path: '/clients/brands/:clientId',
           name: 'clients-brands',
           component: BrandsComponent
+        },
+        {
+          path: '/assetRequest',
+          name: 'asset-request',
+          component: AssetRequest
         },
         {
           path: '/users',

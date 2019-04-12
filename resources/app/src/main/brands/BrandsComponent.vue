@@ -21,7 +21,7 @@
         <div class="table__button">
           <button class="btn btn__row" @click="$router.push({ name: 'brands-campaigns', params: { brandId: brand.id }})">Campaigns</button>
         </div>
-        <div class="table__td--action" v-if="user.role_id !== 4">
+        <div class="table__td--action" v-if="user.role_id === 1 || user.role_id === 2">
           <div class="dropdown">
             <div class="icon__dropdown"  id="dropdownRowBuilding" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
               <i class="fa fa-ellipsis-v" ></i>
