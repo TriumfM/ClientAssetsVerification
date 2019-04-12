@@ -28,7 +28,15 @@ Route::group(['middleware' => ['auth:api', 'role:client admin']], function() {
     Route::post('/users', 'UserController@store');
     Route::put('/users/{id}', 'UserController@update');
     Route::delete('/users/{id}', 'UserController@destroy');
+
     Route::post('/users/brands/{userId}/{brandId}/{flag}', 'UserController@addUserBrand');
+
+    Route::get('/requests', 'VerifiedRequestController@index');
+    Route::get('/requests/{id}', 'VerifiedRequestController@show');
+    Route::delete('/requests/{id}', 'VerifiedRequestController@destroy');
+
+    Route::post('request/approve', 'VerifiedRequestController@directApprove');
+    Route::get('/requests/approve/{id}', 'VerifiedRequestController@approve');
 });
 
 Route::group(['middleware' => ['auth:api', 'role:client user']], function() {
@@ -51,6 +59,8 @@ Route::group(['middleware' => 'auth:api'], function() {
     Route::get('/auth/clients', 'AuthController@clients');
     Route::get('/auth/clientadmin', 'AuthController@clientAdmin');
     Route::get('/auth/logout', 'AuthController@logout');
+
+    Route::post('/requests', 'VerifiedRequestController@store');
 
     Route::get('/brands', 'BrandController@index');
     Route::get('/brands/{id}', 'BrandController@show');
