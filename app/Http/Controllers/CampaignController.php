@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Campaign;
+use App\Events\CampaignVerifiedEvent;
 use App\Http\Requests\CampaignSaveRequest;
 use App\Http\Requests\CampaignUpdateRequest;
 use App\Services\CampaignService;
@@ -62,8 +63,10 @@ class CampaignController extends Controller
             $campaign->email_verified = $request->json("email_verified");
         }
 
-        $campaign->campaign_verified = $campaign->sms_verified & $campaign->call_verified &  $campaign->email_verified ? true : false;
-
+        if(!$campaign->campaign_verified & $campaign->sms_verified & $campaign->call_verified &  $campaign->email_verified) {
+            $campaign->campaign_verified = true;
+            event(new CampaignVerifiedEvent($campaign));
+        }
         $campaign->brand_id = $request->json("brand_id");
         $campaign->client_id = $request->json("client_id");
 
