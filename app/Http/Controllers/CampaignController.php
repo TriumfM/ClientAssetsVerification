@@ -6,7 +6,9 @@ use App\Campaign;
 use App\Events\CampaignVerifiedEvent;
 use App\Http\Requests\CampaignSaveRequest;
 use App\Http\Requests\CampaignUpdateRequest;
+use App\Mail\CampaignVerifiedMail;
 use App\Services\CampaignService;
+use Illuminate\Support\Facades\Mail;
 
 class CampaignController extends Controller
 {

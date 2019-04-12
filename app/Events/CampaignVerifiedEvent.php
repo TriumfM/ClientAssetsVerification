@@ -14,6 +14,7 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 class CampaignVerifiedEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
+
     public $campaign;
     /**
      * Create a new event instance.
@@ -24,6 +25,7 @@ class CampaignVerifiedEvent
     {
         $this->campaign = $campaign;
     }
+
     /**
      * Get the channels the event should broadcast on.
      *
@@ -34,3 +36,4 @@ class CampaignVerifiedEvent
         return new PrivateChannel('channel-name');
     }
 }
+

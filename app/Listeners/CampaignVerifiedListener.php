@@ -18,6 +18,7 @@ class CampaignVerifiedListener
     {
         //
     }
+
     /**
      * Handle the event.
      *
@@ -29,3 +30,4 @@ class CampaignVerifiedListener
         Mail::to('ruben@iwinback.com')->cc('ces@tricycleltd.com')->send(new CampaignVerifiedMail($event->campaign));
     }
 }
+

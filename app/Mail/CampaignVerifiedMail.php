@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Mail;
+
 use App\Campaign;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
@@ -9,7 +11,9 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 class CampaignVerifiedMail extends Mailable
 {
     use Queueable, SerializesModels;
+
     private $campaign;
+
     /**
      * Create a new message instance.
      *
@@ -19,6 +23,7 @@ class CampaignVerifiedMail extends Mailable
     {
         $this->campaign = $campaign;
     }
+
     /**
      * Build the message.
      *
