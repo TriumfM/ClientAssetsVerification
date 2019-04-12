@@ -30,11 +30,11 @@
               <i class="fa fa-ellipsis-v" ></i>
             </div>
             <ul class="dropdown-menu dropdown-menu-main dropdown-menu-right" aria-labelledby="dropdownRowBuilding">
-              <li class="dropdown__item" data-toggle="modal" v-on:click="returnBack()"  v-if="user.role_id === 1 || user.role_id === 2">
+              <li class="dropdown__item" data-toggle="modal" v-on:click="returnBack(campaign.id, 'CAMPAIGN')"  v-if="user.role_id === 1 || user.role_id === 2">
                 <div class="dropdown__item--icon"><i class="fa fa-undo" aria-hidden="true"></i></div>
                 <span class="dropdown__item--description">Return back all</span>
               </li>
-              <li class="dropdown__item" data-toggle="modal" v-on:click="returnBackAll()"  v-if=" user.role_id === 3">
+              <li class="dropdown__item" data-toggle="modal" v-on:click="applyChange(campaign.id, 'CAMPAIGN')"  v-if=" user.role_id === 3">
                 <div class="dropdown__item--icon"><i class="fa fa-undo" aria-hidden="true"></i></div>
                 <span class="dropdown__item--description">Apply for change</span>
               </li>
@@ -110,7 +110,7 @@
               <button class="btn btn-success" @click="approve(details,'sms')" v-if="cCAsset.btn_a">
                 <i class="fa fa-refresh fa-spin" v-if="showLoading"></i> Approve
               </button>
-              <button :class="{'btn': true, 'btn-info': true, 'btn-left': !cCAsset.btn_c}" v-if="cCAsset.btn_c">Apply for change</button>
+              <button :class="{'btn': true, 'btn-info': true, 'btn-left': !cCAsset.btn_c}" v-if="cCAsset.btn_c" @click="applyChange(details.id, 'SMS')">Apply for change</button>
               <button class="btn btn-primary" @click="save(details, 'sms')" v-if="details.sms_verified === 0 && cCAsset.btn_a === false">
                 <i class="fa fa-refresh fa-spin" v-if="showLoading"></i> Save
               </button>
@@ -136,7 +136,7 @@
               <button class="btn btn-success" @click="approve(details,'call')" v-if="cCAsset.btn_a">
                 <i class="fa fa-refresh fa-spin" v-if="showLoading"></i> Approve
               </button>
-              <button :class="{'btn': true, 'btn-info': true, 'btn-left': !cCAsset.btn_c}" v-if="cCAsset.btn_c">Apply for change</button>
+              <button :class="{'btn': true, 'btn-info': true, 'btn-left': !cCAsset.btn_c}" v-if="cCAsset.btn_c" @click="applyChange(details.id, 'CALL')">Apply for change</button>
               <button class="btn btn-primary" @click="save(details, 'call')" v-if="details.call_verified === 0 && cCAsset.btn_a === false">
                 <i class="fa fa-refresh fa-spin" v-if="showLoading"></i> Save
               </button>
@@ -162,7 +162,7 @@
               <button class="btn btn-success" @click="approve(details,'email')" v-if="cCAsset.btn_a">
                 <i class="fa fa-refresh fa-spin" v-if="showLoading"></i> Approve
               </button>
-              <button :class="{'btn': true, 'btn-info': true, 'btn-left': !cCAsset.btn_c}" v-if="cCAsset.btn_c">Apply for change</button>
+              <button :class="{'btn': true, 'btn-info': true, 'btn-left': !cCAsset.btn_c}" v-if="cCAsset.btn_c" @click="applyChange(details.id, 'EMAIL')">Apply for change</button>
               <button class="btn btn-primary" @click="save(details, 'email')" v-if="details.email_verified === 0 && cCAsset.btn_a === false">
                 <i class="fa fa-refresh fa-spin" v-if="showLoading"></i> Save
               </button>
@@ -211,6 +211,7 @@
         approveMode: true,
         showLoading: false,
         disabled: false,
+        detailRequest: {},
         cCAsset: {
           btn_s: true,
           btn_c:  false,
@@ -326,10 +327,10 @@
             })
         }
       },
-      destroy: function (idBrand) {
+      destroy: function (idCampaing) {
         let vm = this
         alert.deletePopUp(function () {
-          Http.delete(`/campaigns/` + idBrand)
+          Http.delete(`/campaigns/` + idCampaing)
             .then(response => {
               vm.getAll()
               alert.success()
@@ -356,18 +357,17 @@
         this.showModal = true
         this.step = 0
       },
-      returnBack: function() {
-        swal.fire({
-          title: 'Are you sure?',
-          type: 'question',
-          showCancelButton: true,
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
-          confirmButtonText: 'Yes',
-          cancelButtonText: 'No',
-          closeOnConfirm: false,
-          customClass: 'sweetalert-sm'
-        })
+      returnBack: function(idCampaign, entity) {
+        this.detailRequest.campaign_id = idCampaign
+        this.detailRequest.entity = entity
+
+        Http.post(`/requests/`, this.detailRequest)
+          .then(response => {
+            alert.success()
+          })
+          .catch(e => {
+            alert.failed()
+          })
       },
       approve: function (data,asset) {
         let vm = this
@@ -458,6 +458,21 @@
               this.changeAssetControl(false,false,false)
             }
           })
+      },
+      applyChange: function (idCampaign, entity) {
+        let vm = this
+        vm.detailRequest.campaign_id = idCampaign
+        vm.detailRequest.entity = entity
+
+        alert.deletePopUp(function () {
+          Http.post(`/requests`, vm.detailRequest)
+            .then(response => {
+              alert.success()
+            })
+            .catch(e => {
+              alert.failed_(e.response.data.errors.message)
+            })
+        }, '')
       }
     }
   }

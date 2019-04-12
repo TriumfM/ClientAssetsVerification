@@ -220,13 +220,8 @@ export default{
           .then(response => {
             this.clients = response.data
           })
-      } else if (this.user.role_id === 3 || this.user.role_id === 4) {
+      } else if (this.user.role_id !== 1) {
         Http.get(`/auth/clients`)
-          .then(response => {
-            this.clients = response.data
-          })
-      } else {
-        Http.get(`/clients?filter[id]=`+ this.user.client_id)
           .then(response => {
             this.clients = response.data
           })

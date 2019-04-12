@@ -152,5 +152,15 @@ export default {
       showConfirmButton: false,
       customClass: 'sweetalert-sm'
     })
+  },
+
+  failed_: function (text) {
+    swal.fire({
+      title: 'Error!',
+      text: text,
+      type: 'error',
+      showConfirmButton: false,
+      customClass: 'sweetalert-sm'
+    })
   }
 }

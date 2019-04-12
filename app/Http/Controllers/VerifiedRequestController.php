@@ -27,9 +27,13 @@ class VerifiedRequestController extends Controller
         $verifiedRequest->campaign_id = $request->json('campaign_id');
         $verifiedRequest->entity = $request->json('entity');
 
-        $verifiedRequest->save();
+        $requestExists = VerifiedRequest::where('entity', $verifiedRequest->entity)->where('campaign_id', $verifiedRequest->campaign_id)->first();
+        if($requestExists)
+            return response(['errors' => ['message' =>'Request for this campaign and asset exists already']],422);
 
-        return $verifiedRequest;
+         $verifiedRequest->save();
+
+        return response(['message'=> 'Successfully'], 200);
     }
 
     public function directApprove(Request $request)
@@ -57,6 +61,7 @@ class VerifiedRequestController extends Controller
     }
     public function approve($id)
     {
+        $flag = true;
         $verifiedRequest = VerifiedRequest::findOrFail($id);
 
         $campaign = Campaign::findOrFail($verifiedRequest->campaign_id);
@@ -74,11 +79,15 @@ class VerifiedRequestController extends Controller
             $campaign->sms_verified = false;
             $campaign->call_verified = false;
             $campaign->email_verified = false;
+            $flag = true;
         }
         $campaign->campaign_verified = false;
         $campaign->update();
 
-        $this->destroy($id);
+        if($flag)
+            VerifiedRequest::where('campaign_id', $verifiedRequest->campaign_id)->delete();
+        else
+            $this->destroy($id);
         return response(['message' => 'Successfully'], 200);
     }
 
