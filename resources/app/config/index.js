@@ -55,7 +55,7 @@ module.exports = {
 
   build: {
     // Template for index.html
-    index: path.resolve(__dirname, ' ../../../resources/views/index.blade.php'),
+    index: path.resolve(__dirname, '../../../resources/views/index.blade.php'),
 
     // Paths
     assetsRoot: path.resolve(__dirname, '../../../public'),
