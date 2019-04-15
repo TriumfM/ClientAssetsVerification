@@ -36,7 +36,7 @@ export default {
     }
   },
   mounted: function () {
-    if (localStorage.getItem('vuex') !== '' || localStorage.getItem('vuex') === undefined) {
+    if (localStorage.getItem('vuex') !== '' || localStorage.getItem('vuex') == undefined) {
       this.$router.push('/')
     }
     this.$store.watch(

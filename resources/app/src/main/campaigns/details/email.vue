@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="html_text--details" v-if="user.role_id !== 4">
-      <div class="form-line" v-if="cCAsset.btn_s === true && details.email_verified === 0">
+      <div class="form-line" v-if="cCAsset.btn_s == true && details.email_verified == 0">
         <div class="cnf__input col-md-12">
           <label>Subject</label>
           <input type="text" class="form-control" placeholder=" Enter subject" v-model="details.email_subject">
@@ -13,7 +13,7 @@
           <span class="error__span" v-if="errors.email_html">{{ errors.email_html[0] }}</span>
         </div>
       </div>
-      <div class="form-line" v-if="cCAsset.btn_s === false || details.email_verified === 1">
+      <div class="form-line" v-if="cCAsset.btn_s == false || details.email_verified == 1">
         <div class="cnf__input col-md-12">
           <label>Subject</label>
           <span class="form-control cursorDedault">{{details.email_subject}}</span>
@@ -24,7 +24,7 @@
         </div>
       </div>
     </div>
-    <div class="html_text--details"  v-if="user.role_id === 4">
+    <div class="html_text--details"  v-if="user.role_id == 4">
       <div class="cnf__input col-md-12">
         <label>Subject</label>
         <span class="form-control cursorDedault">{{details.email_subject}}</span>

@@ -1,10 +1,10 @@
 <template>
   <div class="col-md-12 menu-content">
     <div class="menu-content_header">
-      <h2 class="title_side" v-if="$route.name === 'brands'">All Brands</h2>
-      <h2 class="title_side" v-if="$route.name === 'clients-brands'">Brands of client: {{client.name}}</h2>
+      <h2 class="title_side" v-if="$route.name == 'brands'">All Brands</h2>
+      <h2 class="title_side" v-if="$route.name == 'clients-brands'">Brands of client: {{client.name}}</h2>
       <div class="add_new-button">
-        <button class="btn btn-primary" @click="modalAdd()" v-if="user.role_id === 1 || user.role_id === 2">Add new</button>
+        <button class="btn btn-primary" @click="modalAdd()" v-if="user.role_id == 1 || user.role_id == 2">Add new</button>
       </div>
     </div>
     <div class="horizontal__line"></div>
@@ -21,7 +21,7 @@
         <div class="table__button">
           <button class="btn btn__row" @click="$router.push({ name: 'brands-campaigns', params: { brandId: brand.id }})">Campaigns</button>
         </div>
-        <div class="table__td--action" v-if="user.role_id === 1 || user.role_id === 2">
+        <div class="table__td--action" v-if="user.role_id == 1 || user.role_id == 2">
           <div class="dropdown">
             <div class="icon__dropdown"  id="dropdownRowBuilding" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
               <i class="fa fa-ellipsis-v" ></i>
@@ -120,7 +120,7 @@ export default{
   },
   watch: {
     '$route': function () {
-      if (this.$route.path === '/brands') {
+      if (this.$route.path == '/brands') {
         this.clientId = null
         this.getAll()
       }
@@ -129,7 +129,7 @@ export default{
   },
   mounted: function () {
     this.getUser()
-    if(this.$route.params.clientId === undefined) {
+    if(this.$route.params.clientId == undefined) {
       this.clientId = null
     }
     else {
@@ -139,7 +139,7 @@ export default{
   },
   methods: {
     getAll: function () {
-      if(this.$route.name === 'clients-brands' ) {
+      if(this.$route.name == 'clients-brands' ) {
         this.getClientDetails(this.$route.params.clientId)
         Http.get(`/brands/clients/`+ this.$route.params.clientId + '?include=client')
           .then(response => {
@@ -178,7 +178,7 @@ export default{
           .catch(e => {
             vm.showLoading = false
             vm.errors = e.response.data.errors
-            if(vm.errors === {}) {
+            if(vm.errors == {}) {
               alert.failed()
             }
           })
@@ -195,7 +195,7 @@ export default{
           .catch(e => {
             vm.showLoading = false
             vm.errors = e.response.data.errors
-            if(vm.errors === {}) {
+            if(vm.errors == {}) {
               alert.failed()
             }
           })
@@ -215,7 +215,7 @@ export default{
       }, '')
     },
     fetchClients: function () {
-      if(this.user.client_id === null) {
+      if(this.user.client_id == null) {
         Http.get(`/clients`)
           .then(response => {
             this.clients = response.data

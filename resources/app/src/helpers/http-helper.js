@@ -14,12 +14,12 @@ Http.interceptors.request.use(function (request) {
 Http.interceptors.response.use(response => {
   return response
 }, error => {
-  // if (error.response.status === 409) {
+  // if (error.response.status == 409) {
   //   store.dispatch('errorsStore/addError', {title: error.response.data.error, body: error.response.data.message, status: error.response.status})
-  // } else if (error.response.status === 401 && error.response.data.type == null) {
+  // } else if (error.response.status == 401 && error.response.data.type == null) {
   //   localStorage.setItem('vuex', '')
   //   window.location.replace('/')
-  // } else if (error.response.status === 500) {
+  // } else if (error.response.status == 500) {
   //   if (error.response.data.errors !== null) {
   //     swal.fire({title: 'Server error!', text: error.response.data.errors.general, type: 'error'})
   //   } else {

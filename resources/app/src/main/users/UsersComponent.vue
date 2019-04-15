@@ -19,7 +19,7 @@
         </div>
         <div class='table__th--data'>
           <div class="table__th"></div>
-          <div class='table__td table_td--click'><i :class="{'fa': true, 'fa-circle': true, 'text-success': (user.active === true), 'text-danger': (user.active === false)}"></i></div>
+          <div class='table__td table_td--click'><i :class="{'fa': true, 'fa-circle': true, 'text-success': (user.active == true), 'text-danger': (user.active == false)}"></i></div>
         </div>
         <div class="table__td--action">
           <div class="dropdown">
@@ -185,13 +185,13 @@ export default{
     },
     roleId: function () {
       this.fetchClients()
-      if (this.roleId === 2) {
+      if (this.roleId == 2) {
         if (this.details.role_id) {
           this.roles = [{id: 2,name:'Client Admin'}, {id: 3,name:'Client User'}, {id: 4, name:'Client Viewer'}]
         }
         this.customizeUser.clients = true
         this.customizeUser.brands = false
-      } else if (this.roleId === 3 || this.roleId === 4) {
+      } else if (this.roleId == 3 || this.roleId == 4) {
         this.customizeUser.clients = true
         this.customizeUser.brands = true
       } else {
@@ -238,7 +238,7 @@ export default{
             vm.showLoading = false
             vm.errors = e.response.data.errors
             console.log(vm.errors)
-            if(vm.errors === {}) {
+            if(vm.errors == {}) {
               alert.failed()
             }
           })
@@ -255,7 +255,7 @@ export default{
           .catch(e => {
             vm.showLoading = false
             vm.errors = e.response.data.errors
-            if(vm.errors === {}) {
+            if(vm.errors == {}) {
               alert.failed()
             }
             console.log(vm.errors)
@@ -279,7 +279,7 @@ export default{
       this.modal = 'Add new'
       this.details = {}
       this.details.active = true
-      if (this.user.role_id === 2) {
+      if (this.user.role_id == 2) {
         this.roles = [{id: 3,name:'Client User'}, {id: 4, name:'Client Viewer'}]
       }
       this.showModal = true
@@ -287,7 +287,7 @@ export default{
     modalEdit: function() {
       this.modal = 'Edit'
       this.showModal = true
-      if (this.user.role_id === 2) {
+      if (this.user.role_id == 2) {
         this.roles = [{id: 3,name:'Client User'}, {id: 4, name:'Client Viewer'}]
       }
     },

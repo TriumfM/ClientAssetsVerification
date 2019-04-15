@@ -1,11 +1,11 @@
 <template>
   <div class="col-md-12 menu-content">
     <div class="menu-content_header">
-      <h2 class="title_side" v-if="$route.name === 'campaigns'">All Campaigns</h2>
-      <h2 class="title_side" v-if="$route.name === 'clients-campaigns'">Campaigns of client: {{client.name}}</h2>
-      <h2 class="title_side" v-if="$route.name === 'brands-campaigns'">Campaigns of brands: {{brand.name}}</h2>
+      <h2 class="title_side" v-if="$route.name == 'campaigns'">All Campaigns</h2>
+      <h2 class="title_side" v-if="$route.name == 'clients-campaigns'">Campaigns of client: {{client.name}}</h2>
+      <h2 class="title_side" v-if="$route.name == 'brands-campaigns'">Campaigns of brands: {{brand.name}}</h2>
       <div class="add_new-button">
-        <button class="btn btn-primary" @click="modalAdd()" v-if="user.role_id === 1 || user.role_id === 2">Add new</button>
+        <button class="btn btn-primary" @click="modalAdd()" v-if="user.role_id == 1 || user.role_id == 2">Add new</button>
       </div>
     </div>
     <div class="horizontal__line"></div>
@@ -20,9 +20,9 @@
           <span class="tag">{{campaign.brand.name}}</span>
         </div>
         <div class="table__button">
-          <button :class="{'btn': true, 'btn__': true, 'btn-danger': (campaign.sms_verified === 0),'btn-success': (campaign.sms_verified === 1)}" @click="openModal(campaign.id, 'sms'), modalAsset('sms', campaign.sms_verified)">SMS</button>
-          <button :class="{'btn': true, 'btn__': true, 'btn-danger': (campaign.call_verified === 0),'btn-success': (campaign.call_verified === 1)}" @click="openModal(campaign.id, 'call'), modalAsset('call', campaign.call_verified)">Call</button>
-          <button :class="{'btn': true, 'btn__': true, 'btn-danger': (campaign.email_verified === 0),'btn-success': (campaign.email_verified === 1)}" @click="openModal(campaign.id, 'email'), modalAsset('email', campaign.email_verified)">Email</button>
+          <button :class="{'btn': true, 'btn__': true, 'btn-danger': (campaign.sms_verified == 0),'btn-success': (campaign.sms_verified == 1)}" @click="openModal(campaign.id, 'sms'), modalAsset('sms', campaign.sms_verified)">SMS</button>
+          <button :class="{'btn': true, 'btn__': true, 'btn-danger': (campaign.call_verified == 0),'btn-success': (campaign.call_verified == 1)}" @click="openModal(campaign.id, 'call'), modalAsset('call', campaign.call_verified)">Call</button>
+          <button :class="{'btn': true, 'btn__': true, 'btn-danger': (campaign.email_verified == 0),'btn-success': (campaign.email_verified == 1)}" @click="openModal(campaign.id, 'email'), modalAsset('email', campaign.email_verified)">Email</button>
         </div>
         <div class="table__td--action" v-if="user.role_id !== 4">
           <div class="dropdown">
@@ -30,11 +30,11 @@
               <i class="fa fa-ellipsis-v" ></i>
             </div>
             <ul class="dropdown-menu dropdown-menu-main dropdown-menu-right" aria-labelledby="dropdownRowBuilding">
-              <li class="dropdown__item" data-toggle="modal" v-on:click="returnBack(campaign.id, 'CAMPAIGN')"  v-if="user.role_id === 1 || user.role_id === 2">
+              <li class="dropdown__item" data-toggle="modal" v-on:click="returnBack(campaign.id, 'CAMPAIGN')"  v-if="user.role_id == 1 || user.role_id == 2">
                 <div class="dropdown__item--icon"><i class="fa fa-undo" aria-hidden="true"></i></div>
                 <span class="dropdown__item--description">Return back all</span>
               </li>
-              <li class="dropdown__item" data-toggle="modal" v-on:click="applyChange(campaign.id, 'CAMPAIGN')"  v-if=" user.role_id === 3">
+              <li class="dropdown__item" data-toggle="modal" v-on:click="applyChange(campaign.id, 'CAMPAIGN')"  v-if=" user.role_id == 3">
                 <div class="dropdown__item--icon"><i class="fa fa-undo" aria-hidden="true"></i></div>
                 <span class="dropdown__item--description">Apply for change</span>
               </li>
@@ -56,36 +56,36 @@
         <div class="modal-wrapper">
           <div class="modal-container modal-container_lg">
             <div class="modal-header-stepper">
-              <div :class="{'step': true, 'step_active': (step === 0)}" @click="step = 0" >
+              <div :class="{'step': true, 'step_active': (step == 0)}" @click="step = 0" >
                 <div class="icon"><i class="fa fa-circle"></i></div>
                 <span class="details">Details</span>
               </div>
               <div class="line"></div>
-              <div :class="{'step': true, 'step_active': (step === 1)}" @click="step = 1">
+              <div :class="{'step': true, 'step_active': (step == 1)}" @click="step = 1">
                 <div class="icon"><i class="fa fa-circle"></i></div>
                 <span class="details">SMS</span>
               </div>
               <div class="line"></div>
-              <div :class="{'step': true, 'step_active': (step === 2)}" @click="step = 2">
+              <div :class="{'step': true, 'step_active': (step == 2)}" @click="step = 2">
                 <div class="icon"><i class="fa fa-circle"></i></div>
                 <span class="details">Call</span>
               </div>
               <div class="line"></div>
-              <div :class="{'step': true, 'step_active': (step === 3)}" @click="step = 3">
+              <div :class="{'step': true, 'step_active': (step == 3)}" @click="step = 3">
                 <div class="icon"><i class="fa fa-circle"></i></div>
                 <span class="details">Email</span>
               </div>
               <i class="fa fa-times close_modal" @click="showModal = false"></i>
             </div>
             <div class="modal-body-customize modal-body-stepper">
-              <campaign-details-data v-if="step === 0" :details="details" :errors="errors"></campaign-details-data>
-              <campaign-details-sms v-if="step === 1" :details="details" :errors="errors" :disabled="disabled" :cCAsset="cCAsset"></campaign-details-sms>
-              <campaign-details-call v-if="step === 2" :details="details" :errors="errors" :disabled="disabled" :cCAsset="cCAsset"></campaign-details-call>
-              <campaign-details-email v-if="step === 3" :details="details" :errors="errors" :disabled="disabled" :cCAsset="cCAsset"></campaign-details-email>
+              <campaign-details-data v-if="step == 0" :details="details" :errors="errors"></campaign-details-data>
+              <campaign-details-sms v-if="step == 1" :details="details" :errors="errors" :disabled="disabled" :cCAsset="cCAsset"></campaign-details-sms>
+              <campaign-details-call v-if="step == 2" :details="details" :errors="errors" :disabled="disabled" :cCAsset="cCAsset"></campaign-details-call>
+              <campaign-details-email v-if="step == 3" :details="details" :errors="errors" :disabled="disabled" :cCAsset="cCAsset"></campaign-details-email>
             </div>
             <div class="modal-footer-customize" v-if="user.role_id !== 4">
               <button class="btn btn-primary" @click="step++" v-if="step !== 3">Next</button>
-              <button class="btn btn-primary" :disabled="showLoading" @click="save(details, null)" v-if="step === 3">
+              <button class="btn btn-primary" :disabled="showLoading" @click="save(details, null)" v-if="step == 3">
                 <i class="fa fa-refresh fa-spin" v-if="showLoading"></i> Save
               </button>
             </div>
@@ -111,7 +111,7 @@
                 <i class="fa fa-refresh fa-spin" v-if="showLoading"></i> Approve
               </button>
               <button :class="{'btn': true, 'btn-info': true, 'btn-left': !cCAsset.btn_c}" v-if="cCAsset.btn_c" @click="applyChange(details.id, 'SMS')">Apply for change</button>
-              <button class="btn btn-primary" @click="save(details, 'sms')" v-if="details.sms_verified === 0 && cCAsset.btn_a === false">
+              <button class="btn btn-primary" @click="save(details, 'sms')" v-if="details.sms_verified == 0 && cCAsset.btn_a == false">
                 <i class="fa fa-refresh fa-spin" v-if="showLoading"></i> Save
               </button>
             </div>
@@ -137,7 +137,7 @@
                 <i class="fa fa-refresh fa-spin" v-if="showLoading"></i> Approve
               </button>
               <button :class="{'btn': true, 'btn-info': true, 'btn-left': !cCAsset.btn_c}" v-if="cCAsset.btn_c" @click="applyChange(details.id, 'CALL')">Apply for change</button>
-              <button class="btn btn-primary" @click="save(details, 'call')" v-if="details.call_verified === 0 && cCAsset.btn_a === false">
+              <button class="btn btn-primary" @click="save(details, 'call')" v-if="details.call_verified == 0 && cCAsset.btn_a == false">
                 <i class="fa fa-refresh fa-spin" v-if="showLoading"></i> Save
               </button>
             </div>
@@ -163,7 +163,7 @@
                 <i class="fa fa-refresh fa-spin" v-if="showLoading"></i> Approve
               </button>
               <button :class="{'btn': true, 'btn-info': true, 'btn-left': !cCAsset.btn_c}" v-if="cCAsset.btn_c" @click="applyChange(details.id, 'EMAIL')">Apply for change</button>
-              <button class="btn btn-primary" @click="save(details, 'email')" v-if="details.email_verified === 0 && cCAsset.btn_a === false">
+              <button class="btn btn-primary" @click="save(details, 'email')" v-if="details.email_verified == 0 && cCAsset.btn_a == false">
                 <i class="fa fa-refresh fa-spin" v-if="showLoading"></i> Save
               </button>
             </div>
@@ -231,7 +231,7 @@
     },
     watch: {
       '$route': function () {
-        if (this.$route.path === '/campaigns') {
+        if (this.$route.path == '/campaigns') {
           this.getAll()
         }
       },
@@ -242,13 +242,13 @@
     },
     methods: {
       getAll: function () {
-        if(this.$route.name === 'clients-campaigns' ) {
+        if(this.$route.name == 'clients-campaigns' ) {
           this.getClientDetails(this.$route.params.clientId)
           Http.get(`/campaigns/clients/`+ this.$route.params.clientId + '?include=client,brand')
             .then(response => {
               this.campaigns = response.data
             })
-        } else if(this.$route.name === 'brands-campaigns' ) {
+        } else if(this.$route.name == 'brands-campaigns' ) {
           this.getBrandDetails(this.$route.params.brandId)
           Http.get(`/campaigns/brands/`+ this.$route.params.brandId + '?include=client,brand')
             .then(response => {
@@ -283,16 +283,16 @@
               vm.showLoading = false
               vm.showModal = false
 
-              if (asset === 'sms') {
-                if(response.data.sms_verified === 0) {
+              if (asset == 'sms') {
+                if(response.data.sms_verified == 0) {
                   vm.changeAssetControl(false, false, true)
                 }
-              } else if (asset === 'call') {
-                if(vm.details.call_verified === 0) {
+              } else if (asset == 'call') {
+                if(vm.details.call_verified == 0) {
                   vm.changeAssetControl(false, false, true)
                 }
-              } else if (asset === 'email') {
-                if(vm.details.email_verified === 0) {
+              } else if (asset == 'email') {
+                if(vm.details.email_verified == 0) {
                   vm.changeAssetControl(false, false, true)
                 }
               }
@@ -303,7 +303,7 @@
               vm.errors = e.response.data.errors
               vm.changeAssetControl(true, false, false)
               vm.step = 0
-              if(vm.errors === {}) {
+              if(vm.errors == {}) {
                 alert.failed()
               }
             })
@@ -321,7 +321,7 @@
               vm.showLoading = false
               vm.errors = e.response.data.errors
               vm.step = 0
-              if(vm.errors === {}) {
+              if(vm.errors == {}) {
                 alert.failed()
               }
             })
@@ -373,9 +373,9 @@
         let vm = this
         vm.errors = {}
 
-        if(asset === 'sms') this.details.sms_verified = true
-        if(asset === 'call') this.details.call_verified = true
-        if(asset === 'email') this.details.email_verified = true
+        if(asset == 'sms') this.details.sms_verified = true
+        if(asset == 'call') this.details.call_verified = true
+        if(asset == 'email') this.details.email_verified = true
         console.log(123)
         alert.deletePopUp(function () {
           vm.showLoading = true
@@ -392,10 +392,10 @@
 
               vm.showLoading = false
               vm.errors = e.response.data.errors
-              if(asset === 'sms') this.details.sms_verified = false
-              if(asset === 'call') this.details.call_verified = false
-              if(asset === 'email') this.details.email_verified = false
-              if(vm.errors === {}) {
+              if(asset == 'sms') this.details.sms_verified = false
+              if(asset == 'call') this.details.call_verified = false
+              if(asset == 'email') this.details.email_verified = false
+              if(vm.errors == {}) {
                 alert.failed()
               }
             })
@@ -414,8 +414,8 @@
       },
       modalAsset :function (asset, verified) {
         var vm = this
-        if(asset === 'sms' || asset === 'call' || asset === 'email') {
-          if(verified === 1) {
+        if(asset == 'sms' || asset == 'call' || asset == 'email') {
+          if(verified == 1) {
             this.changeAssetControl(false, true, false)
           } else {
             vm.changeAssetControl(true, false, false)
@@ -424,11 +424,11 @@
       },
       openModal: function (campaignID, asset) {
         this.getDetails(campaignID)
-        if(asset === 'sms') {
+        if(asset == 'sms') {
           this.showModalSMS = true
-        } else if (asset === 'call') {
+        } else if (asset == 'call') {
           this.showModalCall = true
-        } else if (asset === 'email'){
+        } else if (asset == 'email'){
           this.showModalEmail = true
         }
       },
@@ -454,7 +454,7 @@
         Http.get(`auth/details`)
           .then(response => {
             this.user = response.data
-            if (response.data.role_id === 4) {
+            if (response.data.role_id == 4) {
               this.changeAssetControl(false,false,false)
             }
           })

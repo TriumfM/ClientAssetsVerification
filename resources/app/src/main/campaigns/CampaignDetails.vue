@@ -66,7 +66,7 @@ export default {
     // Executed when @completed-step event is triggered
     completeStep(payload) {
       this.demoSteps.forEach((step) => {
-        if (step.name === payload.name) {
+        if (step.name == payload.name) {
           step.completed = true;
         }
       })
@@ -74,8 +74,8 @@ export default {
     // Executed when @active-step event is triggered
     isStepActive(payload) {
       this.demoSteps.forEach((step) => {
-        if (step.name === payload.name) {
-          if(step.completed === true) {
+        if (step.name == payload.name) {
+          if(step.completed == true) {
             step.completed = false;
           }
         }

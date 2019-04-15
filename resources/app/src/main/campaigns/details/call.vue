@@ -1,19 +1,19 @@
 <template>
   <div>
     <div class="html_text--details" v-if="user.role_id !== 4">
-      <div class="form-line" v-if="cCAsset.btn_s === true && details.call_verified === 0" >
+      <div class="form-line" v-if="cCAsset.btn_s == true && details.call_verified == 0" >
         <div class="cnf__input ">
           <label>Call content ({{totalcharacter}}/character)</label>
           <ckeditor :editor="editor" v-model="details.call_script"  type="classic" @keyup='charCount()' :disabled="dis"></ckeditor>
           <span class="error__span" v-if="errors.call_script">{{ errors.call_script[0] }}</span>
         </div>
       </div>
-      <div class="cnf__input-html" v-if="cCAsset.btn_s === false || details.call_verified === 1">
+      <div class="cnf__input-html" v-if="cCAsset.btn_s == false || details.call_verified == 1">
         <label>Call content</label>
         <div class="view-html" v-html="details.call_script"></div>
       </div>
     </div>
-    <div class="html_text--details" v-if="user.role_id === 4">
+    <div class="html_text--details" v-if="user.role_id == 4">
       <div class="cnf__input-html" >
         <label>Call content</label>
         <div class="view-html" v-html="details.call_script"></div>
@@ -58,7 +58,7 @@
       charCount: function(){
         this.totalcharacter = this.details.call_script.length;
 
-        if(this.totalcharacter === 1600) {
+        if(this.totalcharacter == 1600) {
 
         }
       }

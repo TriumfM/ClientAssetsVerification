@@ -140,7 +140,7 @@ export default{
             vm.showLoading = false
             vm.errors = e.response.data.errors
             console.log(vm.errors)
-            if(vm.errors === {}) {
+            if(vm.errors == {}) {
               alert.failed()
             }
           })
@@ -157,7 +157,7 @@ export default{
           .catch(e => {
             vm.showLoading = false
             vm.errors = e.response.data.errors
-            if(vm.errors === {}) {
+            if(vm.errors == {}) {
               alert.failed()
             }
             console.log(vm.errors)

@@ -1,5 +1,5 @@
 <template>
-  <div :class="{'menu':true, 'sidebar':true,}">
+  <div v-bind:class="{'menu':true, 'sidebar':true,}">
     <div class="logo">
       <div class="first__letters">
         <p>{{user.username | firstLetter}}</p>
@@ -11,7 +11,7 @@
       <a @click="logout()"><i class="fa fa-power-off" aria-hidden="true"></i></a>
     </div>
     <div class='list'>
-      <router-link to="/clients" v-if="user.role_id === 1" :class="{'list__tile--link' : true, 'list__tile--link-active' : (routes[1] === 'clients')}">
+      <router-link to="/clients" v-if='user.role_id == "1"' v-bind:class='{"list__tile--link" : true, "list__tile--link-active" : (routes[1] == "clients")}'>
         <span class="active__span"></span>
         <div :class="{'list__tile__icon':true, 'active__icon': true}">
           <i class="fa fa-building-o"></i>
@@ -20,7 +20,7 @@
           <span>Clients</span>
         </div>
       </router-link>
-      <router-link to="/assetRequest" v-if="user.role_id === 1 || user.role_id === 2" :class="{'list__tile--link' : true, 'list__tile--link-active' : (routes[1] === 'assetRequest')}">
+      <router-link to="/assetRequest" v-if="user.role_id == 1 || user.role_id == 2" :class="{'list__tile--link' : true, 'list__tile--link-active' : (routes[1] == 'assetRequest')}">
         <span class="active__span"></span>
         <div :class="{'list__tile__icon':true, 'active__icon': true}">
           <i class="fa fa-bell-o"></i>
@@ -29,7 +29,7 @@
           <span>Asset request</span>
         </div>
       </router-link>
-      <router-link to="/brands" :class="{'list__tile--link' : true, 'list__tile--link-active' : (routes[1] === 'brands')}">
+      <router-link to="/brands" :class="{'list__tile--link' : true, 'list__tile--link-active' : (routes[1] == 'brands')}">
         <span class="active__span"></span>
         <div :class="{'list__tile__icon':true, 'active__icon': true}">
           <i class="fa fa-square-o"></i>
@@ -38,7 +38,7 @@
           <span>Brands</span>
         </div>
       </router-link>
-      <router-link to="/campaigns" :class="{'list__tile--link' : true, 'list__tile--link-active' : (routes[1] === 'campaigns')}">
+      <router-link to="/campaigns" :class="{'list__tile--link' : true, 'list__tile--link-active' : (routes[1] == 'campaigns')}">
         <span class="active__span"></span>
         <div :class="{'list__tile__icon':true, 'active__icon': true}">
           <i class="fa fa-sticky-note"></i>
@@ -47,7 +47,7 @@
           <span>Campaigns</span>
         </div>
       </router-link>
-      <router-link to="/users" v-if="user.role_id === 1 || user.role_id === 2" :class="{'list__tile--link' : true, 'list__tile--link-active' : (routes[1] === 'users')}">
+      <router-link to="/users" v-if="user.role_id == 1 || user.role_id == 2" :class="{'list__tile--link' : true, 'list__tile--link-active' : (routes[1] == 'users')}">
         <span class="active__span"></span>
         <div :class="{'list__tile__icon':true, 'active__icon': true}">
           <i class="fa fa-users"></i>
@@ -97,13 +97,13 @@
     methods: {
       watchRoute: function () {
         this.routes = String(this.$route.path).split('/')
-        if (this.user.role_id === 2) {
-          if (this.routes[2] === undefined) {
+        if (this.user.role_id == 2) {
+          if (this.routes[2] == undefined) {
             this.routes[2] = 'brands'
           }
         }
         else {
-          if (this.routes[2] === undefined) {
+          if (this.routes[2] == undefined) {
             this.routes[2] = 'clients'
           }
         }
