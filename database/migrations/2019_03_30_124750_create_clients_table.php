@@ -16,8 +16,8 @@ class CreateClientsTable extends Migration
         Schema::create('clients', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
-            $table->string('iwinback_api_key');
-            $table->string('iwinback_api_secret');
+            $table->string('iwinback_api_key')->nullable();
+            $table->string('iwinback_api_secret')->nullable();
             $table->timestamps();
         });
     }

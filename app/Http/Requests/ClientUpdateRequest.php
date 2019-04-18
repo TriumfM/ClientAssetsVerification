@@ -25,8 +25,6 @@ class ClientUpdateRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'iwinback_api_key' => 'required',
-            'iwinback_api_secret' => 'required',
         ];
     }
 }

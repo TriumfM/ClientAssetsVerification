@@ -35,6 +35,8 @@ Route::group(['middleware' => ['auth:api', 'role:client admin']], function() {
     Route::get('/requests/{id}', 'VerifiedRequestController@show');
     Route::delete('/requests/{id}', 'VerifiedRequestController@destroy');
 
+    Route::delete('/campaigns/{id}', 'CampaignController@destroy');
+
     Route::post('request/approve', 'VerifiedRequestController@directApprove');
     Route::get('/requests/approve/{id}', 'VerifiedRequestController@approve');
 });
@@ -47,7 +49,7 @@ Route::group(['middleware' => ['auth:api', 'role:client user']], function() {
 
     Route::post('/campaigns', 'CampaignController@store');
     Route::put('/campaigns/{id}', 'CampaignController@update');
-    Route::delete('/campaigns/{id}', 'CampaignController@destroy');
+
 });
 
 Route::group(['middleware' => 'auth:api'], function() {
