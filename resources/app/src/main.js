@@ -5,17 +5,10 @@ import {store} from '@/store'
 import '@/assets/scss/main.scss'
 
 import libraries from './libraries'
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
-import VueCkeditor from 'vue-ckeditor5'
+import CKEditor from '@ckeditor/ckeditor5-vue';
 
-const options = {
-  editors: {
-    classic: ClassicEditor,
-  },
-  name: 'ckeditor'
-}
+Vue.use( CKEditor );
 
-Vue.use(VueCkeditor.plugin, options);
 Vue.use(libraries)
 Vue.config.productionTip = false
 

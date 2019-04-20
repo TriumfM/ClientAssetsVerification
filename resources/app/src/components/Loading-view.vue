@@ -38,14 +38,14 @@ export default {
         .then(response => {
           this.user = response.data
 
-          if( response.data.role_id !== 1 || response.data.role_id !== 2) {
+          if( response.data.role_id != 1 || response.data.role_id != 2) {
             this.$router.push({name: 'brands'})
           } else {
             this.$router.push({name: 'clients'})
           }
         })
         .catch(e => {
-          if (e.response.status !== 200) {
+          if (e.response.status != 200) {
             localStorage.setItem('vuex', '')
             this.$router.push('login')
           }

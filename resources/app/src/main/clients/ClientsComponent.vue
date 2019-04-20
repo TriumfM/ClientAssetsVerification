@@ -127,7 +127,7 @@ export default{
       let vm = this
       vm.errors = {}
       vm.showLoading = true
-      if (data.id !== undefined) {
+      if (data.id != undefined) {
         Http.put('/clients/' + data.id, vm.details)
           .then(response => {
             vm.getAll()
@@ -190,7 +190,7 @@ export default{
       Http.get(`auth/details`)
         .then(response => {
           this.user = response.data
-          if (response.data.role_id !== 1) {
+          if (response.data.role_id != 1) {
             this.$router.push('brands')
           }
         })

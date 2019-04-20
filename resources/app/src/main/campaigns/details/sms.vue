@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="html_text--details" v-if="user.role_id !== 4">
+    <div class="html_text--details" v-if="user.role_id != 4">
       <div class="form-line" v-if="cCAsset.btn_s == true && details.sms_verified == 0">
         <div class="cnf__input ">
           <label>SMS content ({{sms_count}} sms/ {{totalcharacter}} characters)</label>

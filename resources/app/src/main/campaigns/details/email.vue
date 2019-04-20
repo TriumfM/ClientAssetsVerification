@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div class="html_text--details" v-if="user.role_id !== 4">
+  <div class="email">
+    <div class="html_text--details" v-if="user.role_id != 4">
       <div class="form-line" v-if="cCAsset.btn_s == true && details.email_verified == 0">
         <div class="cnf__input col-md-12">
           <label>Subject</label>
@@ -8,8 +8,12 @@
           <span class="error__span" v-if="errors.email_subject">{{ errors.email_subject[0] }}</span>
         </div>
         <div class="cnf__input ">
+          <div class="box__source">
+            <button :class="{'btn_source-html': true, 'active': showSource}" @click="showSource = !showSource">Source</button>
+          </div>
           <label>Email HTML/Text</label>
           <ckeditor :editor="editor" v-model="details.email_html"  type="classic"></ckeditor>
+          <div class="email_html-code" v-if="showSource">{{details.email_html}}</div>
           <span class="error__span" v-if="errors.email_html">{{ errors.email_html[0] }}</span>
         </div>
       </div>
@@ -47,7 +51,8 @@
       return {
         editor: ClassicEditor,
         editorDisabled: true,
-        user: {}
+        user: {},
+        showSource: false
       }
     },
     computed: function () {

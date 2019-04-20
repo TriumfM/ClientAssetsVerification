@@ -71,7 +71,7 @@ export default{
   },
   methods: {
     fetchClients: function () {
-      if (this.user.role_id !== 1) {
+      if (this.user.role_id != 1) {
         Http.get(`/auth/clients`)
           .then(response => {
             this.clients = response.data
