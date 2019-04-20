@@ -29,6 +29,8 @@ Route::group(['middleware' => ['auth:api', 'role:client admin']], function() {
     Route::put('/users/{id}', 'UserController@update');
     Route::delete('/users/{id}', 'UserController@destroy');
 
+    Route::get('users/brands/{user_id}', 'UserController@getUserBrands');
+    Route::get('users/brands/not/{user_id}', 'UserController@getNotUserBrands');
     Route::post('/users/brands/{userId}/{brandId}/{flag}', 'UserController@addUserBrand');
 
     Route::get('/requests', 'VerifiedRequestController@index');
