@@ -20,7 +20,7 @@ Http.interceptors.response.use(response => {
   //   localStorage.setItem('vuex', '')
   //   window.location.replace('/')
   // } else if (error.response.status == 500) {
-  //   if (error.response.data.errors !== null) {
+  //   if (error.response.data.errors != null) {
   //     swal.fire({title: 'Server error!', text: error.response.data.errors.general, type: 'error'})
   //   } else {
   //     swal.fire({title: 'Server error!', text: null, type: 'error'})

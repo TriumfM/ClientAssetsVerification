@@ -5,7 +5,7 @@
         <p>{{user.username | firstLetter}}</p>
       </div>
       <p class="user__name">{{user.username}}</p>
-      <p class="user__client-name" v-if="user.client_id !== null">{{userClient[0].name}}</p>
+      <p class="user__client-name" v-if="user.client_id != null">{{userClient[0].name}}</p>
     </div>
     <div class="user__actions">
       <a @click="logout()"><i class="fa fa-power-off" aria-hidden="true"></i></a>

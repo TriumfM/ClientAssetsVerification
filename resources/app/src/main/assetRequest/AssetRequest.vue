@@ -101,7 +101,7 @@ export default {
       Http.get(`auth/details`)
         .then(response => {
           this.user = response.data
-          if (response.data.role_id !== 1) {
+          if (response.data.role_id != 1) {
             this.$router.push('brands')
           }
         })

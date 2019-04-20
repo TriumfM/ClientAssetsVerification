@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="html_text--details" v-if="user.role_id !== 4">
+    <div class="html_text--details" v-if="user.role_id != 4">
       <div class="form-line" v-if="cCAsset.btn_s == true && details.call_verified == 0" >
         <div class="cnf__input ">
           <label>Call content ({{totalcharacter}}/character)</label>
@@ -25,11 +25,12 @@
 <script>
   import {Http} from '@/helpers/http-helper'
   import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+  import Editor from 'v-markdown-editor'
 
   export default{
     props:['details','errors', 'cCAsset', 'step'],
     components: {
-
+      Editor
     },
     data () {
       return {

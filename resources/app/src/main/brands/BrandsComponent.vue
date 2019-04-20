@@ -166,7 +166,7 @@ export default{
       let vm = this
       vm.errors = {}
       vm.showLoading = true
-      if (data.id !== undefined) {
+      if (data.id != undefined) {
         Http.put('/brands/' + data.id, vm.details)
           .then(response => {
             vm.getAll()
@@ -220,7 +220,7 @@ export default{
           .then(response => {
             this.clients = response.data
           })
-      } else if (this.user.role_id !== 1) {
+      } else if (this.user.role_id != 1) {
         Http.get(`/auth/clients`)
           .then(response => {
             this.clients = response.data

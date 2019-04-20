@@ -13,7 +13,13 @@
     "build": "node build/build.js"
   },
   "dependencies": {
-    "@ckeditor/ckeditor5-build-classic": "^12.0.0",
+    "@ckeditor/ckeditor5-basic-styles": "^11.1.0",
+    "@ckeditor/ckeditor5-build-classic": "^12.1.0",
+    "@ckeditor/ckeditor5-build-decoupled-document": "^12.1.0",
+    "@ckeditor/ckeditor5-editor-classic": "^12.1.0",
+    "@ckeditor/ckeditor5-essentials": "^11.0.1",
+    "@ckeditor/ckeditor5-link": "^11.0.1",
+    "@ckeditor/ckeditor5-paragraph": "^11.0.1",
     "@ckeditor/ckeditor5-vue": "^1.0.0-beta.1",
     "@riophae/vue-treeselect": "0.0.38",
     "axios": "^0.18.0",
@@ -25,13 +31,13 @@
     "popper.js": "^1.14.7",
     "sass-loader": "^7.1.0",
     "sweetalert2": "^8.7.0",
+    "v-markdown-editor": "^1.0.8",
     "vue": "^2.5.2",
     "vue-ckeditor5": "^0.4.1",
     "vue-router": "^3.0.1",
     "vue-stepper": "^1.4.2",
     "vuex": "^3.1.0",
-    "vuex-persistedstate": "^2.5.4",
-    "yimo-vue-editor": "^1.1.2"
+    "vuex-persistedstate": "^2.5.4"
   },
   "devDependencies": {
     "@ckeditor/ckeditor5-comments": "^2.0.0",
@@ -80,7 +86,8 @@
     "webpack": "^3.6.0",
     "webpack-bundle-analyzer": "^2.9.0",
     "webpack-dev-server": "^2.9.1",
-    "webpack-merge": "^4.1.0"
+    "webpack-merge": "^4.1.0",
+    "yimo-vue-editor": "^1.1.2"
   },
   "engines": {
     "node": ">= 6.0.0",
