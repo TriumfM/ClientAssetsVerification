@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Brand;
 use App\Http\Requests\UserSaveRequest;
 use App\Http\Requests\UserUpdateRequest;
 use App\Role;
@@ -90,6 +91,23 @@ class UserController extends Controller
     {
         return $this->service->addUserBrand($userId, $brandId, $flag);
     }
+
+
+    public function getUserBrands($user_id)
+    {
+        return Brand::whereHas('users', function($query) use ($user_id){
+            $query->where('user_id', $user_id);
+        })->get();
+    }
+
+    public function getNotUserBrands($user_id)
+    {
+        $user = User::findOrFail($user_id);
+        return Brand::whereDoesntHave('users', function($query) use ($user_id){
+            $query->where('user_id', $user_id);
+        })->where('client_id', $user->client_id)->get();
+    }
+
 
     private function checkRoleId($role_id)
     {

@@ -73,8 +73,10 @@ class CampaignServiceImpl implements CampaignService
     public function delete($id)
     {
         $campaign = Campaign::findOrFail($id);
-
-        $campaign->delete();
+        if(!$campaign->campaign_verified)
+            $campaign->delete();
+        else
+            return response(['errors' => [ 'general' => ['You cannot delete verified campaigns']]], 422);
     }
 
     public function getByClientId($client_id)

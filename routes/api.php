@@ -29,11 +29,15 @@ Route::group(['middleware' => ['auth:api', 'role:client admin']], function() {
     Route::put('/users/{id}', 'UserController@update');
     Route::delete('/users/{id}', 'UserController@destroy');
 
+    Route::get('users/brands/{user_id}', 'UserController@getUserBrands');
+    Route::get('users/brands/not/{user_id}', 'UserController@getNotUserBrands');
     Route::post('/users/brands/{userId}/{brandId}/{flag}', 'UserController@addUserBrand');
 
     Route::get('/requests', 'VerifiedRequestController@index');
     Route::get('/requests/{id}', 'VerifiedRequestController@show');
     Route::delete('/requests/{id}', 'VerifiedRequestController@destroy');
+
+    Route::delete('/campaigns/{id}', 'CampaignController@destroy');
 
     Route::post('request/approve', 'VerifiedRequestController@directApprove');
     Route::get('/requests/approve/{id}', 'VerifiedRequestController@approve');
@@ -47,7 +51,7 @@ Route::group(['middleware' => ['auth:api', 'role:client user']], function() {
 
     Route::post('/campaigns', 'CampaignController@store');
     Route::put('/campaigns/{id}', 'CampaignController@update');
-    Route::delete('/campaigns/{id}', 'CampaignController@destroy');
+
 });
 
 Route::group(['middleware' => 'auth:api'], function() {

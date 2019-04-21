@@ -83,7 +83,8 @@ class UserServiceImpl implements UserService
     public function delete($id)
     {
         $user = User::findOrFail($id);
-
+        if(\Auth::user()->id == $id)
+            return response(['errors' => ['general'=> ['You cannot delete your account!']]], 403);
         $user->delete();
     }
 
