@@ -137,8 +137,9 @@
 
 .cnt__textarea-lg {
   @extend .cnt__textarea;
-  height: 300px !important;
+  min-height: 300px !important;
   word-wrap: break-word;
+  height: auto !important;
 }
 
 .vue-treeselect__control {
