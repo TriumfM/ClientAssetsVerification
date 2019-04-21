@@ -27,7 +27,7 @@
               <i class="fa fa-ellipsis-v" ></i>
             </div>
             <ul class="dropdown-menu dropdown-menu-main dropdown-menu-right" aria-labelledby="dropdownRowBuilding">
-              <li class="dropdown__item" data-toggle="modal" v-on:click="getDetails(user.id), modalEdit(), fetchRole()">
+              <li class="dropdown__item" data-toggle="modal" v-on:click="getDetails(user.id), modalEdit(user.id), fetchRole()">
                 <div class="dropdown__item--icon"><i class="fa fa-pencil" aria-hidden="true"></i></div>
                 <span class="dropdown__item--description">Edit</span>
               </li>
@@ -99,7 +99,7 @@
                     </treeselect>
                     <span class="error__span" v-if="errors.client_id">{{ errors.client_id[0] }}</span>
                   </div>
-                  <div class="cnf__input col-md-12" v-if="customizeUser.brands">
+                  <div class="cnf__input col-md-12" v-if="customizeUser.brands && modal == 'Add new'">
                     <label>Brands</label>
                     <treeselect :options="brands" :multiple="true" placeholder=" Choose brands" :normalizer="normalizer" v-model="details.brands">
                       <label slot="option-label" slot-scope="{ node }">
@@ -108,6 +108,38 @@
                     </treeselect>
                     <span class="error__span" v-if="errors.brands">{{ errors.brands[0] }}</span>
                   </div>
+
+                  <div class="user__vehicles-holder" v-if="customizeUser.brands && modal == 'Edit'">
+                    <div class="table__holder auto--overflow-y roles--table col-md-6">
+                      <div class="table__header">
+                        <label class="col-md-10">No Access brands</label>
+                        <label class="col-md-2">+</label>
+                      </div>
+                      <div class="table__cell has--grid" v-for="(brandNA, index) in brandsNotAllow" :key="index">
+                        <div class="col-md-10 grid__input">
+                          <label class="font-100 text-left">{{ brandNA.name }}</label>
+                        </div>
+                        <div class="col-md-2 grid__input click">
+                          <label class="font-100 click"><a v-on:click="addOrRemoveBrands(brandNA.id, details.id, 'add')"><i class="fa fa-plus" aria-hidden="true"></i></a></label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="table__holder auto--overflow-y roles--table col-md-6">
+                      <div class="table__header">
+                        <label class="col-md-10">Access brands</label>
+                        <label class="col-md-2">-</label>
+                      </div>
+                      <div class="table__cell has--grid" v-for="(brandA, index) in brandsAllow" :key="index">
+                        <div class="col-md-10 grid__input">
+                          <label class="font-100 text-left">{{ brandA.name }}</label>
+                        </div>
+                        <div class="col-md-2 grid__input click">
+                          <label class="font-100 click"><a v-on:click="addOrRemoveBrands(brandA.id, details.id, 'remove')"><i class="fa fa-minus" aria-hidden="true"></i></a></label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
                   <div class="cnf__input ">
                     <input type="checkbox" v-model="details.active">
                     <label>Active</label>
@@ -145,6 +177,8 @@ export default{
       users: {},
       clients: [],
       brands: [],
+      brandsAllow: [],
+      brandsNotAllow: [],
       roles: [
         {id: 1, name:'Super Admin'},
         {id: 2, name:'Client Admin'},
@@ -181,7 +215,9 @@ export default{
   watch: {
     clientId: function () {
       this.details.brands = []
-      this.fetchBrands(this.clientId)
+      if(this.modal != 'Edit') {
+        this.fetchBrands(this.clientId)
+      }
     },
     roleId: function () {
       this.fetchClients()
@@ -213,7 +249,7 @@ export default{
     },
     getDetails: function (idUser) {
       this.errors = {}
-      Http.get(`/users/` + idUser)
+      Http.get(`/users/` + idUser +'?include=brands')
         .then(response => {
           this.details = response.data
         })
@@ -284,12 +320,13 @@ export default{
       }
       this.showModal = true
     },
-    modalEdit: function() {
+    modalEdit: function(user_id) {
       this.modal = 'Edit'
       this.showModal = true
       if (this.user.role_id == 2) {
         this.roles = [{id: 3,name:'Client User'}, {id: 4, name:'Client Viewer'}]
       }
+      this.ftechBrandss(user_id)
     },
     fetchRole: function () {
 
@@ -313,6 +350,36 @@ export default{
         .then(response => {
           this.brands = response.data
         })
+    },
+    ftechBrandss: function (user_id) {
+      Http.get(`/users/brands/not/` + user_id)
+        .then(response => {
+          this.brandsNotAllow = response.data
+        })
+
+      Http.get(`/users/brands/` + user_id)
+        .then(response => {
+          this.brandsAllow = response.data
+        })
+    },
+    addOrRemoveBrands: function (brand_id, user_id, mode) {
+      if (mode == 'add') {
+        Http.post(`/users/brands/`+ user_id +`/`+ brand_id+`/add`)
+          .then(response => {
+            this.ftechBrandss(user_id)
+          })
+          .catch(e => {
+          })
+      }
+
+      if (mode == 'remove') {
+        Http.post(`/users/brands/`+ user_id +`/`+ brand_id+`/remove`)
+          .then(response => {
+            this.ftechBrandss(user_id)
+          })
+          .catch(e => {
+          })
+      }
     },
     getUser: function () {
       Http.get(`auth/details`)

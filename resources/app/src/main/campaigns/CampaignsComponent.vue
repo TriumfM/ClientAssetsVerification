@@ -42,7 +42,7 @@
                 <div class="dropdown__item--icon"><i class="fa fa-pencil" aria-hidden="true"></i></div>
                 <span class="dropdown__item--description">Edit</span>
               </li>
-              <li class="dropdown__item" v-on:click="destroy(campaign.id)" v-if="((campaign.sms_verified == 1 && campaign.call_verified == 1 && campaign.email_verified == 1) && (user.role_id == 1 || user.role_id == 2))">
+              <li class="dropdown__item" v-on:click="destroy(campaign.id)" v-if="((campaign.sms_verified == 1 && campaign.call_verified == 1 && campaign.email_verified == 1))">
                 <div class="dropdown__item--icon"><i class="fa fa-trash" aria-hidden="true"></i></div>
                 <span class="dropdown__item--description">Delete</span>
               </li>

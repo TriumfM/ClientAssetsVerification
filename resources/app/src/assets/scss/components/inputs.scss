@@ -138,6 +138,7 @@
 .cnt__textarea-lg {
   @extend .cnt__textarea;
   height: 300px !important;
+  word-wrap: break-word;
 }
 
 .vue-treeselect__control {

@@ -48,9 +48,15 @@ $greenAlphaColor: #90d09c;
 $redColor: #d9534f;
 $redAlphaColor: #de9492;
 
-
+// BEZIERS
+$firstBezier:  cubic-bezier(.4,1,1,1);
+$secondBezier: cubic-bezier(0,.98,.53,.95);
 
 // SHADOWS
 $firstShadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
 $secondShadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 
+// TABLE COLORS
+$table-head: #646466;
+$table-cell: #f5f6f8;
+$table-cell-font: #9e9e9e;

@@ -13,7 +13,7 @@
           </div>
           <label>Email HTML/Text</label>
           <ckeditor :editor="editor" v-model="details.email_html"  type="classic"></ckeditor>
-          <div class="email_html-code" v-if="showSource">{{details.email_html}}</div>
+          <textarea class="email_html-code" v-if="showSource"  v-model="details.email_html"></textarea>
           <span class="error__span" v-if="errors.email_html">{{ errors.email_html[0] }}</span>
         </div>
       </div>
