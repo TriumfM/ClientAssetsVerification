@@ -9,11 +9,11 @@
         </div>
         <div class="cnf__input ">
           <div class="box__source">
-            <button :class="{'btn_source-html': true, 'active': showSource}" @click="showSource = !showSource">Source</button>
+            <button :class="{'btn_source-html': true, 'active': showSource}" @click="source()">Source</button>
           </div>
           <label>Email HTML/Text</label>
           <ckeditor :editor="editor" v-model="details.email_html"  type="classic"></ckeditor>
-          <textarea class="email_html-code" v-if="showSource"  v-model="details.email_html"></textarea>
+          <textarea class="email_html-code" v-if="showSource"  v-model="email_html"></textarea>
           <span class="error__span" v-if="errors.email_html">{{ errors.email_html[0] }}</span>
         </div>
       </div>
@@ -52,12 +52,26 @@
         editor: ClassicEditor,
         editorDisabled: true,
         user: {},
-        showSource: false
+        showSource: false,
+        email_html: ''
       }
     },
-    computed: function () {
+    computed: {
+      btn_s: function () {
+        return this.cCAsset.btn_s
+      }
     },
     watch: {
+      btn_s: function () {
+        if(!this.cCAsset.btn_s) {
+          this.details.email_html = this.email_html
+
+          Http.put('/campaigns/' + this.details.id, this.details)
+            .then(response => {
+
+            })
+        }
+      }
     },
     mounted: function () {
       this.getUser()
@@ -68,6 +82,19 @@
           .then(response => {
             this.user = response.data
           })
+      },
+      as: function () {
+        this.email_html = this.details.email_html
+      },
+      source: function () {
+        this.showSource = !this.showSource
+        if(this.showSource) {
+          this.email_html = this.details.email_html
+        }
+
+        if(!this.showSource) {
+          this.details.email_html = this.email_html
+        }
       }
     }
   }
